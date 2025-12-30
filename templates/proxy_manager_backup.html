@@ -1,0 +1,2855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proxy Manager - 代理配置管理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            background: white;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 13px;
+        }
+
+        .content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #6b7280;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #4b5563;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            border-radius: 8px;
+            border: 1px solid #e5e7eb;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+
+        thead {
+            background: #f9fafb;
+        }
+
+        th {
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            font-size: 14px;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        tr:hover {
+            background: #f9fafb;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .badge-socks5 {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+
+        .badge-trojan {
+            background: #fce7f3;
+            color: #9f1239;
+        }
+
+        .badge-http {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .modal-header h2 {
+            font-size: 24px;
+            color: #111827;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 28px;
+            cursor: pointer;
+            color: #6b7280;
+            padding: 0;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .close-btn:hover {
+            color: #111827;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            color: #374151;
+            font-size: 14px;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+            margin-top: 24px;
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: 6px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a7f3d0;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #6b7280;
+        }
+
+        .empty-state svg {
+            width: 64px;
+            height: 64px;
+            margin-bottom: 16px;
+            opacity: 0.5;
+        }
+
+        .json-display {
+            background: #f9fafb;
+            padding: 12px;
+            border-radius: 6px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            word-break: break-all;
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            border: none;
+            background: none;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            color: #6b7280;
+            border-bottom: 2px solid transparent;
+            margin-bottom: -2px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            color: #667eea;
+        }
+
+        .tab-btn.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            flex: 1;
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+        
+        .tab-content.active {
+            display: flex !important;
+        }
+        
+        /* 搜索和工具栏区域 */
+        .toolbar-wrapper {
+            flex-shrink: 0;
+            margin-bottom: 15px;
+        }
+        
+        .search-bar {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .search-input {
+            flex: 1;
+            max-width: 400px;
+            padding: 10px 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        /* 表格容器 - 可滚动 */
+        .table-wrapper {
+            flex: 1;
+            overflow: auto;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            background: white;
+        }
+        
+        /* 固定表头的表格 */
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+        
+        .data-table thead {
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            background: #f9fafb;
+        }
+        
+        .data-table th {
+            padding: 12px 15px;
+            text-align: left;
+            font-weight: 600;
+            color: #374151;
+            border-bottom: 2px solid #e5e7eb;
+            white-space: nowrap;
+        }
+        
+        .data-table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .data-table tbody tr:hover {
+            background: #f9fafb;
+        }
+        
+        /* 分页组件 */
+        .pagination-wrapper {
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-top: 15px;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .pagination-info {
+            color: #6b7280;
+            font-size: 14px;
+        }
+        
+        .pagination {
+            display: flex;
+            gap: 5px;
+            align-items: center;
+        }
+        
+        .pagination button {
+            padding: 6px 12px;
+            border: 1px solid #d1d5db;
+            background: white;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.2s;
+        }
+        
+        .pagination button:hover:not(:disabled) {
+            background: #f3f4f6;
+            border-color: #667eea;
+        }
+        
+        .pagination button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        
+        .pagination button.active {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .page-size-selector {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            color: #6b7280;
+        }
+        
+        .page-size-selector select {
+            padding: 6px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .tabs {
+                flex-direction: column;
+            }
+
+            .tab-btn {
+                text-align: left;
+                border-bottom: none;
+                border-left: 3px solid transparent;
+                margin-bottom: 0;
+            }
+
+            .tab-btn.active {
+                border-left-color: #667eea;
+                border-bottom-color: transparent;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
+                <div>
+                    <h1>🔧 Proxy Manager</h1>
+                    <p>管理 config.yaml 中的代理配置</p>
+                </div>
+                <button class="btn btn-secondary" onclick="showPathSettingsModal()" style="padding: 10px 20px;">
+                    ⚙️ 路径设置
+                </button>
+            </div>
+        </div>
+
+        <div class="content">
+            <!-- 标签页导航 -->
+            <div class="tabs" style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid #e5e7eb;">
+                <button class="tab-btn active" onclick="switchTab('devices')" style="padding: 12px 24px; border: none; background: none; cursor: pointer; font-size: 16px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px;">
+                    📱 设备管理
+                </button>
+                <button class="tab-btn" onclick="switchTab('proxies')" style="padding: 12px 24px; border: none; background: none; cursor: pointer; font-size: 16px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px;">
+                    📋 代理列表
+                </button>
+                <button class="tab-btn" onclick="switchTab('transit')" style="padding: 12px 24px; border: none; background: none; cursor: pointer; font-size: 16px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px;">
+                    🔗 中转线路列表
+                </button>
+                <button class="tab-btn" onclick="switchTab('vm')" style="padding: 12px 24px; border: none; background: none; cursor: pointer; font-size: 16px; font-weight: 500; color: #6b7280; border-bottom: 2px solid transparent; margin-bottom: -2px;">
+                    🖥️ VM 管理
+                </button>
+            </div>
+
+            <!-- 设备管理标签页 -->
+            <div id="devices-tab" class="tab-content" style="display: block;">
+                <div class="toolbar">
+                    <div>
+                        <button class="btn btn-secondary" onclick="refreshDeviceList()">
+                            🔄 刷新设备列表
+                        </button>
+                    </div>
+                    <div id="device-count" style="color: #6b7280; font-size: 14px;">
+                        加载中...
+                    </div>
+                </div>
+
+                <div id="device-alert-container"></div>
+
+                <!-- 已连接设备列表 -->
+                <div>
+                    <h3 style="font-size: 18px; margin-bottom: 15px; color: #374151;">🔌 已连接设备（实时扫描）</h3>
+                    <div class="table-container">
+                        <div id="devices-scan-loading" class="loading" style="display: none;">正在扫描设备...</div>
+                        <div id="devices-scan-empty" class="empty-state" style="display: none;">
+                            <p>暂无设备连接</p>
+                            <p style="font-size: 12px; margin-top: 5px; color: #9ca3af;">请确保设备已通过USB连接并已启用USB调试</p>
+                        </div>
+                        <table id="devices-scan-table" class="data-table" style="display: none;">
+                            <thead>
+                                <tr>
+                                    <th>备注</th>
+                                    <th>设备ID</th>
+                                    <th>状态</th>
+                                    <th>操作</th>
+                                </tr>
+                            </thead>
+                            <tbody id="devices-scan-tbody">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 代理列表标签页 -->
+            <div id="proxies-tab" class="tab-content" style="display: none;">
+                <div class="toolbar">
+                    <div>
+                        <button class="btn btn-primary" onclick="showAddModal()">
+                            ➕ 添加代理
+                        </button>
+                        <button class="btn btn-secondary" onclick="loadProxies()">
+                            🔄 刷新
+                        </button>
+                    </div>
+                    <div id="proxy-count" style="color: #6b7280; font-size: 14px;">
+                        加载中...
+                    </div>
+                </div>
+
+                <div id="alert-container"></div>
+
+                <div class="table-container">
+                    <div id="loading" class="loading">加载中...</div>
+                    <div id="empty-state" class="empty-state" style="display: none;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                        </svg>
+                        <p>暂无代理配置</p>
+                    </div>
+                    <table id="proxy-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>索引</th>
+                                <th>名称</th>
+                                <th>类型</th>
+                                <th>地区</th>
+                                <th>服务器</th>
+                                <th>端口</th>
+                                <th>用户名</th>
+                                <th>中转线路</th>
+                                <th>其他参数</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="proxy-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 中转线路列表标签页 -->
+            <div id="transit-tab" class="tab-content" style="display: none;">
+                <div class="toolbar">
+                    <div>
+                        <button class="btn btn-primary" onclick="showAddTransitModal()">
+                            ➕ 添加中转线路
+                        </button>
+                        <button class="btn btn-secondary" onclick="loadTransitProxies()">
+                            🔄 刷新
+                        </button>
+                    </div>
+                    <div id="transit-count" style="color: #6b7280; font-size: 14px;">
+                        加载中...
+                    </div>
+                </div>
+
+                <div id="transit-alert-container"></div>
+
+                <div class="table-container">
+                    <div id="transit-loading" class="loading">加载中...</div>
+                    <div id="transit-empty-state" class="empty-state" style="display: none;">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"></path>
+                        </svg>
+                        <p>暂无中转线路配置</p>
+                    </div>
+                    <table id="transit-table" style="display: none;">
+                        <thead>
+                            <tr>
+                                <th>索引</th>
+                                <th>名称</th>
+                                <th>类型</th>
+                                <th>服务器</th>
+                                <th>端口</th>
+                                <th>用户名</th>
+                                <th>其他参数</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transit-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- VM 管理标签页 -->
+            <div id="vm-tab" class="tab-content" style="display: none;">
+                <div class="toolbar">
+                    <div>
+                        <button class="btn btn-primary" onclick="showVMNewModal()">
+                            🆕 创建新账号
+                        </button>
+                        <button class="btn btn-success" onclick="showVMLoadModal()">
+                            ♻️ 加载账号
+                        </button>
+                        <button class="btn btn-secondary" onclick="showVMSaveModal()">
+                            💾 保存账号
+                        </button>
+                        <button class="btn btn-secondary" onclick="showRegionManageModal()">
+                            🌍 管理地区
+                        </button>
+                    </div>
+                </div>
+
+                <div id="vm-alert-container"></div>
+
+                <!-- 日志输出区域 -->
+                <div style="margin-top: 20px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+                        <h3 style="font-size: 18px; color: #374151;">📋 执行日志</h3>
+                        <button class="btn btn-sm btn-secondary" onclick="clearVMLog()" style="padding: 6px 12px; font-size: 12px;">
+                            🗑️ 清空日志
+                        </button>
+                    </div>
+                    <div id="vm-log-container" style="background: #1e1e1e; color: #d4d4d4; padding: 20px; border-radius: 8px; font-family: 'Courier New', monospace; font-size: 13px; max-height: 600px; overflow-y: auto; min-height: 400px;">
+                        <div style="color: #6b7280;">等待操作...</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 添加/编辑模态框 -->
+    <div id="proxy-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="modal-title">添加代理</h2>
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+            </div>
+            
+            <!-- 添加模式切换按钮 -->
+            <div id="proxy-mode-switch" style="display: none; margin-bottom: 20px; text-align: center;">
+                <div style="display: inline-flex; background: #f3f4f6; border-radius: 8px; padding: 4px;">
+                    <button type="button" class="mode-btn active" onclick="switchProxyMode('single')" 
+                            style="padding: 8px 24px; border: none; background: white; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+                        📝 单条添加
+                    </button>
+                    <button type="button" class="mode-btn" onclick="switchProxyMode('batch')" 
+                            style="padding: 8px 24px; border: none; background: transparent; border-radius: 6px; cursor: pointer; font-weight: 500; transition: all 0.2s;">
+                        📋 批量导入
+                    </button>
+                </div>
+            </div>
+            
+            <!-- 单条添加表单 -->
+            <form id="proxy-form" onsubmit="saveProxy(event)">
+                <div class="form-group">
+                    <label>名称 *</label>
+                    <input type="text" name="name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>类型 *</label>
+                        <select name="type" required>
+                            <option value="socks5" selected>socks5</option>
+                            <option value="trojan">trojan</option>
+                            <option value="http">http</option>
+                            <option value="https">https</option>
+                            <option value="ss">ss</option>
+                            <option value="vmess">vmess</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>地区 *</label>
+                        <div style="display: flex; gap: 8px;">
+                            <select name="region" id="proxy-region-select" required style="flex: 1;">
+                                <option value="">加载中...</option>
+                            </select>
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="showRegionManageModal()" style="padding: 10px 16px; white-space: nowrap;">
+                                ⚙️ 管理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>跳过证书验证</label>
+                        <select name="skip-cert-verify">
+                            <option value="true" selected>是</option>
+                            <option value="false">否</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>服务器 *</label>
+                        <input type="text" name="server" required>
+                    </div>
+                    <div class="form-group">
+                        <label>端口 *</label>
+                        <input type="text" name="port" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>用户名 *</label>
+                        <input type="text" name="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label>密码 *</label>
+                        <input type="text" name="password" required>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>SNI</label>
+                    <input type="text" name="sni">
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>UDP</label>
+                        <select name="udp">
+                            <option value="true" selected>是（默认）</option>
+                            <option value="false">否</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Dialer Proxy (中转线路)</label>
+                        <select name="dialer-proxy" id="dialer-proxy-select">
+                            <option value="">无（不使用中转）</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>其他参数 (JSON 格式，可选)</label>
+                    <textarea name="extra-params" rows="3" placeholder='{"key": "value"}' style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; font-family: 'Courier New', monospace;"></textarea>
+                    <small style="color: #6b7280; font-size: 12px;">例如: {"network": "tcp", "tls": true}</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+            
+            <!-- 批量导入表单 -->
+            <form id="proxy-batch-form" onsubmit="saveBatchProxies(event)" style="display: none;">
+                <div class="form-group">
+                    <label>数据格式 *</label>
+                    <select name="format_type" required onchange="updateFormatHint()">
+                        <option value="">请选择数据格式</option>
+                        <option value="format1">格式1: username:password:hostname:port</option>
+                        <option value="format2">格式2: hostname:port:username:password</option>
+                        <option value="format3">格式3: username:password@hostname:port</option>
+                    </select>
+                    <div id="format-hint" style="margin-top: 8px; padding: 8px; background: #f0f9ff; border-left: 3px solid #3b82f6; font-size: 13px; color: #1e40af; display: none;">
+                        <!-- 格式提示将动态显示 -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>代理名称前缀 *</label>
+                    <input type="text" name="name_prefix" required placeholder="例如: UK, SG, HK">
+                    <small style="color: #6b7280;">代理名称将自动生成为: 前缀_001, 前缀_002, ...</small>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>地区 *</label>
+                        <select name="region" id="proxy-batch-region-select" required>
+                            <option value="">加载中...</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>中转线路</label>
+                        <select name="dialer_proxy" id="proxy-batch-dialer-select">
+                            <option value="">无（不使用中转）</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>代理数据 * <span style="color: #6b7280; font-weight: normal;">(每行一个代理)</span></label>
+                    <textarea name="proxy_lines" rows="10" required 
+                              placeholder="请粘贴代理数据，每行一个&#10;例如（根据选择的格式）：&#10;user1:pass1:proxy1.com:8080&#10;user2:pass2:proxy2.com:8080"></textarea>
+                    <small style="color: #6b7280;">支持多行批量导入，系统会自动解析</small>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">取消</button>
+                    <button type="submit" class="btn btn-primary">批量导入</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 添加/编辑中转线路模态框 -->
+    <div id="transit-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 id="transit-modal-title">添加中转线路</h2>
+                <button class="close-btn" onclick="closeTransitModal()">&times;</button>
+            </div>
+            <form id="transit-form" onsubmit="saveTransitProxy(event)">
+                <div class="form-group">
+                    <label>名称 *</label>
+                    <input type="text" name="name" required>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>类型 *</label>
+                        <select name="type" required>
+                            <option value="socks5" selected>socks5</option>
+                            <option value="trojan">trojan</option>
+                            <option value="http">http</option>
+                            <option value="https">https</option>
+                            <option value="ss">ss</option>
+                            <option value="vmess">vmess</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>跳过证书验证</label>
+                        <select name="skip-cert-verify">
+                            <option value="true" selected>是</option>
+                            <option value="false">否</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>服务器 *</label>
+                        <input type="text" name="server" required>
+                    </div>
+                    <div class="form-group">
+                        <label>端口 *</label>
+                        <input type="text" name="port" required>
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" name="username">
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="text" name="password">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>SNI</label>
+                    <input type="text" name="sni">
+                </div>
+
+                <div class="form-group">
+                    <label>UDP</label>
+                    <select name="udp">
+                        <option value="">未设置</option>
+                        <option value="true">是</option>
+                        <option value="false">否</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>其他参数 (JSON 格式，可选)</label>
+                    <textarea name="extra-params" rows="3" placeholder='{"key": "value"}' style="width: 100%; padding: 10px 14px; border: 1px solid #d1d5db; border-radius: 6px; font-size: 14px; font-family: 'Courier New', monospace;"></textarea>
+                    <small style="color: #6b7280; font-size: 12px;">例如: {"network": "tcp", "tls": true}</small>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeTransitModal()">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- VM 管理模态框 -->
+    <div id="vm-new-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🆕 创建新账号</h2>
+                <button class="close-btn" onclick="closeVMModal('new')">&times;</button>
+            </div>
+            <form onsubmit="executeVMNew(event)">
+                <div class="form-group">
+                    <label>账号名称 *</label>
+                    <div style="display: flex; gap: 8px;">
+                        <input type="text" name="name" id="vm-account-name-input" required placeholder="自动生成" readonly style="flex: 1; background-color: #f3f4f6;">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="generateVMAccountName()" style="padding: 10px 16px; white-space: nowrap;">
+                            🔄 重新生成
+                        </button>
+                    </div>
+                    <small style="color: #6b7280; font-size: 12px;">格式：应用类型_地域_自增数（例如：Vinted_GB_001）</small>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>应用类型 *</label>
+                        <select name="app_type" id="vm-app-type-select" required onchange="generateVMAccountName()">
+                            <option value="Vinted">Vinted</option>
+                            <option value="Carousell">Carousell</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>地区 *</label>
+                        <div style="display: flex; gap: 8px;">
+                            <select name="region" id="vm-new-region-select" required style="flex: 1;" onchange="updateVMProxyNodes(); generateVMAccountName();">
+                                <option value="">加载中...</option>
+                            </select>
+                            <button type="button" class="btn btn-sm btn-secondary" onclick="showRegionManageModal()" style="padding: 10px 16px; white-space: nowrap;">
+                                ⚙️ 管理
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>代理节点名称 *</label>
+                    <select name="node" id="vm-new-node-select" required>
+                        <option value="">请先选择地区</option>
+                    </select>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeVMModal('new')">取消</button>
+                    <button type="submit" class="btn btn-primary">创建</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="vm-load-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>♻️ 加载账号</h2>
+                <button class="close-btn" onclick="closeVMModal('load')">&times;</button>
+            </div>
+            <form onsubmit="executeVMLoad(event)">
+                <div class="form-group">
+                    <label>账号名称 *</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <select name="name" id="vm-load-account-select" required style="flex: 1; padding: 10px; border: 1px solid #e5e7eb; border-radius: 4px;">
+                            <option value="">正在加载账号列表...</option>
+                        </select>
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="loadVMAccountList()" style="padding: 10px 16px; white-space: nowrap;">
+                            🔄 刷新
+                        </button>
+                    </div>
+                    <small style="color: #6b7280; font-size: 12px;">从设备配置文件目录自动获取账号列表</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeVMModal('load')">取消</button>
+                    <button type="submit" class="btn btn-primary">加载</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="vm-save-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>💾 保存账号</h2>
+                <button class="close-btn" onclick="closeVMModal('save')">&times;</button>
+            </div>
+            <form onsubmit="executeVMSave(event)">
+                <div class="form-group">
+                    <label>账号名称 (AccountName)</label>
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="text" id="vm-save-account-name" readonly style="flex: 1; background-color: #f3f4f6; cursor: not-allowed;" placeholder="正在获取...">
+                        <button type="button" class="btn btn-sm btn-secondary" onclick="loadAccountNameForSave()" style="padding: 10px 16px; white-space: nowrap;">
+                            🔄 刷新
+                        </button>
+                    </div>
+                    <small style="color: #6b7280; font-size: 12px;">从设备配置文件中自动获取当前账号名称</small>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeVMModal('save')">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 路径设置模态框 -->
+    <div id="path-settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>⚙️ 文件路径设置</h2>
+                <button class="close-btn" onclick="closePathSettingsModal()">&times;</button>
+            </div>
+            <form onsubmit="savePathSettings(event)">
+                <div class="form-group">
+                    <label>config.yaml 文件路径</label>
+                    <input type="text" id="config-file-path-input" style="width: 100%;" placeholder="例如: D:\app_uploader\config.yaml">
+                </div>
+                <div class="form-group">
+                    <label>vm.sh 文件路径</label>
+                    <input type="text" id="vm-script-path-input" style="width: 100%;" placeholder="例如: D:\app_uploader\vm.sh">
+                </div>
+                <div class="form-group">
+                    <label>adb 可执行文件路径</label>
+                    <input type="text" id="adb-path-input" style="width: 100%;" placeholder="例如: C:\platform-tools\adb.exe 或 adb">
+                </div>
+                <div class="form-group">
+                    <label>多账号动态配置文件路径</label>
+                    <input type="text" id="vm-accounts-file-path-input" style="width: 100%;" placeholder="例如: /data/local/tmp/multiapp_conf.txt">
+                </div>
+                <div class="form-group">
+                    <label>VM机型配置路径</label>
+                    <input type="text" id="vm-model-config-path-input" style="width: 100%;" placeholder="例如: /data/local/tmp/vm_model_config.yaml">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closePathSettingsModal()">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 编辑备注模态框 -->
+    <div id="edit-remark-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>✏️ 编辑设备备注</h2>
+                <button class="close-btn" onclick="closeEditRemarkModal()">&times;</button>
+            </div>
+            <form id="edit-remark-form" onsubmit="saveDeviceRemarkFromModal(event)">
+                <div class="form-group">
+                    <label>设备ID</label>
+                    <input type="text" id="edit-remark-device-id" readonly style="font-family: monospace; background: #f3f4f6; cursor: not-allowed;">
+                </div>
+                <div class="form-group">
+                    <label>备注</label>
+                    <input type="text" id="edit-remark-input" placeholder="请输入备注" style="width: 100%;">
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditRemarkModal()">取消</button>
+                    <button type="submit" class="btn btn-primary">保存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- 地区管理模态框 -->
+    <div id="region-manage-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>🌍 地区管理</h2>
+                <button class="close-btn" onclick="closeRegionManageModal()">&times;</button>
+            </div>
+            
+            <!-- 添加地区表单 -->
+            <div style="margin-bottom: 30px; padding: 20px; background: #f9fafb; border-radius: 8px;">
+                <h3 style="font-size: 16px; margin-bottom: 15px; color: #374151;">添加新地区</h3>
+                <form onsubmit="addRegion(event)" style="display: grid; grid-template-columns: 1fr 2fr auto; gap: 10px; align-items: end;">
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 12px;">地区代码 *</label>
+                        <input type="text" name="code" id="region-code-input" required placeholder="例如: US" maxlength="5" style="text-transform: uppercase;" oninput="this.value = this.value.toUpperCase()">
+                    </div>
+                    <div class="form-group" style="margin-bottom: 0;">
+                        <label style="font-size: 12px;">地区名称 *</label>
+                        <input type="text" name="name" id="region-name-input" required placeholder="例如: 美国">
+                    </div>
+                    <button type="submit" class="btn btn-primary" style="height: fit-content;">添加</button>
+                </form>
+            </div>
+
+            <!-- 地区列表 -->
+            <div>
+                <h3 style="font-size: 16px; margin-bottom: 15px; color: #374151;">地区列表</h3>
+                <div id="region-list-container" class="table-container">
+                    <table style="width: 100%;">
+                        <thead>
+                            <tr>
+                                <th>地区代码</th>
+                                <th>地区名称</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody id="region-list-tbody">
+                            <tr>
+                                <td colspan="3" style="text-align: center; padding: 20px; color: #6b7280;">加载中...</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-actions" style="margin-top: 20px;">
+                <button type="button" class="btn btn-secondary" onclick="closeRegionManageModal()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentEditIndex = null;
+        let currentTransitEditIndex = null;
+        let transitProxyNames = []; // 中转线路名称列表
+        let vmEventSource = null; // Server-Sent Events 连接
+        let regionsList = []; // 地区列表
+
+        // 加载代理列表
+        async function loadProxies() {
+            const loading = document.getElementById('loading');
+            const table = document.getElementById('proxy-table');
+            const emptyState = document.getElementById('empty-state');
+            const tbody = document.getElementById('proxy-tbody');
+            const countEl = document.getElementById('proxy-count');
+
+            loading.style.display = 'block';
+            table.style.display = 'none';
+            emptyState.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/proxies');
+                const result = await response.json();
+
+                if (result.success) {
+                    const proxies = result.data;
+                    countEl.textContent = `共 ${proxies.length} 个代理`;
+
+                    if (proxies.length === 0) {
+                        emptyState.style.display = 'block';
+                    } else {
+                        tbody.innerHTML = '';
+                        proxies.forEach((proxy, index) => {
+                            const row = createProxyRow(proxy, index);
+                            tbody.appendChild(row);
+                        });
+                        table.style.display = 'table';
+                    }
+                } else {
+                    showAlert('error', '加载失败: ' + result.error);
+                }
+            } catch (error) {
+                showAlert('error', '加载失败: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // 创建代理行
+        function createProxyRow(proxy, index) {
+            const row = document.createElement('tr');
+            
+            const typeBadge = getTypeBadge(proxy.type || 'unknown');
+            const otherParams = getOtherParams(proxy);
+            const dialerProxy = proxy['dialer-proxy'] || '-';
+            const region = proxy.region || '-';
+
+            row.innerHTML = `
+                <td>${index}</td>
+                <td><strong>${proxy.name || '-'}</strong></td>
+                <td>${typeBadge}</td>
+                <td><span class="badge badge-http">${region}</span></td>
+                <td>${proxy.server || '-'}</td>
+                <td>${proxy.port || '-'}</td>
+                <td>${proxy.username || '-'}</td>
+                <td>${dialerProxy}</td>
+                <td><div class="json-display">${otherParams}</div></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-sm btn-success" onclick="editProxy(${index})">编辑</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProxy(${index})">删除</button>
+                    </div>
+                </td>
+            `;
+
+            return row;
+        }
+
+        // 获取类型徽章
+        function getTypeBadge(type) {
+            const badges = {
+                'socks5': '<span class="badge badge-socks5">SOCKS5</span>',
+                'trojan': '<span class="badge badge-trojan">Trojan</span>',
+                'http': '<span class="badge badge-http">HTTP</span>',
+                'https': '<span class="badge badge-http">HTTPS</span>',
+                'ss': '<span class="badge badge-http">Shadowsocks</span>',
+                'vmess': '<span class="badge badge-http">VMess</span>'
+            };
+            return badges[type] || `<span class="badge">${type}</span>`;
+        }
+
+        // 获取其他参数
+        function getOtherParams(proxy) {
+            const excludeKeys = ['name', 'type', 'server', 'port', 'username', 'password', 'region', '_index'];
+            const other = {};
+            for (const key in proxy) {
+                if (!excludeKeys.includes(key) && proxy[key] !== null && proxy[key] !== undefined) {
+                    other[key] = proxy[key];
+                }
+            }
+            return Object.keys(other).length > 0 ? JSON.stringify(other, null, 2) : '-';
+        }
+
+        // 加载中转线路名称列表
+        async function loadTransitProxyNames() {
+            try {
+                const response = await fetch('/api/transit-proxies/names');
+                const result = await response.json();
+                if (result.success) {
+                    transitProxyNames = result.data;
+                    updateDialerProxySelect();
+                }
+            } catch (error) {
+                console.error('加载中转线路名称失败:', error);
+            }
+        }
+
+        // 更新Dialer Proxy下拉选择框
+        function updateDialerProxySelect() {
+            const select = document.getElementById('dialer-proxy-select');
+            if (!select) return;
+            
+            // 保留第一个选项（无）
+            const firstOption = select.querySelector('option[value=""]');
+            select.innerHTML = '';
+            if (firstOption) {
+                select.appendChild(firstOption);
+            } else {
+                select.innerHTML = '<option value="">无（不使用中转）</option>';
+            }
+            
+            // 添加中转线路选项
+            transitProxyNames.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                select.appendChild(option);
+            });
+        }
+
+        // 标签页切换
+        function switchTab(tabName) {
+            // 更新标签按钮样式
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+                btn.style.color = '#6b7280';
+                btn.style.borderBottomColor = 'transparent';
+            });
+            
+            // 显示/隐藏内容
+            document.getElementById('devices-tab').style.display = tabName === 'devices' ? 'block' : 'none';
+            document.getElementById('proxies-tab').style.display = tabName === 'proxies' ? 'block' : 'none';
+            document.getElementById('transit-tab').style.display = tabName === 'transit' ? 'block' : 'none';
+            document.getElementById('vm-tab').style.display = tabName === 'vm' ? 'block' : 'none';
+            
+            // 激活当前标签
+            const tabButtons = document.querySelectorAll('.tab-btn');
+            let activeBtn = null;
+            if (tabName === 'devices') {
+                activeBtn = tabButtons[0];
+                loadDeviceConfigs(); // 加载设备配置
+                refreshDeviceList(); // 刷新设备列表
+            } else if (tabName === 'proxies') {
+                activeBtn = tabButtons[1];
+            } else if (tabName === 'transit') {
+                activeBtn = tabButtons[2];
+            } else if (tabName === 'vm') {
+                activeBtn = tabButtons[3];
+            }
+            
+            if (activeBtn) {
+                activeBtn.classList.add('active');
+                activeBtn.style.color = '#667eea';
+                activeBtn.style.borderBottomColor = '#667eea';
+            }
+            
+            // 加载对应数据
+            if (tabName === 'devices') {
+                refreshDeviceList();
+            } else if (tabName === 'proxies') {
+                loadProxies();
+            } else if (tabName === 'transit') {
+                loadTransitProxies();
+            } else if (tabName === 'vm') {
+                loadVMProxyNames();
+                loadRegions();
+            }
+        }
+
+        // 更新代理地区选择框
+        function updateProxyRegionSelect() {
+            const select = document.getElementById('proxy-region-select');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">请选择地区</option>';
+            regionsList.forEach(region => {
+                const option = document.createElement('option');
+                option.value = region.code;
+                option.textContent = `${region.code} (${region.name})`;
+                select.appendChild(option);
+            });
+        }
+
+        // 显示添加模态框
+        async function showAddModal() {
+            currentEditIndex = null;
+            document.getElementById('modal-title').textContent = '添加代理';
+            document.getElementById('proxy-form').reset();
+            document.querySelector('select[name="type"]').value = 'socks5';
+            document.querySelector('select[name="skip-cert-verify"]').value = 'true';
+            document.querySelector('select[name="udp"]').value = 'true';  // 设置UDP默认值为true
+            
+            // 显示模式切换按钮
+            document.getElementById('proxy-mode-switch').style.display = 'block';
+            
+            // 默认显示单条添加模式
+            switchProxyMode('single');
+            
+            // 加载中转线路名称列表和地区列表
+            await Promise.all([loadTransitProxyNames(), loadRegions()]);
+            updateProxyRegionSelect();
+            updateBatchProxyRegionSelect();
+            updateBatchDialerProxySelect();
+            
+            document.getElementById('proxy-modal').classList.add('active');
+        }
+        
+        // 切换代理添加模式（单条/批量）
+        function switchProxyMode(mode) {
+            const singleForm = document.getElementById('proxy-form');
+            const batchForm = document.getElementById('proxy-batch-form');
+            const modeBtns = document.querySelectorAll('.mode-btn');
+            
+            if (mode === 'single') {
+                singleForm.style.display = 'block';
+                batchForm.style.display = 'none';
+                modeBtns[0].classList.add('active');
+                modeBtns[1].classList.remove('active');
+                modeBtns[0].style.background = 'white';
+                modeBtns[1].style.background = 'transparent';
+            } else {
+                singleForm.style.display = 'none';
+                batchForm.style.display = 'block';
+                modeBtns[0].classList.remove('active');
+                modeBtns[1].classList.add('active');
+                modeBtns[0].style.background = 'transparent';
+                modeBtns[1].style.background = 'white';
+            }
+        }
+        
+        // 更新格式提示
+        function updateFormatHint() {
+            const formatSelect = document.querySelector('select[name="format_type"]');
+            const hintDiv = document.getElementById('format-hint');
+            const format = formatSelect.value;
+            
+            const hints = {
+                'format1': '示例: myuser:mypass:proxy.example.com:8080',
+                'format2': '示例: proxy.example.com:8080:myuser:mypass',
+                'format3': '示例: myuser:mypass@proxy.example.com:8080'
+            };
+            
+            if (format && hints[format]) {
+                hintDiv.textContent = hints[format];
+                hintDiv.style.display = 'block';
+            } else {
+                hintDiv.style.display = 'none';
+            }
+        }
+        
+        // 更新批量导入的地区选择框
+        function updateBatchProxyRegionSelect() {
+            const select = document.getElementById('proxy-batch-region-select');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">请选择地区</option>';
+            regionsList.forEach(region => {
+                const option = document.createElement('option');
+                option.value = region.code;
+                option.textContent = `${region.code} (${region.name})`;
+                select.appendChild(option);
+            });
+        }
+        
+        // 更新批量导入的中转线路选择框
+        function updateBatchDialerProxySelect() {
+            const select = document.getElementById('proxy-batch-dialer-select');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">无（不使用中转）</option>';
+            transitProxyNames.forEach(name => {
+                const option = document.createElement('option');
+                option.value = name;
+                option.textContent = name;
+                select.appendChild(option);
+            });
+        }
+        
+        // 保存批量代理
+        async function saveBatchProxies(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const data = {
+                proxy_lines: formData.get('proxy_lines'),
+                format_type: formData.get('format_type'),
+                region: formData.get('region'),
+                name_prefix: formData.get('name_prefix'),
+                dialer_proxy: formData.get('dialer_proxy')
+            };
+            
+            try {
+                const response = await fetch('/api/proxies/batch', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    let message = result.message;
+                    if (result.data && result.data.failed_lines && result.data.failed_lines.length > 0) {
+                        message += '\n\n失败的行:\n' + result.data.failed_lines.join('\n');
+                    }
+                    showAlert('success', message);
+                    closeModal();
+                    loadProxies();
+                } else {
+                    showAlert('error', result.error || '批量导入失败');
+                }
+            } catch (error) {
+                showAlert('error', '批量导入失败: ' + error.message);
+            }
+        }
+
+        // 编辑代理
+        async function editProxy(index) {
+            try {
+                const response = await fetch('/api/proxies');
+                const result = await response.json();
+
+                if (result.success && result.data[index]) {
+                    const proxy = result.data[index];
+                    // 使用显示索引（在过滤后列表中的位置）
+                    currentEditIndex = index;
+
+                    // 加载中转线路名称列表和地区列表
+                    await Promise.all([loadTransitProxyNames(), loadRegions()]);
+                    updateProxyRegionSelect();
+                    
+                    // 隐藏模式切换按钮（编辑时只能单条）
+                    document.getElementById('proxy-mode-switch').style.display = 'none';
+                    document.getElementById('proxy-form').style.display = 'block';
+                    document.getElementById('proxy-batch-form').style.display = 'none';
+
+                    document.getElementById('modal-title').textContent = '编辑代理';
+                    document.querySelector('input[name="name"]').value = proxy.name || '';
+                    document.querySelector('select[name="type"]').value = proxy.type || 'socks5';
+                    document.querySelector('select[name="region"]').value = proxy.region || '';
+                    document.querySelector('input[name="server"]').value = proxy.server || '';
+                    document.querySelector('input[name="port"]').value = proxy.port || '';
+                    document.querySelector('input[name="username"]').value = proxy.username || '';
+                    document.querySelector('input[name="password"]').value = proxy.password || '';
+                    document.querySelector('input[name="sni"]').value = proxy.sni || '';
+                    document.querySelector('select[name="skip-cert-verify"]').value = String(proxy['skip-cert-verify'] !== false);
+                    document.querySelector('select[name="udp"]').value = proxy.udp !== undefined ? String(proxy.udp) : '';
+                    document.querySelector('select[name="dialer-proxy"]').value = proxy['dialer-proxy'] || '';
+
+                    // 处理其他参数
+                    const excludeKeys = ['name', 'type', 'server', 'port', 'username', 'password', 'sni', 'skip-cert-verify', 'udp', 'dialer-proxy', 'region', '_index'];
+                    const extra = {};
+                    for (const key in proxy) {
+                        if (!excludeKeys.includes(key)) {
+                            extra[key] = proxy[key];
+                        }
+                    }
+                    document.querySelector('textarea[name="extra-params"]').value = Object.keys(extra).length > 0 ? JSON.stringify(extra, null, 2) : '';
+
+                    document.getElementById('proxy-modal').classList.add('active');
+                }
+            } catch (error) {
+                showAlert('error', '加载代理信息失败: ' + error.message);
+            }
+        }
+
+        // 保存代理
+        async function saveProxy(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            const data = {
+                name: formData.get('name'),
+                type: formData.get('type'),
+                server: formData.get('server'),
+                port: formData.get('port'),
+                region: formData.get('region'),  // 添加 region 字段
+                'skip-cert-verify': formData.get('skip-cert-verify') === 'true'
+            };
+
+            if (formData.get('username')) data.username = formData.get('username');
+            if (formData.get('password')) data.password = formData.get('password');
+            if (formData.get('sni')) data.sni = formData.get('sni');
+            if (formData.get('udp')) data.udp = formData.get('udp') === 'true';
+            // 总是发送dialer-proxy字段，即使为空字符串（表示不使用中转）
+            data['dialer-proxy'] = formData.get('dialer-proxy') || '';
+
+            // 解析其他参数
+            const extraParams = formData.get('extra-params');
+            if (extraParams) {
+                try {
+                    const extra = JSON.parse(extraParams);
+                    Object.assign(data, extra);
+                } catch (e) {
+                    showAlert('error', '其他参数格式错误，必须是有效的 JSON');
+                    return;
+                }
+            }
+
+            try {
+                const url = currentEditIndex !== null 
+                    ? `/api/proxies/${currentEditIndex}` 
+                    : '/api/proxies';
+                const method = currentEditIndex !== null ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert('success', result.message);
+                    closeModal();
+                    loadProxies();
+                } else {
+                    showAlert('error', '操作失败: ' + result.error);
+                }
+            } catch (error) {
+                showAlert('error', '操作失败: ' + error.message);
+            }
+        }
+
+        // 删除代理
+        async function deleteProxy(index) {
+            if (!confirm('确定要删除这个代理吗？')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/proxies/${index}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showAlert('success', result.message);
+                    loadProxies();
+                } else {
+                    showAlert('error', '删除失败: ' + result.error);
+                }
+            } catch (error) {
+                showAlert('error', '删除失败: ' + error.message);
+            }
+        }
+
+        // 关闭模态框
+        function closeModal() {
+            document.getElementById('proxy-modal').classList.remove('active');
+            currentEditIndex = null;
+        }
+
+        // 显示提示信息
+        function showAlert(type, message) {
+            const container = document.getElementById('alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} show`;
+            alert.textContent = message;
+            container.innerHTML = '';
+            container.appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 300);
+            }, 3000);
+        }
+
+        // 点击模态框外部关闭
+        document.getElementById('proxy-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // ==================== 中转线路管理 ====================
+        
+        // 加载中转线路列表
+        async function loadTransitProxies() {
+            const loading = document.getElementById('transit-loading');
+            const table = document.getElementById('transit-table');
+            const emptyState = document.getElementById('transit-empty-state');
+            const tbody = document.getElementById('transit-tbody');
+            const countEl = document.getElementById('transit-count');
+
+            loading.style.display = 'block';
+            table.style.display = 'none';
+            emptyState.style.display = 'none';
+
+            try {
+                const response = await fetch('/api/transit-proxies');
+                const result = await response.json();
+
+                if (result.success) {
+                    const proxies = result.data;
+                    countEl.textContent = `共 ${proxies.length} 个中转线路`;
+
+                    if (proxies.length === 0) {
+                        emptyState.style.display = 'block';
+                    } else {
+                        tbody.innerHTML = '';
+                        proxies.forEach((proxy, index) => {
+                            const row = createTransitRow(proxy, index);
+                            tbody.appendChild(row);
+                        });
+                        table.style.display = 'table';
+                    }
+                } else {
+                    showTransitAlert('error', '加载失败: ' + result.error);
+                }
+            } catch (error) {
+                showTransitAlert('error', '加载失败: ' + error.message);
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+
+        // 创建中转线路行
+        function createTransitRow(proxy, index) {
+            const row = document.createElement('tr');
+            
+            const typeBadge = getTypeBadge(proxy.type || 'unknown');
+            const otherParams = getOtherParams(proxy);
+
+            row.innerHTML = `
+                <td>${index}</td>
+                <td><strong>${proxy.name || '-'}</strong></td>
+                <td>${typeBadge}</td>
+                <td>${proxy.server || '-'}</td>
+                <td>${proxy.port || '-'}</td>
+                <td>${proxy.username || '-'}</td>
+                <td><div class="json-display">${otherParams}</div></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-sm btn-success" onclick="editTransitProxy(${index})">编辑</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteTransitProxy(${index})">删除</button>
+                    </div>
+                </td>
+            `;
+
+            return row;
+        }
+
+        // 显示添加中转线路模态框
+        function showAddTransitModal() {
+            currentTransitEditIndex = null;
+            document.getElementById('transit-modal-title').textContent = '添加中转线路';
+            document.getElementById('transit-form').reset();
+            document.querySelector('#transit-form select[name="type"]').value = 'socks5';
+            document.querySelector('#transit-form select[name="skip-cert-verify"]').value = 'true';
+            document.getElementById('transit-modal').classList.add('active');
+        }
+
+        // 编辑中转线路
+        async function editTransitProxy(index) {
+            try {
+                const response = await fetch('/api/transit-proxies');
+                const result = await response.json();
+
+                if (result.success && result.data[index]) {
+                    const proxy = result.data[index];
+                    currentTransitEditIndex = index;
+
+                    document.getElementById('transit-modal-title').textContent = '编辑中转线路';
+                    document.querySelector('#transit-form input[name="name"]').value = proxy.name || '';
+                    document.querySelector('#transit-form select[name="type"]').value = proxy.type || 'socks5';
+                    document.querySelector('#transit-form input[name="server"]').value = proxy.server || '';
+                    document.querySelector('#transit-form input[name="port"]').value = proxy.port || '';
+                    document.querySelector('#transit-form input[name="username"]').value = proxy.username || '';
+                    document.querySelector('#transit-form input[name="password"]').value = proxy.password || '';
+                    document.querySelector('#transit-form input[name="sni"]').value = proxy.sni || '';
+                    document.querySelector('#transit-form select[name="skip-cert-verify"]').value = String(proxy['skip-cert-verify'] !== false);
+                    document.querySelector('#transit-form select[name="udp"]').value = proxy.udp !== undefined ? String(proxy.udp) : '';
+
+                    // 处理其他参数
+                    const excludeKeys = ['name', 'type', 'server', 'port', 'username', 'password', 'sni', 'skip-cert-verify', 'udp', '_index'];
+                    const extra = {};
+                    for (const key in proxy) {
+                        if (!excludeKeys.includes(key)) {
+                            extra[key] = proxy[key];
+                        }
+                    }
+                    document.querySelector('#transit-form textarea[name="extra-params"]').value = Object.keys(extra).length > 0 ? JSON.stringify(extra, null, 2) : '';
+
+                    document.getElementById('transit-modal').classList.add('active');
+                }
+            } catch (error) {
+                showTransitAlert('error', '加载中转线路信息失败: ' + error.message);
+            }
+        }
+
+        // 保存中转线路
+        async function saveTransitProxy(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+
+            const data = {
+                name: formData.get('name'),
+                type: formData.get('type'),
+                server: formData.get('server'),
+                port: formData.get('port'),
+                'skip-cert-verify': formData.get('skip-cert-verify') === 'true'
+            };
+
+            if (formData.get('username')) data.username = formData.get('username');
+            if (formData.get('password')) data.password = formData.get('password');
+            if (formData.get('sni')) data.sni = formData.get('sni');
+            if (formData.get('udp')) data.udp = formData.get('udp') === 'true';
+
+            // 解析其他参数
+            const extraParams = formData.get('extra-params');
+            if (extraParams) {
+                try {
+                    const extra = JSON.parse(extraParams);
+                    Object.assign(data, extra);
+                } catch (e) {
+                    showTransitAlert('error', '其他参数格式错误，必须是有效的 JSON');
+                    return;
+                }
+            }
+
+            try {
+                const url = currentTransitEditIndex !== null 
+                    ? `/api/transit-proxies/${currentTransitEditIndex}` 
+                    : '/api/transit-proxies';
+                const method = currentTransitEditIndex !== null ? 'PUT' : 'POST';
+
+                const response = await fetch(url, {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showTransitAlert('success', result.message);
+                    closeTransitModal();
+                    loadTransitProxies();
+                    // 刷新中转线路名称列表
+                    await loadTransitProxyNames();
+                } else {
+                    showTransitAlert('error', '操作失败: ' + result.error);
+                }
+            } catch (error) {
+                showTransitAlert('error', '操作失败: ' + error.message);
+            }
+        }
+
+        // 删除中转线路
+        async function deleteTransitProxy(index) {
+            if (!confirm('确定要删除这个中转线路吗？如果该线路被其他代理使用，将无法删除。')) {
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/transit-proxies/${index}`, {
+                    method: 'DELETE'
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    showTransitAlert('success', result.message);
+                    loadTransitProxies();
+                    // 刷新中转线路名称列表
+                    await loadTransitProxyNames();
+                } else {
+                    showTransitAlert('error', '删除失败: ' + result.error);
+                }
+            } catch (error) {
+                showTransitAlert('error', '删除失败: ' + error.message);
+            }
+        }
+
+        // 关闭中转线路模态框
+        function closeTransitModal() {
+            document.getElementById('transit-modal').classList.remove('active');
+            currentTransitEditIndex = null;
+        }
+
+        // 显示中转线路提示信息
+        function showTransitAlert(type, message) {
+            const container = document.getElementById('transit-alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} show`;
+            alert.textContent = message;
+            container.innerHTML = '';
+            container.appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 300);
+            }, 3000);
+        }
+
+        // 点击中转线路模态框外部关闭
+        document.getElementById('transit-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTransitModal();
+            }
+        });
+
+        // ==================== VM 管理功能 ====================
+        
+        // 加载代理名称列表（用于创建新账号时选择节点）
+        async function loadVMProxyNames(region = '') {
+            try {
+                const url = region 
+                    ? `/api/vm/proxy-names?region=${encodeURIComponent(region)}`
+                    : '/api/vm/proxy-names';
+                const response = await fetch(url);
+                const result = await response.json();
+                if (result.success) {
+                    const select = document.getElementById('vm-new-node-select');
+                    if (select) {
+                        select.innerHTML = '<option value="">请选择代理节点</option>';
+                        if (result.data.length === 0) {
+                            const option = document.createElement('option');
+                            option.value = '';
+                            option.textContent = region ? '该地区暂无可用代理' : '暂无可用代理';
+                            option.disabled = true;
+                            select.appendChild(option);
+                        } else {
+                            result.data.forEach(name => {
+                                const option = document.createElement('option');
+                                option.value = name;
+                                option.textContent = name;
+                                select.appendChild(option);
+                            });
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('加载代理名称失败:', error);
+            }
+        }
+
+        // 更新VM代理节点列表（根据选择的region）
+        function updateVMProxyNodes() {
+            const regionSelect = document.getElementById('vm-new-region-select');
+            const selectedRegion = regionSelect ? regionSelect.value : '';
+            if (selectedRegion) {
+                loadVMProxyNames(selectedRegion);
+            } else {
+                // 如果没有选择region，清空代理节点列表
+                const nodeSelect = document.getElementById('vm-new-node-select');
+                if (nodeSelect) {
+                    nodeSelect.innerHTML = '<option value="">请先选择地区</option>';
+                }
+            }
+        }
+
+        // 加载地区列表
+        async function loadRegions() {
+            try {
+                const response = await fetch('/api/regions');
+                const result = await response.json();
+                if (result.success) {
+                    regionsList = result.data;
+                    updateRegionSelect();  // 更新VM创建表单中的地区选择框
+                    updateProxyRegionSelect();  // 更新代理表单中的地区选择框
+                    updateRegionList();  // 更新地区管理列表
+                }
+            } catch (error) {
+                console.error('加载地区列表失败:', error);
+            }
+        }
+
+        // 更新地区下拉选择框
+        function updateRegionSelect() {
+            const select = document.getElementById('vm-new-region-select');
+            if (!select) return;
+            
+            select.innerHTML = '<option value="">请选择地区</option>';
+            regionsList.forEach(region => {
+                const option = document.createElement('option');
+                option.value = region.code;
+                option.textContent = `${region.code} (${region.name})`;
+                select.appendChild(option);
+            });
+        }
+
+        // 更新地区列表显示
+        function updateRegionList() {
+            const tbody = document.getElementById('region-list-tbody');
+            if (!tbody) return;
+            
+            if (regionsList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 20px; color: #6b7280;">暂无地区配置</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = '';
+            regionsList.forEach(region => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><strong>${region.code}</strong></td>
+                    <td>${region.name}</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" onclick="deleteRegion('${region.code}')">删除</button>
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // 显示地区管理模态框
+        async function showRegionManageModal() {
+            await loadRegions();
+            document.getElementById('region-manage-modal').classList.add('active');
+        }
+
+        // 关闭地区管理模态框
+        function closeRegionManageModal() {
+            document.getElementById('region-manage-modal').classList.remove('active');
+        }
+
+        // 添加地区
+        async function addRegion(event) {
+            event.preventDefault();
+            const code = document.getElementById('region-code-input').value.trim().toUpperCase();
+            const name = document.getElementById('region-name-input').value.trim();
+            
+            if (!code || !name) {
+                showVMAlert('error', '请填写地区代码和名称');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/regions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code, name })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showVMAlert('success', result.message);
+                    document.getElementById('region-code-input').value = '';
+                    document.getElementById('region-name-input').value = '';
+                    await loadRegions();
+                    // 更新代理表单中的地区选择框
+                    updateProxyRegionSelect();
+                    // 更新 VM 创建表单中的地区选择框
+                    updateRegionSelect();
+                } else {
+                    showVMAlert('error', '添加失败: ' + result.error);
+                }
+            } catch (error) {
+                showVMAlert('error', '添加失败: ' + error.message);
+            }
+        }
+
+        // 删除地区
+        async function deleteRegion(code) {
+            if (!confirm(`确定要删除地区 "${code}" 吗？`)) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/regions/${code}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showVMAlert('success', result.message);
+                    await loadRegions();
+                    // 更新代理表单中的地区选择框
+                    updateProxyRegionSelect();
+                    // 更新 VM 创建表单中的地区选择框
+                    updateRegionSelect();
+                } else {
+                    showVMAlert('error', '删除失败: ' + result.error);
+                }
+            } catch (error) {
+                showVMAlert('error', '删除失败: ' + error.message);
+            }
+        }
+
+        // 生成VM账号名称
+        async function generateVMAccountName() {
+            const appType = document.getElementById('vm-app-type-select')?.value || 'Vinted';
+            const region = document.getElementById('vm-new-region-select')?.value || '';
+            
+            if (!appType || !region) {
+                // 如果应用类型或地区未选择，清空账号名称
+                const nameInput = document.getElementById('vm-account-name-input');
+                if (nameInput) {
+                    nameInput.value = '';
+                }
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/vm/generate-account-name?app_type=${encodeURIComponent(appType)}&region=${encodeURIComponent(region)}`);
+                const result = await response.json();
+                
+                if (result.success) {
+                    const nameInput = document.getElementById('vm-account-name-input');
+                    if (nameInput) {
+                        nameInput.value = result.data;
+                    }
+                } else {
+                    console.error('生成账号名称失败:', result.error);
+                }
+            } catch (error) {
+                console.error('生成账号名称失败:', error);
+            }
+        }
+
+        // 显示创建新账号模态框
+        async function showVMNewModal() {
+            await loadRegions();
+            // 不立即加载代理节点，等待用户选择region后再加载
+            const nodeSelect = document.getElementById('vm-new-node-select');
+            if (nodeSelect) {
+                nodeSelect.innerHTML = '<option value="">请先选择地区</option>';
+            }
+            // 重置账号名称输入框
+            const nameInput = document.getElementById('vm-account-name-input');
+            if (nameInput) {
+                nameInput.value = '';
+            }
+            document.getElementById('vm-new-modal').classList.add('active');
+        }
+
+        // 显示加载账号模态框
+        async function showVMLoadModal() {
+            document.getElementById('vm-load-modal').classList.add('active');
+            // 打开模态框时自动加载账号列表
+            await loadVMAccountList();
+        }
+        
+        // 加载VM账号列表
+        async function loadVMAccountList() {
+            const select = document.getElementById('vm-load-account-select');
+            select.innerHTML = '<option value="">正在加载账号列表...</option>';
+            select.disabled = true;
+            
+            try {
+                const response = await fetch('/api/vm/account-list');
+                const result = await response.json();
+                
+                select.innerHTML = '';
+                select.disabled = false;
+                
+                if (result.success && result.data && result.data.length > 0) {
+                    const accounts = result.data;
+                    select.innerHTML = '<option value="">请选择账号</option>';
+                    accounts.forEach(account => {
+                        const option = document.createElement('option');
+                        option.value = account;
+                        option.textContent = account;
+                        select.appendChild(option);
+                    });
+                } else {
+                    select.innerHTML = '<option value="">暂无账号，请先创建账号</option>';
+                    showVMAlert('warning', '未找到账号列表，请确保设备已连接且已创建账号');
+                }
+            } catch (error) {
+                select.innerHTML = '<option value="">加载失败</option>';
+                select.disabled = false;
+                showVMAlert('error', '加载账号列表失败: ' + error.message);
+            }
+        }
+
+        // 显示保存账号模态框
+        async function showVMSaveModal() {
+            document.getElementById('vm-save-modal').classList.add('active');
+            // 打开模态框时自动获取AccountName
+            await loadAccountNameForSave();
+        }
+        
+        // 加载AccountName用于保存
+        async function loadAccountNameForSave() {
+            const accountNameInput = document.getElementById('vm-save-account-name');
+            accountNameInput.value = '';
+            accountNameInput.placeholder = '正在获取...';
+            
+            try {
+                const response = await fetch('/api/vm/get-config-value?field_name=AccountName');
+                const result = await response.json();
+                
+                if (result.success && result.data && result.data.value) {
+                    accountNameInput.value = result.data.value;
+                    accountNameInput.placeholder = '已获取账号名称';
+                } else {
+                    accountNameInput.value = '';
+                    accountNameInput.placeholder = '未找到AccountName，请确保设备已连接且已创建/加载账号';
+                    showVMAlert('warning', '无法获取AccountName，请确保设备已连接且已创建/加载账号');
+                }
+            } catch (error) {
+                accountNameInput.value = '';
+                accountNameInput.placeholder = '获取失败: ' + error.message;
+                showVMAlert('error', '获取AccountName失败: ' + error.message);
+            }
+        }
+
+        // 关闭 VM 模态框
+        function closeVMModal(type) {
+            document.getElementById(`vm-${type}-modal`).classList.remove('active');
+        }
+
+        // 清空日志
+        function clearVMLog() {
+            const logContainer = document.getElementById('vm-log-container');
+            logContainer.innerHTML = '<div style="color: #6b7280;">等待操作...</div>';
+        }
+
+        // 添加日志到显示区域
+        function appendVMLog(message) {
+            const logContainer = document.getElementById('vm-log-container');
+            const timestamp = new Date().toLocaleTimeString();
+            
+            // 移除"等待操作"提示
+            if (logContainer.innerHTML.includes('等待操作')) {
+                logContainer.innerHTML = '';
+            }
+            
+            // 创建日志行
+            const logLine = document.createElement('div');
+            logLine.style.marginBottom = '4px';
+            logLine.style.wordBreak = 'break-word';
+            
+            // 根据消息类型设置颜色
+            if (message.includes('❌') || message.includes('错误')) {
+                logLine.style.color = '#f87171'; // 红色
+            } else if (message.includes('✅') || message.includes('完成')) {
+                logLine.style.color = '#34d399'; // 绿色
+            } else if (message.includes('⚠') || message.includes('警告')) {
+                logLine.style.color = '#fbbf24'; // 黄色
+            } else {
+                logLine.style.color = '#d4d4d4'; // 默认白色
+            }
+            
+            logLine.textContent = `[${timestamp}] ${message}`;
+            logContainer.appendChild(logLine);
+            
+            // 自动滚动到底部
+            logContainer.scrollTop = logContainer.scrollHeight;
+        }
+
+        // 执行创建新账号
+        async function executeVMNew(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const data = {
+                name: formData.get('name'),
+                app_type: formData.get('app_type'),
+                region: formData.get('region'),
+                node: formData.get('node')
+            };
+            
+            if (!data.name || !data.node) {
+                showVMAlert('error', '请填写所有必填项');
+                return;
+            }
+            
+            closeVMModal('new');
+            clearVMLog();
+            appendVMLog(`🆕 开始创建新账号: ${data.name} (${data.app_type}, ${data.region}, ${data.node})`);
+            
+            try {
+                const response = await fetch('/api/vm/new', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    appendVMLog(`❌ 错误: ${error.error || '请求失败'}`);
+                    return;
+                }
+                
+                // 使用 EventSource 接收流式日志
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const message = line.substring(6);
+                            if (message.trim()) {
+                                appendVMLog(message);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                appendVMLog(`❌ 执行失败: ${error.message}`);
+            }
+        }
+
+        // 执行加载账号
+        async function executeVMLoad(event) {
+            event.preventDefault();
+            const form = event.target;
+            const formData = new FormData(form);
+            
+            const name = formData.get('name');
+            
+            if (!name) {
+                showVMAlert('error', '请输入账号名称');
+                return;
+            }
+            
+            closeVMModal('load');
+            clearVMLog();
+            appendVMLog(`♻️ 开始加载账号: ${name}`);
+            
+            try {
+                const response = await fetch('/api/vm/load', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name })
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    appendVMLog(`❌ 错误: ${error.error || '请求失败'}`);
+                    return;
+                }
+                
+                // 使用 EventSource 接收流式日志
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const message = line.substring(6);
+                            if (message.trim()) {
+                                appendVMLog(message);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                appendVMLog(`❌ 执行失败: ${error.message}`);
+            }
+        }
+
+        // 执行保存账号
+        async function executeVMSave(event) {
+            event.preventDefault();
+            
+            const accountNameInput = document.getElementById('vm-save-account-name');
+            const accountName = accountNameInput.value.trim();
+            
+            if (!accountName) {
+                showVMAlert('error', '无法获取账号名称，请先刷新获取AccountName');
+                return;
+            }
+            
+            closeVMModal('save');
+            clearVMLog();
+            appendVMLog(`💾 开始保存账号: ${accountName}`);
+            appendVMLog(`📝 账号名称 (AccountName): ${accountName}`);
+            
+            try {
+                // 不发送name参数，让后端自动从设备配置文件获取
+                const response = await fetch('/api/vm/save', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({})  // 不发送name，后端会自动获取
+                });
+                
+                if (!response.ok) {
+                    const error = await response.json();
+                    appendVMLog(`❌ 错误: ${error.error || '请求失败'}`);
+                    return;
+                }
+                
+                // 使用 EventSource 接收流式日志
+                const reader = response.body.getReader();
+                const decoder = new TextDecoder();
+                
+                while (true) {
+                    const { done, value } = await reader.read();
+                    if (done) break;
+                    
+                    const chunk = decoder.decode(value);
+                    const lines = chunk.split('\n');
+                    
+                    for (const line of lines) {
+                        if (line.startsWith('data: ')) {
+                            const message = line.substring(6);
+                            if (message.trim()) {
+                                appendVMLog(message);
+                            }
+                        }
+                    }
+                }
+            } catch (error) {
+                appendVMLog(`❌ 执行失败: ${error.message}`);
+            }
+        }
+
+        // 显示 VM 提示信息
+        function showVMAlert(type, message) {
+            const container = document.getElementById('vm-alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type} show`;
+            alert.textContent = message;
+            container.innerHTML = '';
+            container.appendChild(alert);
+
+            setTimeout(() => {
+                alert.classList.remove('show');
+                setTimeout(() => alert.remove(), 300);
+            }, 3000);
+        }
+
+        // 点击 VM 模态框外部关闭
+        document.getElementById('vm-new-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeVMModal('new');
+        });
+        document.getElementById('vm-load-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeVMModal('load');
+        });
+        document.getElementById('vm-save-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeVMModal('save');
+        });
+        document.getElementById('region-manage-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeRegionManageModal();
+        });
+        document.getElementById('path-settings-modal').addEventListener('click', function(e) {
+            if (e.target === this) closePathSettingsModal();
+        });
+        document.getElementById('edit-remark-modal').addEventListener('click', function(e) {
+            if (e.target === this) closeEditRemarkModal();
+        });
+
+        // ==================== 路径设置功能 ====================
+        
+        // 显示路径设置模态框
+        async function showPathSettingsModal() {
+            try {
+                const response = await fetch('/api/settings/paths');
+                const result = await response.json();
+                if (result.success) {
+                    document.getElementById('config-file-path-input').value = result.data.config_file_path || '';
+                    document.getElementById('vm-script-path-input').value = result.data.vm_script_path || '';
+                    document.getElementById('adb-path-input').value = result.data.adb_path || '';
+                    document.getElementById('vm-accounts-file-path-input').value = result.data.vm_accounts_file_path || '';
+                    document.getElementById('vm-model-config-path-input').value = result.data.vm_model_config_path || '';
+                }
+            } catch (error) {
+                console.error('加载路径配置失败:', error);
+            }
+            document.getElementById('path-settings-modal').classList.add('active');
+        }
+
+        // 关闭路径设置模态框
+        function closePathSettingsModal() {
+            document.getElementById('path-settings-modal').classList.remove('active');
+        }
+
+        // 保存路径设置
+        async function savePathSettings(event) {
+            event.preventDefault();
+            const configFilePath = document.getElementById('config-file-path-input').value.trim();
+            const vmScriptPath = document.getElementById('vm-script-path-input').value.trim();
+            const adbPath = document.getElementById('adb-path-input').value.trim();
+            const vmAccountsFilePath = document.getElementById('vm-accounts-file-path-input').value.trim();
+            const vmModelConfigPath = document.getElementById('vm-model-config-path-input').value.trim();
+            
+            try {
+                const response = await fetch('/api/settings/paths', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        config_file_path: configFilePath,
+                        vm_script_path: vmScriptPath,
+                        adb_path: adbPath,
+                        vm_accounts_file_path: vmAccountsFilePath,
+                        vm_model_config_path: vmModelConfigPath
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('success', '路径配置已保存');
+                    closePathSettingsModal();
+                } else {
+                    showAlert('error', '保存失败: ' + result.error);
+                }
+            } catch (error) {
+                showAlert('error', '保存失败: ' + error.message);
+            }
+        }
+
+        // ==================== 设备管理功能 ====================
+        
+        // 刷新已连接设备列表（实时扫描）
+        async function refreshDeviceList() {
+            const loading = document.getElementById('devices-scan-loading');
+            const table = document.getElementById('devices-scan-table');
+            const empty = document.getElementById('devices-scan-empty');
+            const tbody = document.getElementById('devices-scan-tbody');
+            const countEl = document.getElementById('device-count');
+            
+            loading.style.display = 'block';
+            table.style.display = 'none';
+            empty.style.display = 'none';
+            
+            try {
+                // 同时获取设备列表和设备配置
+                const [devicesResponse, configsResponse] = await Promise.all([
+                    fetch('/api/devices'),
+                    fetch('/api/device-configs')
+                ]);
+                
+                const devicesResult = await devicesResponse.json();
+                const configsResult = await configsResponse.json();
+                
+                loading.style.display = 'none';
+                
+                if (devicesResult.success) {
+                    const devices = devicesResult.data || [];
+                    const deviceConfigs = configsResult.success ? (configsResult.data || []) : [];
+                    
+                    // 创建设备ID到备注的映射
+                    const remarkMap = {};
+                    deviceConfigs.forEach(config => {
+                        remarkMap[config.device_id] = config.remark || '';
+                    });
+                    
+                    countEl.textContent = `共 ${devices.length} 个设备`;
+                    
+                    if (devices.length === 0) {
+                        empty.style.display = 'block';
+                        table.style.display = 'none';
+                    } else {
+                        empty.style.display = 'none';
+                        table.style.display = 'table';
+                        tbody.innerHTML = '';
+                        
+                        devices.forEach((device) => {
+                            const row = document.createElement('tr');
+                            const deviceId = device.id;
+                            const remark = remarkMap[deviceId] || '';
+                            const safeDeviceId = deviceId.replace(/[^a-zA-Z0-9]/g, '_');
+                            
+                            // 设备状态徽章
+                            let statusBadge = '';
+                            if (device.status === 'device') {
+                                statusBadge = '<span class="badge" style="background: #10b981; color: white;">✓ 已连接</span>';
+                            } else if (device.status === 'unauthorized') {
+                                statusBadge = '<span class="badge" style="background: #f59e0b; color: white;">⚠ 未授权</span>';
+                            } else if (device.status === 'offline') {
+                                statusBadge = '<span class="badge" style="background: #ef4444; color: white;">✗ 离线</span>';
+                            } else {
+                                statusBadge = `<span class="badge" style="background: #6b7280; color: white;">${device.status || '未知'}</span>`;
+                            }
+                            
+                            // 备注列（只读显示）- 第一列
+                            const remarkCell = document.createElement('td');
+                            if (remark) {
+                                remarkCell.textContent = remark;
+                                remarkCell.style.color = '#374151';
+                            } else {
+                                remarkCell.innerHTML = '<span style="color: #9ca3af; font-style: italic;">无备注</span>';
+                            }
+                            
+                            // 设备ID列
+                            const deviceIdCell = document.createElement('td');
+                            deviceIdCell.style.fontFamily = 'monospace';
+                            deviceIdCell.style.fontWeight = '600';
+                            deviceIdCell.textContent = deviceId;
+                            
+                            // 状态列
+                            const statusCell = document.createElement('td');
+                            statusCell.innerHTML = statusBadge;
+                            
+                            // 操作列（编辑按钮）
+                            const actionCell = document.createElement('td');
+                            // 使用data属性传递值，避免转义问题
+                            const editBtn = document.createElement('button');
+                            editBtn.className = 'btn btn-sm btn-success';
+                            editBtn.textContent = '✏️ 编辑';
+                            editBtn.title = '编辑备注';
+                            editBtn.setAttribute('data-device-id', deviceId);
+                            editBtn.setAttribute('data-remark', remark);
+                            editBtn.onclick = function() {
+                                const deviceId = this.getAttribute('data-device-id');
+                                const remark = this.getAttribute('data-remark') || '';
+                                showEditRemarkModal(deviceId, remark);
+                            };
+                            actionCell.appendChild(editBtn);
+                            
+                            // 按顺序添加所有列
+                            row.appendChild(remarkCell);
+                            row.appendChild(deviceIdCell);
+                            row.appendChild(statusCell);
+                            row.appendChild(actionCell);
+                            
+                            tbody.appendChild(row);
+                        });
+                    }
+                } else {
+                    showDeviceAlert('error', '扫描失败: ' + (devicesResult.error || '未知错误'));
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                showDeviceAlert('error', '网络错误: ' + error.message);
+            }
+        }
+        
+        // 显示编辑备注模态框
+        function showEditRemarkModal(deviceId, currentRemark) {
+            document.getElementById('edit-remark-device-id').value = deviceId;
+            document.getElementById('edit-remark-input').value = currentRemark || '';
+            document.getElementById('edit-remark-modal').classList.add('active');
+            // 聚焦到输入框
+            setTimeout(() => {
+                document.getElementById('edit-remark-input').focus();
+            }, 100);
+        }
+        
+        // 关闭编辑备注模态框
+        function closeEditRemarkModal() {
+            document.getElementById('edit-remark-modal').classList.remove('active');
+            document.getElementById('edit-remark-form').reset();
+        }
+        
+        // 从模态框保存设备备注
+        async function saveDeviceRemarkFromModal(event) {
+            event.preventDefault();
+            const deviceId = document.getElementById('edit-remark-device-id').value.trim();
+            const remark = document.getElementById('edit-remark-input').value.trim();
+            
+            if (!deviceId) {
+                showDeviceAlert('error', '设备ID不能为空');
+                return;
+            }
+            
+            try {
+                const response = await fetch('/api/device-configs', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        device_id: deviceId,
+                        remark: remark
+                    })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showDeviceAlert('success', '备注已保存');
+                    closeEditRemarkModal();
+                    refreshDeviceList(); // 刷新设备列表以更新备注显示
+                } else {
+                    showDeviceAlert('error', '保存失败: ' + (result.error || '未知错误'));
+                }
+            } catch (error) {
+                showDeviceAlert('error', '保存失败: ' + error.message);
+            }
+        }
+        
+        // 显示设备管理提示
+        function showDeviceAlert(type, message) {
+            const container = document.getElementById('device-alert-container');
+            const alert = document.createElement('div');
+            alert.className = `alert alert-${type}`;
+            alert.textContent = message;
+            alert.style.marginBottom = '15px';
+            container.appendChild(alert);
+            
+            setTimeout(() => {
+                alert.remove();
+            }, 3000);
+        }
+        
+        // ==================== 旧设备列表功能（已废弃，保留用于兼容） ====================
+        
+        // 加载设备列表（旧版本，已废弃）
+        async function loadDevices() {
+            const loading = document.getElementById('devices-loading');
+            const list = document.getElementById('devices-list');
+            const empty = document.getElementById('devices-empty');
+            const error = document.getElementById('devices-error');
+            
+            // 显示加载状态
+            loading.style.display = 'block';
+            list.style.display = 'none';
+            empty.style.display = 'none';
+            error.style.display = 'none';
+            
+            try {
+                const response = await fetch('/api/devices');
+                const result = await response.json();
+                
+                loading.style.display = 'none';
+                
+                if (result.success) {
+                    const devices = result.data || [];
+                    
+                    if (devices.length === 0) {
+                        // 没有设备
+                        empty.style.display = 'block';
+                        list.style.display = 'none';
+                    } else {
+                        // 显示设备列表
+                        empty.style.display = 'none';
+                        list.style.display = 'grid';
+                        list.innerHTML = '';
+                        
+                        devices.forEach((device, index) => {
+                            const deviceCard = document.createElement('div');
+                            deviceCard.style.cssText = 'padding: 12px 16px; background: white; border: 1px solid #e5e7eb; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; transition: all 0.2s;';
+                            deviceCard.onmouseover = function() { this.style.borderColor = '#3b82f6'; this.style.boxShadow = '0 2px 4px rgba(59, 130, 246, 0.1)'; };
+                            deviceCard.onmouseout = function() { this.style.borderColor = '#e5e7eb'; this.style.boxShadow = 'none'; };
+                            
+                            // 设备状态徽章
+                            let statusBadge = '';
+                            if (device.status === 'device') {
+                                statusBadge = '<span style="background: #10b981; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500;">✓ 已连接</span>';
+                            } else if (device.status === 'unauthorized') {
+                                statusBadge = '<span style="background: #f59e0b; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500;">⚠ 未授权</span>';
+                            } else if (device.status === 'offline') {
+                                statusBadge = '<span style="background: #ef4444; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500;">✗ 离线</span>';
+                            } else {
+                                statusBadge = `<span style="background: #6b7280; color: white; padding: 4px 10px; border-radius: 4px; font-size: 12px; font-weight: 500;">${device.status || '未知'}</span>`;
+                            }
+                            
+                            deviceCard.innerHTML = `
+                                <div style="flex: 1; min-width: 0;">
+                                    <div style="font-weight: 600; color: #374151; margin-bottom: 4px; font-family: "Consolas", "Monaco", monospace; font-size: 14px; word-break: break-all;">
+                                        📱 ${device.id}
+                                    </div>
+                                    <div style="font-size: 12px; color: #6b7280;">
+                                        设备 #${index + 1}
+                                    </div>
+                                </div>
+                                <div style="margin-left: 12px; flex-shrink: 0;">
+                                    ${statusBadge}
+                                </div>
+                            `;
+                            
+                            list.appendChild(deviceCard);
+                        });
+                    }
+                } else {
+                    // 显示错误
+                    error.style.display = 'block';
+                    error.innerHTML = `<p style="margin: 0;">❌ ${result.error || '获取设备列表失败'}</p>`;
+                    list.style.display = 'none';
+                    empty.style.display = 'none';
+                }
+            } catch (error) {
+                loading.style.display = 'none';
+                error.style.display = 'block';
+                error.innerHTML = `<p style="margin: 0;">❌ 网络错误: ${error.message}</p>`;
+                list.style.display = 'none';
+                empty.style.display = 'none';
+            }
+        }
+
+        // 页面加载时初始化
+        // 设置设备管理标签页为激活状态
+        const deviceTabBtn = document.querySelectorAll('.tab-btn')[0];
+        if (deviceTabBtn) {
+            deviceTabBtn.classList.add('active');
+            deviceTabBtn.style.color = '#667eea';
+            deviceTabBtn.style.borderBottomColor = '#667eea';
+        }
+        
+        refreshDeviceList(); // 刷新设备列表
+        loadProxies();
+        loadTransitProxyNames(); // 预加载中转线路名称列表
+        loadRegions(); // 预加载地区列表
+    </script>
+</body>
+</html>
+
