@@ -14,7 +14,7 @@ from core.logger import setup_logging, get_logger
 
 # 工具模块
 from utils.adb_helper import ADBHelper
-from utils.yaml_helper import YAMLHelper
+from utils.yaml_helper import YAMLHelper, to_json
 
 # 服务模块
 from services.proxy_service import ProxyService
@@ -56,7 +56,7 @@ adb_helper = ADBHelper(path_manager)
 
 proxy_service = ProxyService(config_manager, setting_manager, adb_helper)
 transit_service = TransitService(config_manager, adb_helper)
-vm_service = VMService(path_manager, adb_helper, setting_manager)
+vm_service = VMService(path_manager, adb_helper, setting_manager, config_manager)
 device_service = DeviceService(adb_helper, setting_manager)
 region_service = RegionService(setting_manager)
 
@@ -150,9 +150,11 @@ def vm_create_account():
     import shlex
     from datetime import datetime
     
-    def generate():
+    # ⚠️ 重要：在生成器外部获取请求数据，避免上下文错误
+    data = request.json
+    
+    def generate(data):
         try:
-            data = request.json
             name = data.get('name', '').strip()
             app_type = data.get('app_type', '').strip()
             node = data.get('node', '').strip()
@@ -160,14 +162,14 @@ def vm_create_account():
             device_id = data.get('device_id', '').strip()
             
             if not all([name, app_type, node, region]):
-                yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': '缺少必需参数'})}\n\n"
+                yield f"data: {to_json({'type': 'error', 'message': '缺少必需参数'})}\n\n"
                 return
             
             adb_path = path_manager.get_adb_path()
             vm_script_path = path_manager.get_vm_script_path()
             
             if not adb_path:
-                yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': 'ADB 路径未配置'})}\n\n"
+                yield f"data: {to_json({'type': 'error', 'message': 'ADB 路径未配置'})}\n\n"
                 return
             
             # 构建 ADB 命令
@@ -181,7 +183,7 @@ def vm_create_account():
             
             logger.info(f"执行 VM 创建命令: {' '.join(cmd)}")
             timestamp = datetime.now().strftime("%H:%M:%S")
-            yield f"data: {YAMLHelper.to_json({'type': 'log', 'message': f'[{timestamp}] 开始创建 VM 账号: {name}'})}\n\n"
+            yield f"data: {to_json({'type': 'log', 'message': f'[{timestamp}] 开始创建 VM 账号: {name}'})}\n\n"
             
             # 执行命令
             process = subprocess.Popen(
@@ -196,7 +198,7 @@ def vm_create_account():
             # 实时读取输出
             for line in iter(process.stdout.readline, ''):
                 if line:
-                    yield f"data: {YAMLHelper.to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
+                    yield f"data: {to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
             
             process.wait()
             
@@ -204,17 +206,17 @@ def vm_create_account():
             if process.returncode == 0:
                 # 只有创建成功才更新计数器
                 vm_service.increment_account_counter(app_type, region)
-                yield f"data: {YAMLHelper.to_json({'type': 'success', 'message': f'VM 账号 {name} 创建成功'})}\n\n"
+                yield f"data: {to_json({'type': 'success', 'message': f'VM 账号 {name} 创建成功'})}\n\n"
                 logger.info(f"✅ VM 账号 '{name}' 创建成功")
             else:
-                yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': f'创建失败 (返回码: {process.returncode})'})}\n\n"
+                yield f"data: {to_json({'type': 'error', 'message': f'创建失败 (返回码: {process.returncode})'})}\n\n"
                 logger.error(f"❌ VM 账号创建失败，返回码: {process.returncode}")
         
         except Exception as e:
             logger.error(f"VM 创建失败: {str(e)}", exc_info=True)
-            yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': str(e)})}\n\n"
+            yield f"data: {to_json({'type': 'error', 'message': str(e)})}\n\n"
     
-    return Response(generate(), mimetype='text/event-stream')
+    return Response(generate(data), mimetype='text/event-stream')
 
 
 @app.route('/api/vm/save', methods=['POST'])
@@ -226,25 +228,27 @@ def vm_save_account():
     import shlex
     from datetime import datetime
     
-    def generate():
+    # ⚠️ 重要：在生成器外部获取请求数据
+    data = request.json
+    
+    def generate(data):
         try:
-            data = request.json
             device_id = data.get('device_id', '').strip()
             
             # 先获取 AccountName
             timestamp = datetime.now().strftime("%H:%M:%S")
-            yield f"data: {YAMLHelper.to_json({'type': 'log', 'message': f'[{timestamp}] 正在获取账号名称...'})}\n\n"
+            yield f"data: {to_json({'type': 'log', 'message': f'[{timestamp}] 正在获取账号名称...'})}\n\n"
             success, account_name = vm_service.get_config_value('AccountName', device_id or None)
             
             if not success:
-                yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': f'获取账号名称失败: {account_name}'})}\n\n"
+                yield f"data: {to_json({'type': 'error', 'message': f'获取账号名称失败: {account_name}'})}\n\n"
                 return
             
             if not account_name:
-                yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': '账号名称为空'})}\n\n"
+                yield f"data: {to_json({'type': 'error', 'message': '账号名称为空'})}\n\n"
                 return
             
-            yield f"data: {YAMLHelper.to_json({'type': 'log', 'message': f'账号名称: {account_name}'})}\n\n"
+            yield f"data: {to_json({'type': 'log', 'message': f'账号名称: {account_name}'})}\n\n"
             
             # 执行保存命令
             adb_path = path_manager.get_adb_path()
@@ -260,7 +264,7 @@ def vm_save_account():
             
             logger.info(f"执行 VM 保存命令: {' '.join(cmd)}")
             timestamp = datetime.now().strftime("%H:%M:%S")
-            yield f"data: {YAMLHelper.to_json({'type': 'log', 'message': f'[{timestamp}] 开始保存账号: {account_name}'})}\n\n"
+            yield f"data: {to_json({'type': 'log', 'message': f'[{timestamp}] 开始保存账号: {account_name}'})}\n\n"
             
             process = subprocess.Popen(
                 cmd,
@@ -273,21 +277,21 @@ def vm_save_account():
             
             for line in iter(process.stdout.readline, ''):
                 if line:
-                    yield f"data: {YAMLHelper.to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
+                    yield f"data: {to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
             
             process.wait()
             
             if process.returncode == 0:
-                yield f"data: {YAMLHelper.to_json({'type': 'success', 'message': f'账号 {account_name} 保存成功'})}\n\n"
+                yield f"data: {to_json({'type': 'success', 'message': f'账号 {account_name} 保存成功'})}\n\n"
                 logger.info(f"✅ VM 账号 '{account_name}' 保存成功")
             else:
-                yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': f'保存失败 (返回码: {process.returncode})'})}\n\n"
+                yield f"data: {to_json({'type': 'error', 'message': f'保存失败 (返回码: {process.returncode})'})}\n\n"
         
         except Exception as e:
             logger.error(f"VM 保存失败: {str(e)}", exc_info=True)
-            yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': str(e)})}\n\n"
+            yield f"data: {to_json({'type': 'error', 'message': str(e)})}\n\n"
     
-    return Response(generate(), mimetype='text/event-stream')
+    return Response(generate(data), mimetype='text/event-stream')
 
 
 @app.route('/api/vm/load', methods=['POST'])
@@ -299,14 +303,16 @@ def vm_load_account():
     import shlex
     from datetime import datetime
     
-    def generate():
+    # ⚠️ 重要：在生成器外部获取请求数据
+    data = request.json
+    
+    def generate(data):
         try:
-            data = request.json
             name = data.get('name', '').strip()
             device_id = data.get('device_id', '').strip()
             
             if not name:
-                yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': '账号名称不能为空'})}\n\n"
+                yield f"data: {to_json({'type': 'error', 'message': '账号名称不能为空'})}\n\n"
                 return
             
             adb_path = path_manager.get_adb_path()
@@ -322,7 +328,7 @@ def vm_load_account():
             
             logger.info(f"执行 VM 加载命令: {' '.join(cmd)}")
             timestamp = datetime.now().strftime("%H:%M:%S")
-            yield f"data: {YAMLHelper.to_json({'type': 'log', 'message': f'[{timestamp}] 开始加载账号: {name}'})}\n\n"
+            yield f"data: {to_json({'type': 'log', 'message': f'[{timestamp}] 开始加载账号: {name}'})}\n\n"
             
             process = subprocess.Popen(
                 cmd,
@@ -335,21 +341,21 @@ def vm_load_account():
             
             for line in iter(process.stdout.readline, ''):
                 if line:
-                    yield f"data: {YAMLHelper.to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
+                    yield f"data: {to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
             
             process.wait()
             
             if process.returncode == 0:
-                yield f"data: {YAMLHelper.to_json({'type': 'success', 'message': f'账号 {name} 加载成功'})}\n\n"
+                yield f"data: {to_json({'type': 'success', 'message': f'账号 {name} 加载成功'})}\n\n"
                 logger.info(f"✅ VM 账号 '{name}' 加载成功")
             else:
-                yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': f'加载失败 (返回码: {process.returncode})'})}\n\n"
+                yield f"data: {to_json({'type': 'error', 'message': f'加载失败 (返回码: {process.returncode})'})}\n\n"
         
         except Exception as e:
             logger.error(f"VM 加载失败: {str(e)}", exc_info=True)
-            yield f"data: {YAMLHelper.to_json({'type': 'error', 'message': str(e)})}\n\n"
+            yield f"data: {to_json({'type': 'error', 'message': str(e)})}\n\n"
     
-    return Response(generate(), mimetype='text/event-stream')
+    return Response(generate(data), mimetype='text/event-stream')
 
 
 # ==================== 应用启动 ====================

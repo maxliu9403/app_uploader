@@ -31,6 +31,11 @@ def is_transit_proxy(proxy_dict):
     return is_base == True or is_base == 'true' or str(is_base).lower() == 'true'
 
 
+def to_json(data):
+    """将数据转换为 JSON 字符串（用于 SSE 响应）"""
+    return json.dumps(data, ensure_ascii=False)
+
+
 class YAMLHelper:
     """YAML 文件处理辅助类"""
     

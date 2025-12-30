@@ -20029,3 +20029,2050 @@ expected ',' or '}', but got '<scalar>'
 2025-12-30 22:29:58 [INFO] [app.py:107]    响应结果: success=True
 2025-12-30 22:29:58 [INFO] [app.py:114] ================================================================================
 2025-12-30 22:29:58 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:29:58] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:42:30 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:30 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 22:42:30 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:30 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:30 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:42:30 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:30 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:30 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 22:42:30 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:30 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:42:30 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:30 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:30] "[33mGET /api/vm/proxy-names HTTP/1.1[0m" 404 -
+2025-12-30 22:42:30 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:42:30 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:42:30 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:42:30 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:42:30 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:30 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:30] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:42:33 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:33 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:42:33 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:33 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:33 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:42:33 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:42:33 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:42:33 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:42:33 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:33 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:33] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:42:37 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:37 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 22:42:37 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:37 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:37 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:37 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 22:42:37 [INFO] [app.py:92]    查询参数: {'region': 'SG'}
+2025-12-30 22:42:37 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:37 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 22:42:37 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:37 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:42:37 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'SG'}
+2025-12-30 22:42:37 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:37 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 22:42:37 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:37] "[33mGET /api/vm/proxy-names?region=SG HTTP/1.1[0m" 404 -
+2025-12-30 22:42:37 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:42:37 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:37 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:37] "[33mGET /api/vm/generate-account-name?app_type=Carousell&region=SG HTTP/1.1[0m" 404 -
+2025-12-30 22:42:40 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:40 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 22:42:40 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:40 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:40 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 22:42:40 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 22:42:40 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:42:40 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:40 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:40] "[33mGET /api/vm/proxy-names?region=HK HTTP/1.1[0m" 404 -
+2025-12-30 22:42:40 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:40 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 22:42:40 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:40 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:40 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 22:42:40 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 22:42:40 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:42:40 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:40 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:40] "[33mGET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1[0m" 404 -
+2025-12-30 22:42:49 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:49 [INFO] [app.py:78] 📥 收到请求: GET /.well-known/appspecific/com.chrome.devtools.json
+2025-12-30 22:42:49 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:49 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:49 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 22:42:49 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:42:49 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:49 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:49] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-12-30 22:42:56 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:42:56 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:42:56 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:42:56 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:42:56 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:42:56 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:42:56 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:42:56 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:42:56 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:42:56 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:42:56] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:43:00 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:43:00 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:43:00 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 22:43:00 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 22:43:00 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:43:00 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:43:00 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:43:00 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:43:00 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 22:43:00 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 22:43:00 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 22:43:00 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 22:43:00 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:43:00 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:43:00 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:43:00 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:43:00 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:43:00] "[33mGET /api/vm/proxy-names?region=HK HTTP/1.1[0m" 404 -
+2025-12-30 22:43:00 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:43:00] "[33mGET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1[0m" 404 -
+2025-12-30 22:46:21 [INFO] [logger.py:77] ======================================================================
+2025-12-30 22:46:21 [INFO] [logger.py:78] 📝 日志系统配置完成
+2025-12-30 22:46:21 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2025-12-30 22:46:21 [INFO] [logger.py:80]   - 日志级别: INFO
+2025-12-30 22:46:21 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2025-12-30 22:46:21 [INFO] [logger.py:82]   - 保留文件数: 7
+2025-12-30 22:46:21 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2025-12-30 22:46:21 [INFO] [logger.py:84]   - 文件输出: 已启用
+2025-12-30 22:46:21 [INFO] [logger.py:85] ======================================================================
+2025-12-30 22:46:21 [INFO] [app.py:358] ======================================================================
+2025-12-30 22:46:21 [INFO] [app.py:359] 🚀 Proxy Manager 应用启动
+2025-12-30 22:46:21 [INFO] [app.py:360] ======================================================================
+2025-12-30 22:46:21 [INFO] [app.py:361] 📂 工作目录: D:\app_uploader
+2025-12-30 22:46:21 [INFO] [app.py:362] 📝 配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:46:21 [INFO] [app.py:363] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2025-12-30 22:46:21 [INFO] [app.py:364] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2025-12-30 22:46:21 [INFO] [app.py:365] ======================================================================
+2025-12-30 22:46:22 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2025-12-30 22:46:22 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:97] ======================================================================
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:98] 📝 日志系统配置完成
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:99]   - 日志文件: logs/proxy_manager.log
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:100]   - 日志级别: INFO
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:101]   - 单文件大小: 10.0 MB
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:102]   - 保留文件数: 7
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:103]   - 控制台输出: 已启用
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:104]   - 文件输出: 已启用
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:105] ======================================================================
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2936] 检查 templates 目录...
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2949] 网络配置文件存在: D:\app_uploader\config.yaml
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:237] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:03 [ERROR] [proxy_manager.py:315] YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:48:03 [ERROR] [proxy_manager.py:316] 错误位置:   in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:319] 尝试修复YAML格式...
+2025-12-30 22:48:03 [ERROR] [proxy_manager.py:375] 修复后仍然解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:48:03 [ERROR] [proxy_manager.py:382] 加载配置文件失败: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 281, in load_config
+    config = yaml.safe_load(cleaned_content)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 549, in parse_flow_mapping_key
+    raise ParserError("while parsing a flow mapping", self.marks[-1],
+            "expected ',' or '}', but got %r" % token.id, token.start_mark)
+yaml.parser.ParserError: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 338, in load_config
+    config = yaml.safe_load(fixed_content)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 549, in parse_flow_mapping_key
+    raise ParserError("while parsing a flow mapping", self.marks[-1],
+            "expected ',' or '}', but got %r" % token.id, token.start_mark)
+yaml.parser.ParserError: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 376, in load_config
+    raise Exception(f"YAML解析失败: {str(e)}。修复尝试也失败: {str(e2)}")
+Exception: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:48:03 [WARNING] [proxy_manager.py:2955] 网络配置文件格式检查失败: 加载配置文件失败: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2966] 项目配置文件存在: D:\app_uploader\config\setting.yaml
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2969] 项目配置文件加载成功
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2989] ======================================================================
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2990] Proxy Manager 服务启动中...
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2991] 配置文件路径: D:\app_uploader\config.yaml
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2992] VM脚本路径: D:\data\local\tmp\vm.sh
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2993] 服务地址: http://localhost:5000
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:2994] ======================================================================
+2025-12-30 22:48:03 [INFO] [proxy_manager.py:3012] Flask 服务启动中...
+2025-12-30 22:48:04 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2025-12-30 22:48:04 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2025-12-30 22:48:05 [INFO] [proxy_manager.py:3000] 正在打开浏览器...
+2025-12-30 22:48:05 [INFO] [proxy_manager.py:3003] 浏览器已打开
+2025-12-30 22:48:05 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:05 [INFO] [app.py:78] 📥 收到请求: GET /
+2025-12-30 22:48:05 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:05 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:05 [INFO] [app.py:137] 🏠 访问主页
+2025-12-30 22:48:05 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:05 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:48:05 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:05 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:05] "GET / HTTP/1.1" 200 -
+2025-12-30 22:48:05 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:05 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:05 [INFO] [app.py:78] 📥 收到请求: GET /api/devices
+2025-12-30 22:48:05 [INFO] [app.py:78] 📥 收到请求: GET /api/device-configs
+2025-12-30 22:48:05 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:05 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:05 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:05 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:05 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:05 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:05 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:05 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:05 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:05] "GET /api/device-configs HTTP/1.1" 200 -
+2025-12-30 22:48:05 [INFO] [adb_helper.py:73] 找到 1 个设备
+2025-12-30 22:48:05 [INFO] [device_service.py:21] 找到 1 个设备
+2025-12-30 22:48:05 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:05 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:05 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:05 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:05 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:05] "GET /api/devices HTTP/1.1" 200 -
+2025-12-30 22:48:06 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:06 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:06 [INFO] [app.py:78] 📥 收到请求: GET /api/proxies
+2025-12-30 22:48:06 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 22:48:06 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:06 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:06 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:06 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:06 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:06 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:48:06 [INFO] [proxy_service.py:36] 🔍 开始获取所有普通代理...
+2025-12-30 22:48:06 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 22:48:06 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:06 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:06 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:06 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:06 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:48:06 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:48:06 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:48:06 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:06 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 22:48:06 [INFO] [proxy_service.py:41]    配置文件中共有 12 个代理条目
+2025-12-30 22:48:06 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:06 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 22:48:06 [INFO] [proxy_service.py:54]    过滤后: 11 个普通代理, 1 个中转线路
+2025-12-30 22:48:06 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:06 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 22:48:06 [INFO] [proxy_service.py:55] ✅ 成功返回 11 个普通代理
+2025-12-30 22:48:06 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:06 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:06 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:06 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:06] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:48:06 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:06 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:06 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:06 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:06 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:06 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:06 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:06] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 22:48:06 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:06] "GET /api/proxies HTTP/1.1" 200 -
+2025-12-30 22:48:06 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:06 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 22:48:06 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:06 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:06 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 22:48:06 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:06 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:48:06 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 22:48:06 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 22:48:06 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 22:48:06 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:06 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:06 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:06 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:06 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:06] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 22:48:08 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:08 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies
+2025-12-30 22:48:08 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:08 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:08 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 22:48:08 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:08 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:48:08 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 22:48:08 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 22:48:08 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 22:48:08 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:08 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:08 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:08 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:08 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:08] "GET /api/transit-proxies HTTP/1.1" 200 -
+2025-12-30 22:48:09 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:09 [INFO] [app.py:78] 📥 收到请求: GET /api/proxies
+2025-12-30 22:48:09 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:09 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:09 [INFO] [proxy_service.py:36] 🔍 开始获取所有普通代理...
+2025-12-30 22:48:09 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:09 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:48:09 [INFO] [proxy_service.py:41]    配置文件中共有 12 个代理条目
+2025-12-30 22:48:09 [INFO] [proxy_service.py:54]    过滤后: 11 个普通代理, 1 个中转线路
+2025-12-30 22:48:09 [INFO] [proxy_service.py:55] ✅ 成功返回 11 个普通代理
+2025-12-30 22:48:09 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:09 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:09 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:09 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:09 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:09] "GET /api/proxies HTTP/1.1" 200 -
+2025-12-30 22:48:09 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:09 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 22:48:09 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:09 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:09 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 22:48:09 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:09 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:48:09 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 22:48:09 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 22:48:09 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 22:48:09 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:09 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:09 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:09 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:09 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:09] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 22:48:10 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:10 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 22:48:10 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:10 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:10 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:10 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:48:10 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: 全部）
+2025-12-30 22:48:10 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:10 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:10 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:10 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:10 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:10] "GET /api/vm/proxy-names HTTP/1.1" 200 -
+2025-12-30 22:48:10 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:10 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:48:10 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:10 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:10 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:48:10 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:10 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:10 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:10 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:10 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:10] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:48:11 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:11 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:48:11 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:11 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:11 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:48:11 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:11 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:11 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:11 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:11 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:11] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:48:15 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:15 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 22:48:15 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:15 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:15 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 22:48:15 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:48:15 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:48:15 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 22:48:15 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:15 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:15 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:15 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:15 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:15] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 22:48:15 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:15 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 22:48:15 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:15 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:15 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 22:48:15 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_002
+2025-12-30 22:48:15 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:15 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:48:15 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:48:15 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:15 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:15] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 22:48:21 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:48:21 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 22:48:21 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:48:21 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:48:21 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_002', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_091'}
+2025-12-30 22:48:21 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:48:21 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 22:48:21 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:48:21 [ERROR] [app.py:214] VM 创建失败: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+Traceback (most recent call last):
+  File "D:\app_uploader\app.py", line 155, in generate
+    data = request.json
+           ^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\werkzeug\local.py", line 318, in __get__
+    obj = instance._get_current_object()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\werkzeug\local.py", line 519, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+2025-12-30 22:48:21 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:48:21] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 22:51:14 [INFO] [logger.py:77] ======================================================================
+2025-12-30 22:51:14 [INFO] [logger.py:78] 📝 日志系统配置完成
+2025-12-30 22:51:14 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2025-12-30 22:51:14 [INFO] [logger.py:80]   - 日志级别: INFO
+2025-12-30 22:51:14 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2025-12-30 22:51:14 [INFO] [logger.py:82]   - 保留文件数: 7
+2025-12-30 22:51:14 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2025-12-30 22:51:14 [INFO] [logger.py:84]   - 文件输出: 已启用
+2025-12-30 22:51:14 [INFO] [logger.py:85] ======================================================================
+2025-12-30 22:52:46 [INFO] [logger.py:77] ======================================================================
+2025-12-30 22:52:46 [INFO] [logger.py:78] 📝 日志系统配置完成
+2025-12-30 22:52:46 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2025-12-30 22:52:46 [INFO] [logger.py:80]   - 日志级别: INFO
+2025-12-30 22:52:46 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2025-12-30 22:52:46 [INFO] [logger.py:82]   - 保留文件数: 7
+2025-12-30 22:52:46 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2025-12-30 22:52:46 [INFO] [logger.py:84]   - 文件输出: 已启用
+2025-12-30 22:52:46 [INFO] [logger.py:85] ======================================================================
+2025-12-30 22:52:46 [INFO] [app.py:358] ======================================================================
+2025-12-30 22:52:46 [INFO] [app.py:359] 🚀 Proxy Manager 应用启动
+2025-12-30 22:52:46 [INFO] [app.py:360] ======================================================================
+2025-12-30 22:52:46 [INFO] [app.py:361] 📂 工作目录: D:\app_uploader
+2025-12-30 22:52:47 [INFO] [app.py:362] 📝 配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:52:47 [INFO] [app.py:363] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2025-12-30 22:52:47 [INFO] [app.py:364] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2025-12-30 22:52:47 [INFO] [app.py:365] ======================================================================
+2025-12-30 22:52:48 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2025-12-30 22:52:48 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:97] ======================================================================
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:98] 📝 日志系统配置完成
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:99]   - 日志文件: logs/proxy_manager.log
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:100]   - 日志级别: INFO
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:101]   - 单文件大小: 10.0 MB
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:102]   - 保留文件数: 7
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:103]   - 控制台输出: 已启用
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:104]   - 文件输出: 已启用
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:105] ======================================================================
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2936] 检查 templates 目录...
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2949] 网络配置文件存在: D:\app_uploader\config.yaml
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:237] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:54:42 [ERROR] [proxy_manager.py:315] YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:54:42 [ERROR] [proxy_manager.py:316] 错误位置:   in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:319] 尝试修复YAML格式...
+2025-12-30 22:54:42 [ERROR] [proxy_manager.py:375] 修复后仍然解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:54:42 [ERROR] [proxy_manager.py:382] 加载配置文件失败: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 281, in load_config
+    config = yaml.safe_load(cleaned_content)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 549, in parse_flow_mapping_key
+    raise ParserError("while parsing a flow mapping", self.marks[-1],
+            "expected ',' or '}', but got %r" % token.id, token.start_mark)
+yaml.parser.ParserError: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 338, in load_config
+    config = yaml.safe_load(fixed_content)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 549, in parse_flow_mapping_key
+    raise ParserError("while parsing a flow mapping", self.marks[-1],
+            "expected ',' or '}', but got %r" % token.id, token.start_mark)
+yaml.parser.ParserError: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 376, in load_config
+    raise Exception(f"YAML解析失败: {str(e)}。修复尝试也失败: {str(e2)}")
+Exception: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:54:42 [WARNING] [proxy_manager.py:2955] 网络配置文件格式检查失败: 加载配置文件失败: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2966] 项目配置文件存在: D:\app_uploader\config\setting.yaml
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2969] 项目配置文件加载成功
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2989] ======================================================================
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2990] Proxy Manager 服务启动中...
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2991] 配置文件路径: D:\app_uploader\config.yaml
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2992] VM脚本路径: D:\data\local\tmp\vm.sh
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2993] 服务地址: http://localhost:5000
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:2994] ======================================================================
+2025-12-30 22:54:42 [INFO] [proxy_manager.py:3012] Flask 服务启动中...
+2025-12-30 22:54:43 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2025-12-30 22:54:43 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2025-12-30 22:54:43 [INFO] [proxy_manager.py:3000] 正在打开浏览器...
+2025-12-30 22:54:44 [INFO] [proxy_manager.py:3003] 浏览器已打开
+2025-12-30 22:54:44 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:44 [INFO] [app.py:78] 📥 收到请求: GET /
+2025-12-30 22:54:44 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:44 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:44 [INFO] [app.py:137] 🏠 访问主页
+2025-12-30 22:54:44 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:44 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 22:54:44 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:44 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:44] "GET / HTTP/1.1" 200 -
+2025-12-30 22:54:44 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:44 [INFO] [app.py:78] 📥 收到请求: GET /api/devices
+2025-12-30 22:54:44 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:44 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:44 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:44 [INFO] [app.py:78] 📥 收到请求: GET /api/device-configs
+2025-12-30 22:54:44 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:44 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:44 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:44 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:44 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:44 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:44 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:44] "GET /api/device-configs HTTP/1.1" 200 -
+2025-12-30 22:54:44 [INFO] [adb_helper.py:73] 找到 1 个设备
+2025-12-30 22:54:44 [INFO] [device_service.py:21] 找到 1 个设备
+2025-12-30 22:54:44 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:44 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:44 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:44 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:44 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:44] "GET /api/devices HTTP/1.1" 200 -
+2025-12-30 22:54:45 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:45 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:45 [INFO] [app.py:78] 📥 收到请求: GET /api/proxies
+2025-12-30 22:54:45 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 22:54:45 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:45 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:45 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:45 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:45 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:54:45 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:45 [INFO] [proxy_service.py:36] 🔍 开始获取所有普通代理...
+2025-12-30 22:54:45 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:45 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 22:54:45 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:54:45 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:45 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:54:45 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:54:45 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:54:45 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:54:45 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:45 [INFO] [proxy_service.py:41]    配置文件中共有 12 个代理条目
+2025-12-30 22:54:45 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 22:54:45 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:45 [INFO] [proxy_service.py:54]    过滤后: 11 个普通代理, 1 个中转线路
+2025-12-30 22:54:45 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 22:54:45 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:45 [INFO] [proxy_service.py:55] ✅ 成功返回 11 个普通代理
+2025-12-30 22:54:45 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 22:54:45 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:45 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:45 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:45 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:45] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:54:45 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:45 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:45 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:45 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:45 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:45 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:45 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:45] "GET /api/proxies HTTP/1.1" 200 -
+2025-12-30 22:54:45 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:45] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 22:54:45 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:45 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 22:54:45 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:45 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:45 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 22:54:45 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:54:45 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:54:45 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 22:54:45 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 22:54:45 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 22:54:45 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:45 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:45 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:45 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:45 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:45] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 22:54:47 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:47 [INFO] [app.py:78] 📥 收到请求: GET /api/proxies
+2025-12-30 22:54:47 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:47 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:47 [INFO] [proxy_service.py:36] 🔍 开始获取所有普通代理...
+2025-12-30 22:54:47 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:54:47 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:54:47 [INFO] [proxy_service.py:41]    配置文件中共有 12 个代理条目
+2025-12-30 22:54:47 [INFO] [proxy_service.py:54]    过滤后: 11 个普通代理, 1 个中转线路
+2025-12-30 22:54:47 [INFO] [proxy_service.py:55] ✅ 成功返回 11 个普通代理
+2025-12-30 22:54:47 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:47 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:47 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:47 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:47 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:47] "GET /api/proxies HTTP/1.1" 200 -
+2025-12-30 22:54:48 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:48 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 22:54:48 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:48 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:48 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 22:54:48 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:54:48 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:54:48 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 22:54:48 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 22:54:48 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 22:54:48 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:48 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:48 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:48 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:48 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:48] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 22:54:48 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:48 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies
+2025-12-30 22:54:48 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:48 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:48 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 22:54:48 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:54:48 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:54:48 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 22:54:48 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 22:54:48 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 22:54:48 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:48 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:48 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:48 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:48 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:48] "GET /api/transit-proxies HTTP/1.1" 200 -
+2025-12-30 22:54:52 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:52 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:52 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 22:54:52 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:54:52 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:52 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:52 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:52 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:52 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:54:52 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:54:52 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:54:52 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:52 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: 全部）
+2025-12-30 22:54:52 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:52 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:52 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:52 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:52 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:52 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:52 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:52] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:54:52 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:52 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:52] "GET /api/vm/proxy-names HTTP/1.1" 200 -
+2025-12-30 22:54:53 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:54:53 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 22:54:53 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:54:53 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:54:53 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 22:54:53 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:54:53 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:54:53 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:54:53 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:54:53 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:54:53] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 22:55:00 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:55:00 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 22:55:00 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:55:00 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:55:00 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 22:55:00 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:55:00 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:55:00 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 22:55:00 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:55:00 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:55:00 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 22:55:00 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 22:55:00 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 22:55:00 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:55:00 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:55:00 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_002
+2025-12-30 22:55:00 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:55:00 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:55:00 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:55:00 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 22:55:00 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:55:00] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 22:55:00 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 22:55:00 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:55:00 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:55:00] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 22:55:05 [INFO] [app.py:77] ================================================================================
+2025-12-30 22:55:05 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 22:55:05 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 22:55:05 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 22:55:05 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_002', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_091'}
+2025-12-30 22:55:05 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 22:55:05 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 22:55:05 [INFO] [app.py:114] ================================================================================
+2025-12-30 22:55:05 [ERROR] [app.py:214] VM 创建失败: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+Traceback (most recent call last):
+  File "D:\app_uploader\app.py", line 155, in generate
+    data = request.json
+           ^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\werkzeug\local.py", line 318, in __get__
+    obj = instance._get_current_object()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\werkzeug\local.py", line 519, in _get_current_object
+    raise RuntimeError(unbound_message) from None
+RuntimeError: Working outside of request context.
+
+This typically means that you attempted to use functionality that needed
+an active HTTP request. Consult the documentation on testing for
+information about how to avoid this problem.
+2025-12-30 22:55:05 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 22:55:05] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 22:58:40 [INFO] [logger.py:77] ======================================================================
+2025-12-30 22:58:40 [INFO] [logger.py:78] 📝 日志系统配置完成
+2025-12-30 22:58:40 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2025-12-30 22:58:40 [INFO] [logger.py:80]   - 日志级别: INFO
+2025-12-30 22:58:40 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2025-12-30 22:58:40 [INFO] [logger.py:82]   - 保留文件数: 7
+2025-12-30 22:58:40 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2025-12-30 22:58:40 [INFO] [logger.py:84]   - 文件输出: 已启用
+2025-12-30 22:58:40 [INFO] [logger.py:85] ======================================================================
+2025-12-30 22:58:40 [INFO] [app.py:364] ======================================================================
+2025-12-30 22:58:40 [INFO] [app.py:365] 🚀 Proxy Manager 应用启动
+2025-12-30 22:58:40 [INFO] [app.py:366] ======================================================================
+2025-12-30 22:58:40 [INFO] [app.py:367] 📂 工作目录: D:\app_uploader
+2025-12-30 22:58:40 [INFO] [app.py:368] 📝 配置文件: D:\app_uploader\config.yaml
+2025-12-30 22:58:40 [INFO] [app.py:369] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2025-12-30 22:58:40 [INFO] [app.py:370] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2025-12-30 22:58:40 [INFO] [app.py:371] ======================================================================
+2025-12-30 22:58:41 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2025-12-30 22:58:41 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:97] ======================================================================
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:98] 📝 日志系统配置完成
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:99]   - 日志文件: logs/proxy_manager.log
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:100]   - 日志级别: INFO
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:101]   - 单文件大小: 10.0 MB
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:102]   - 保留文件数: 7
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:103]   - 控制台输出: 已启用
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:104]   - 文件输出: 已启用
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:105] ======================================================================
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2936] 检查 templates 目录...
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2949] 网络配置文件存在: D:\app_uploader\config.yaml
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:237] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:00:47 [ERROR] [proxy_manager.py:315] YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:00:47 [ERROR] [proxy_manager.py:316] 错误位置:   in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:319] 尝试修复YAML格式...
+2025-12-30 23:00:47 [ERROR] [proxy_manager.py:375] 修复后仍然解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:00:47 [ERROR] [proxy_manager.py:382] 加载配置文件失败: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 281, in load_config
+    config = yaml.safe_load(cleaned_content)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 549, in parse_flow_mapping_key
+    raise ParserError("while parsing a flow mapping", self.marks[-1],
+            "expected ',' or '}', but got %r" % token.id, token.start_mark)
+yaml.parser.ParserError: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 338, in load_config
+    config = yaml.safe_load(fixed_content)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 549, in parse_flow_mapping_key
+    raise ParserError("while parsing a flow mapping", self.marks[-1],
+            "expected ',' or '}', but got %r" % token.id, token.start_mark)
+yaml.parser.ParserError: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 376, in load_config
+    raise Exception(f"YAML解析失败: {str(e)}。修复尝试也失败: {str(e2)}")
+Exception: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:00:47 [WARNING] [proxy_manager.py:2955] 网络配置文件格式检查失败: 加载配置文件失败: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2966] 项目配置文件存在: D:\app_uploader\config\setting.yaml
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2969] 项目配置文件加载成功
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2989] ======================================================================
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2990] Proxy Manager 服务启动中...
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2991] 配置文件路径: D:\app_uploader\config.yaml
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2992] VM脚本路径: D:\data\local\tmp\vm.sh
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2993] 服务地址: http://localhost:5000
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:2994] ======================================================================
+2025-12-30 23:00:47 [INFO] [proxy_manager.py:3012] Flask 服务启动中...
+2025-12-30 23:00:48 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2025-12-30 23:00:48 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2025-12-30 23:00:48 [INFO] [proxy_manager.py:3000] 正在打开浏览器...
+2025-12-30 23:00:48 [INFO] [proxy_manager.py:3003] 浏览器已打开
+2025-12-30 23:00:49 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:00:49 [INFO] [app.py:78] 📥 收到请求: GET /
+2025-12-30 23:00:49 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:00:49 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:00:49 [INFO] [app.py:137] 🏠 访问主页
+2025-12-30 23:00:49 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:00:49 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 23:00:49 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:00:49 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:00:49] "GET / HTTP/1.1" 200 -
+2025-12-30 23:00:49 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:00:49 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:00:49 [INFO] [app.py:78] 📥 收到请求: GET /api/devices
+2025-12-30 23:00:49 [INFO] [app.py:78] 📥 收到请求: GET /api/device-configs
+2025-12-30 23:00:49 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:00:49 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:00:49 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:00:49 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:00:49 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:00:49 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:00:49 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:00:49 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:00:49 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:00:49] "GET /api/device-configs HTTP/1.1" 200 -
+2025-12-30 23:00:49 [INFO] [adb_helper.py:73] 找到 1 个设备
+2025-12-30 23:00:49 [INFO] [device_service.py:21] 找到 1 个设备
+2025-12-30 23:00:49 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:00:49 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:00:49 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:00:49 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:00:49 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:00:49] "GET /api/devices HTTP/1.1" 200 -
+2025-12-30 23:00:49 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:00:49 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:00:49 [INFO] [app.py:78] 📥 收到请求: GET /api/proxies
+2025-12-30 23:00:49 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 23:00:49 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:00:49 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:00:49 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:00:49 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:00:49 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:00:49 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:00:49 [INFO] [proxy_service.py:36] 🔍 开始获取所有普通代理...
+2025-12-30 23:00:49 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:00:49 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:00:49 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 23:00:49 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:00:49 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:00:50 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:00:50 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:00:50 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:00:50 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:00:50 [INFO] [proxy_service.py:41]    配置文件中共有 12 个代理条目
+2025-12-30 23:00:50 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 23:00:50 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:00:50 [INFO] [proxy_service.py:54]    过滤后: 11 个普通代理, 1 个中转线路
+2025-12-30 23:00:50 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 23:00:50 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:00:50 [INFO] [proxy_service.py:55] ✅ 成功返回 11 个普通代理
+2025-12-30 23:00:50 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 23:00:50 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:00:50 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:00:50 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:00:50 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:00:50] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:00:50 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:00:50 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:00:50 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:00:50 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:00:50 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:00:50 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:00:50 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:00:50] "GET /api/proxies HTTP/1.1" 200 -
+2025-12-30 23:00:50 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:00:50] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 23:00:50 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:00:50 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 23:00:50 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:00:50 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:00:50 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 23:00:50 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:00:50 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:00:50 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 23:00:50 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 23:00:50 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 23:00:50 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:00:50 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:00:50 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:00:50 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:00:50 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:00:50] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 23:01:02 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:01:02 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:01:02 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:01:02 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:01:02 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:01:02 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:01:02 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: 全部）
+2025-12-30 23:01:02 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:01:02 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:01:02 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:01:02 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:01:02 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:01:02] "GET /api/vm/proxy-names HTTP/1.1" 200 -
+2025-12-30 23:01:02 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:01:02 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:01:02 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:01:02 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:01:02 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:01:02 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:01:02 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:01:02 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:01:02 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:01:02 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:01:02] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:01:03 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:01:03 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:01:03 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:01:03 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:01:03 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:01:03 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:01:03 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:01:03 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:01:03 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:01:03 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:01:03] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:01:07 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:01:07 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:01:07 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:01:07 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:01:07 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 23:01:07 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:01:07 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:01:07 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 23:01:07 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:01:07 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:01:07 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:01:07 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:01:07 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:01:07] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 23:01:08 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:01:08 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 23:01:08 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:01:08 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:01:08 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 23:01:08 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_002
+2025-12-30 23:01:08 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:01:08 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:01:08 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:01:08 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:01:08 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:01:08] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 23:01:11 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:01:11 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 23:01:11 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:01:11 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:01:11 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_002', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_091'}
+2025-12-30 23:01:11 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:01:11 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:01:11 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:01:11 [INFO] [app.py:184] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh new Carousell_HK_002 Carousell HK_091 HK'
+2025-12-30 23:01:11 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:01:11] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 23:01:31 [INFO] [config.py:45] 项目配置文件保存成功
+2025-12-30 23:01:31 [INFO] [vm_service.py:54] 更新 VM 账号计数器: Carousell_HK = 2
+2025-12-30 23:01:31 [INFO] [app.py:210] ✅ VM 账号 'Carousell_HK_002' 创建成功
+2025-12-30 23:03:27 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:03:27 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:03:27 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:03:27 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:03:27 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:03:27 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:03:27 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:03:27 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:03:27 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:03:27 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:03:27] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:03:30 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:03:30 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:03:30 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:03:30 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:03:30 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 23:03:30 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:03:30 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:03:30 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 23:03:30 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:03:30 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:03:30 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:03:30 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:03:30 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:03:30] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 23:03:30 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:03:30 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 23:03:30 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:03:30 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:03:30 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 23:03:30 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_003
+2025-12-30 23:03:30 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:03:30 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:03:30 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:03:30 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:03:30 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:03:30] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 23:03:34 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:03:34 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 23:03:34 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:03:34 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:03:34 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_003', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_092'}
+2025-12-30 23:03:34 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:03:34 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:03:34 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:03:34 [INFO] [app.py:184] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh new Carousell_HK_003 Carousell HK_092 HK'
+2025-12-30 23:03:34 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:03:34] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 23:03:52 [INFO] [config.py:45] 项目配置文件保存成功
+2025-12-30 23:03:52 [INFO] [vm_service.py:54] 更新 VM 账号计数器: Carousell_HK = 3
+2025-12-30 23:03:52 [INFO] [app.py:210] ✅ VM 账号 'Carousell_HK_003' 创建成功
+2025-12-30 23:15:19 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:15:19 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:15:19 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:15:19 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:15:19 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:15:19 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:15:19 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:15:19 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:15:19 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:15:19 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:15:19] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:15:23 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:15:23 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:15:23 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:15:23 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:15:23 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 23:15:23 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:15:23 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:15:23 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 23:15:23 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:15:23 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:15:23 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:15:23 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:15:23 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:15:23] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 23:15:23 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:15:23 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 23:15:23 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:15:23 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:15:23 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 23:15:23 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_004
+2025-12-30 23:15:23 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:15:23 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:15:23 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:15:23 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:15:23 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:15:23] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 23:15:28 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:15:28 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 23:15:28 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:15:28 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:15:28 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_004', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_091'}
+2025-12-30 23:15:28 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:15:28 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:15:28 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:15:28 [INFO] [app.py:184] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh new Carousell_HK_004 Carousell HK_091 HK'
+2025-12-30 23:15:28 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:15:28] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 23:15:46 [INFO] [config.py:45] 项目配置文件保存成功
+2025-12-30 23:15:46 [INFO] [vm_service.py:54] 更新 VM 账号计数器: Carousell_HK = 4
+2025-12-30 23:15:46 [INFO] [app.py:210] ✅ VM 账号 'Carousell_HK_004' 创建成功
+2025-12-30 23:26:09 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:26:09 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:26:09 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:26:09 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:26:09 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:26:09 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:26:09 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:26:09 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:26:09 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:26:09 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:26:09] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:26:14 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:26:14 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:26:14 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:26:14 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:26:14 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 23:26:14 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:26:14 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:26:14 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 23:26:14 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:26:14 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:26:14 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:26:14 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:26:14 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:26:14] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 23:26:14 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:26:14 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 23:26:14 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:26:14 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:26:14 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 23:26:14 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_005
+2025-12-30 23:26:14 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:26:14 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:26:14 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:26:14 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:26:14 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:26:14] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 23:26:18 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:26:18 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 23:26:18 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:26:18 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:26:18 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_005', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_091'}
+2025-12-30 23:26:18 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:26:18 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:26:18 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:26:18 [INFO] [app.py:184] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh new Carousell_HK_005 Carousell HK_091 HK'
+2025-12-30 23:26:18 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:26:18] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 23:26:37 [INFO] [config.py:45] 项目配置文件保存成功
+2025-12-30 23:26:37 [INFO] [vm_service.py:54] 更新 VM 账号计数器: Carousell_HK = 5
+2025-12-30 23:26:37 [INFO] [app.py:210] ✅ VM 账号 'Carousell_HK_005' 创建成功
+2025-12-30 23:29:55 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:29:55 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:29:55 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:29:55 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:29:55 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:29:55 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:29:55 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:29:55 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:29:55 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:29:55 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:29:55] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:29:59 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:29:59 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:29:59 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:29:59 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:29:59 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 23:29:59 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:29:59 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:29:59 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 23:29:59 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:29:59 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:29:59 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:29:59 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:29:59 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:29:59] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 23:30:00 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:30:00 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 23:30:00 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:30:00 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:30:00 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 23:30:00 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_006
+2025-12-30 23:30:00 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:30:00 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:30:00 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:30:00 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:30:00 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:30:00] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 23:30:03 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:30:03 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 23:30:03 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:30:03 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:30:03 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_006', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_098'}
+2025-12-30 23:30:03 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:30:03 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:30:03 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:30:03 [INFO] [app.py:184] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh new Carousell_HK_006 Carousell HK_098 HK'
+2025-12-30 23:30:03 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:30:03] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 23:30:21 [INFO] [config.py:45] 项目配置文件保存成功
+2025-12-30 23:30:21 [INFO] [vm_service.py:54] 更新 VM 账号计数器: Carousell_HK = 6
+2025-12-30 23:30:21 [INFO] [app.py:210] ✅ VM 账号 'Carousell_HK_006' 创建成功
+2025-12-30 23:34:10 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:34:10 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:34:10 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:34:10 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:34:10 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:34:10 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:34:10 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:34:10 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:34:10 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:34:10 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:34:10] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:34:13 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:34:13 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:34:13 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:34:13 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:34:13 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 23:34:13 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:34:13 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:34:13 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 23:34:13 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:34:13 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:34:13 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:34:13 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:34:13 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:34:13] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 23:34:13 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:34:13 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 23:34:13 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:34:13 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:34:13 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 23:34:13 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_007
+2025-12-30 23:34:13 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:34:13 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:34:13 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:34:13 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:34:13 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:34:13] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 23:34:20 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:34:20 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 23:34:20 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:34:20 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:34:20 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_007', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_098'}
+2025-12-30 23:34:20 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:34:20 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:34:20 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:34:20 [INFO] [app.py:184] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh new Carousell_HK_007 Carousell HK_098 HK'
+2025-12-30 23:34:20 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:34:20] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 23:34:34 [INFO] [config.py:45] 项目配置文件保存成功
+2025-12-30 23:34:34 [INFO] [vm_service.py:54] 更新 VM 账号计数器: Carousell_HK = 7
+2025-12-30 23:34:34 [INFO] [app.py:210] ✅ VM 账号 'Carousell_HK_007' 创建成功
+2025-12-30 23:35:39 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:35:39 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:35:39 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:35:39 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:35:39 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:35:39 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:35:39 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:35:39 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:35:39 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:35:39 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:35:39] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:35:41 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:35:41 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:35:41 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:35:41 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:35:41 [INFO] [app.py:92]    查询参数: {'region': 'HK'}
+2025-12-30 23:35:41 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:35:41 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:35:41 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: HK）
+2025-12-30 23:35:41 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:35:41 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:35:41 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:35:41 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:35:41 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:35:41] "GET /api/vm/proxy-names?region=HK HTTP/1.1" 200 -
+2025-12-30 23:35:41 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:35:41 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/generate-account-name
+2025-12-30 23:35:41 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:35:41 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:35:41 [INFO] [app.py:92]    查询参数: {'app_type': 'Carousell', 'region': 'HK'}
+2025-12-30 23:35:41 [INFO] [vm_service.py:33] 生成账号名称: Carousell_HK_008
+2025-12-30 23:35:41 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:35:41 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:35:41 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:35:41 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:35:41 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:35:41] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK HTTP/1.1" 200 -
+2025-12-30 23:35:44 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:35:44 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/new
+2025-12-30 23:35:44 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:35:44 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:35:44 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_008', 'app_type': 'Carousell', 'region': 'HK', 'node': 'HK_096'}
+2025-12-30 23:35:44 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:35:44 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:35:44 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:35:44 [INFO] [app.py:184] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh new Carousell_HK_008 Carousell HK_096 HK'
+2025-12-30 23:35:44 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:35:44] "POST /api/vm/new HTTP/1.1" 200 -
+2025-12-30 23:35:57 [INFO] [config.py:45] 项目配置文件保存成功
+2025-12-30 23:35:57 [INFO] [vm_service.py:54] 更新 VM 账号计数器: Carousell_HK = 8
+2025-12-30 23:35:57 [INFO] [app.py:210] ✅ VM 账号 'Carousell_HK_008' 创建成功
+2025-12-30 23:38:13 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:38:13 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/get-config-value
+2025-12-30 23:38:13 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:38:13 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:38:13 [INFO] [app.py:92]    查询参数: {'field_name': 'AccountName'}
+2025-12-30 23:38:13 [INFO] [vm_service.py:75] 成功获取配置值: AccountName = Carousell_HK_008
+2025-12-30 23:38:13 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:38:13 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:38:13 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:38:13 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:38:13 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:38:13] "GET /api/vm/get-config-value?field_name=AccountName HTTP/1.1" 200 -
+2025-12-30 23:38:15 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:38:15 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/get-config-value
+2025-12-30 23:38:15 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:38:15 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:38:15 [INFO] [app.py:92]    查询参数: {'field_name': 'AccountName'}
+2025-12-30 23:38:15 [INFO] [vm_service.py:75] 成功获取配置值: AccountName = Carousell_HK_008
+2025-12-30 23:38:15 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:38:15 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:38:15 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:38:15 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:38:15 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:38:15] "GET /api/vm/get-config-value?field_name=AccountName HTTP/1.1" 200 -
+2025-12-30 23:38:16 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:38:16 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/get-config-value
+2025-12-30 23:38:16 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:38:16 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:38:16 [INFO] [app.py:92]    查询参数: {'field_name': 'AccountName'}
+2025-12-30 23:38:16 [INFO] [vm_service.py:75] 成功获取配置值: AccountName = Carousell_HK_008
+2025-12-30 23:38:16 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:38:16 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:38:16 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:38:16 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:38:16 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:38:16] "GET /api/vm/get-config-value?field_name=AccountName HTTP/1.1" 200 -
+2025-12-30 23:38:18 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:38:18 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/get-config-value
+2025-12-30 23:38:18 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:38:18 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:38:18 [INFO] [app.py:92]    查询参数: {'field_name': 'AccountName'}
+2025-12-30 23:38:18 [INFO] [vm_service.py:75] 成功获取配置值: AccountName = Carousell_HK_008
+2025-12-30 23:38:18 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:38:18 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:38:18 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:38:18 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:38:18 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:38:18] "GET /api/vm/get-config-value?field_name=AccountName HTTP/1.1" 200 -
+2025-12-30 23:39:33 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:39:33 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/get-config-value
+2025-12-30 23:39:33 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:39:33 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:39:33 [INFO] [app.py:92]    查询参数: {'field_name': 'AccountName'}
+2025-12-30 23:39:33 [INFO] [vm_service.py:75] 成功获取配置值: AccountName = Carousell_HK_008
+2025-12-30 23:39:33 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:39:33 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:39:33 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:39:33 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:39:33 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:39:33] "GET /api/vm/get-config-value?field_name=AccountName HTTP/1.1" 200 -
+2025-12-30 23:39:36 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:39:36 [INFO] [app.py:78] 📥 收到请求: GET /.well-known/appspecific/com.chrome.devtools.json
+2025-12-30 23:39:36 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:39:36 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:39:36 [INFO] [app.py:98] 📤 响应状态: 404 404 NOT FOUND
+2025-12-30 23:39:36 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 23:39:36 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:39:36 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:39:36] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-12-30 23:39:37 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:39:37 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/get-config-value
+2025-12-30 23:39:37 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:39:37 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:39:37 [INFO] [app.py:92]    查询参数: {'field_name': 'AccountName'}
+2025-12-30 23:39:37 [INFO] [vm_service.py:75] 成功获取配置值: AccountName = Carousell_HK_008
+2025-12-30 23:39:37 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:39:37 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:39:37 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:39:37 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:39:37 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:39:37] "GET /api/vm/get-config-value?field_name=AccountName HTTP/1.1" 200 -
+2025-12-30 23:41:38 [INFO] [logger.py:77] ======================================================================
+2025-12-30 23:41:38 [INFO] [logger.py:78] 📝 日志系统配置完成
+2025-12-30 23:41:38 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2025-12-30 23:41:38 [INFO] [logger.py:80]   - 日志级别: INFO
+2025-12-30 23:41:38 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2025-12-30 23:41:38 [INFO] [logger.py:82]   - 保留文件数: 7
+2025-12-30 23:41:38 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2025-12-30 23:41:38 [INFO] [logger.py:84]   - 文件输出: 已启用
+2025-12-30 23:41:38 [INFO] [logger.py:85] ======================================================================
+2025-12-30 23:41:38 [INFO] [app.py:364] ======================================================================
+2025-12-30 23:41:38 [INFO] [app.py:365] 🚀 Proxy Manager 应用启动
+2025-12-30 23:41:38 [INFO] [app.py:366] ======================================================================
+2025-12-30 23:41:38 [INFO] [app.py:367] 📂 工作目录: D:\app_uploader
+2025-12-30 23:41:38 [INFO] [app.py:368] 📝 配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:41:38 [INFO] [app.py:369] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2025-12-30 23:41:38 [INFO] [app.py:370] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2025-12-30 23:41:38 [INFO] [app.py:371] ======================================================================
+2025-12-30 23:41:40 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2025-12-30 23:41:40 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:97] ======================================================================
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:98] 📝 日志系统配置完成
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:99]   - 日志文件: logs/proxy_manager.log
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:100]   - 日志级别: INFO
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:101]   - 单文件大小: 10.0 MB
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:102]   - 保留文件数: 7
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:103]   - 控制台输出: 已启用
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:104]   - 文件输出: 已启用
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:105] ======================================================================
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2936] 检查 templates 目录...
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2949] 网络配置文件存在: D:\app_uploader\config.yaml
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:237] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:43:32 [ERROR] [proxy_manager.py:315] YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:43:32 [ERROR] [proxy_manager.py:316] 错误位置:   in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:319] 尝试修复YAML格式...
+2025-12-30 23:43:32 [ERROR] [proxy_manager.py:375] 修复后仍然解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:43:32 [ERROR] [proxy_manager.py:382] 加载配置文件失败: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 281, in load_config
+    config = yaml.safe_load(cleaned_content)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 549, in parse_flow_mapping_key
+    raise ParserError("while parsing a flow mapping", self.marks[-1],
+            "expected ',' or '}', but got %r" % token.id, token.start_mark)
+yaml.parser.ParserError: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 338, in load_config
+    config = yaml.safe_load(fixed_content)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 125, in safe_load
+    return load(stream, SafeLoader)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\__init__.py", line 81, in load
+    return loader.get_single_data()
+           ~~~~~~~~~~~~~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\constructor.py", line 49, in get_single_data
+    node = self.get_single_node()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 36, in get_single_node
+    document = self.compose_document()
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 55, in compose_document
+    node = self.compose_node(None, None)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 133, in compose_mapping_node
+    item_value = self.compose_node(node, item_key)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 84, in compose_node
+    node = self.compose_mapping_node(anchor)
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\composer.py", line 127, in compose_mapping_node
+    while not self.check_event(MappingEndEvent):
+              ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 98, in check_event
+    self.current_event = self.state()
+                         ~~~~~~~~~~^^
+  File "C:\Users\kukuc\AppData\Local\Programs\Python\Python313\Lib\site-packages\yaml\parser.py", line 549, in parse_flow_mapping_key
+    raise ParserError("while parsing a flow mapping", self.marks[-1],
+            "expected ',' or '}', but got %r" % token.id, token.start_mark)
+yaml.parser.ParserError: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\app_uploader\proxy_manager.py", line 376, in load_config
+    raise Exception(f"YAML解析失败: {str(e)}。修复尝试也失败: {str(e2)}")
+Exception: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:43:32 [WARNING] [proxy_manager.py:2955] 网络配置文件格式检查失败: 加载配置文件失败: YAML解析失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4]
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^。修复尝试也失败: while parsing a flow mapping
+  in "<unicode string>", line 40, column 20:
+      fallback-filter: { geoip: true, ipcidr: [240.0.0. ... 
+                       ^
+expected ',' or '}', but got '<scalar>'
+  in "<unicode string>", line 43, column 1:
+    tun:
+    ^
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2966] 项目配置文件存在: D:\app_uploader\config\setting.yaml
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2969] 项目配置文件加载成功
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2989] ======================================================================
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2990] Proxy Manager 服务启动中...
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2991] 配置文件路径: D:\app_uploader\config.yaml
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2992] VM脚本路径: D:\data\local\tmp\vm.sh
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2993] 服务地址: http://localhost:5000
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:2994] ======================================================================
+2025-12-30 23:43:32 [INFO] [proxy_manager.py:3012] Flask 服务启动中...
+2025-12-30 23:43:33 [INFO] [proxy_manager.py:3000] 正在打开浏览器...
+2025-12-30 23:43:33 [INFO] [proxy_manager.py:3003] 浏览器已打开
+2025-12-30 23:43:34 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2025-12-30 23:43:34 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2025-12-30 23:43:34 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:34 [INFO] [app.py:78] 📥 收到请求: GET /
+2025-12-30 23:43:34 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:34 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:34 [INFO] [app.py:137] 🏠 访问主页
+2025-12-30 23:43:34 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:34 [INFO] [app.py:99]    内容类型: text/html; charset=utf-8
+2025-12-30 23:43:34 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:34 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:34] "GET / HTTP/1.1" 200 -
+2025-12-30 23:43:34 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:34 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:34 [INFO] [app.py:78] 📥 收到请求: GET /api/devices
+2025-12-30 23:43:34 [INFO] [app.py:78] 📥 收到请求: GET /api/device-configs
+2025-12-30 23:43:34 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:34 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:34 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:34 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:34 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:34 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:34 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:34 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:34 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:34] "GET /api/device-configs HTTP/1.1" 200 -
+2025-12-30 23:43:34 [INFO] [adb_helper.py:73] 找到 1 个设备
+2025-12-30 23:43:34 [INFO] [device_service.py:21] 找到 1 个设备
+2025-12-30 23:43:34 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:34 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:34 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:34 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:34 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:34] "GET /api/devices HTTP/1.1" 200 -
+2025-12-30 23:43:35 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:35 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:35 [INFO] [app.py:78] 📥 收到请求: GET /api/proxies
+2025-12-30 23:43:35 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:35 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 23:43:35 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:35 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:43:35 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:35 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:35 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:35 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:35 [INFO] [proxy_service.py:36] 🔍 开始获取所有普通代理...
+2025-12-30 23:43:35 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:35 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 23:43:35 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:43:35 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:43:35 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:43:35 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:35 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:35 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:35 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:43:35 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:43:35 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:35 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 23:43:35 [INFO] [proxy_service.py:41]    配置文件中共有 12 个代理条目
+2025-12-30 23:43:35 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:35] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:43:35 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 23:43:35 [INFO] [proxy_service.py:54]    过滤后: 11 个普通代理, 1 个中转线路
+2025-12-30 23:43:35 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 23:43:35 [INFO] [proxy_service.py:55] ✅ 成功返回 11 个普通代理
+2025-12-30 23:43:35 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:35 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:35 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:35 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:35 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:35 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:35 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:35 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:35 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:35] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 23:43:35 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:35] "GET /api/proxies HTTP/1.1" 200 -
+2025-12-30 23:43:35 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:35 [INFO] [app.py:78] 📥 收到请求: GET /api/transit-proxies/names
+2025-12-30 23:43:35 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:35 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:35 [INFO] [transit_service.py:23] 🔍 开始获取所有中转线路...
+2025-12-30 23:43:35 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:43:35 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:43:35 [INFO] [transit_service.py:28]    配置文件中共有 12 个代理条目
+2025-12-30 23:43:35 [INFO] [transit_service.py:40]    过滤后: 1 个中转线路, 11 个普通代理
+2025-12-30 23:43:35 [INFO] [transit_service.py:41] ✅ 成功返回 1 个中转线路
+2025-12-30 23:43:35 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:35 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:35 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:35 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:35 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:35] "GET /api/transit-proxies/names HTTP/1.1" 200 -
+2025-12-30 23:43:36 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:36 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/proxy-names
+2025-12-30 23:43:36 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:36 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:36 [INFO] [config.py:106] 开始加载配置文件: D:\app_uploader\config.yaml
+2025-12-30 23:43:36 [INFO] [config.py:126] 配置文件加载成功，包含 12 个代理
+2025-12-30 23:43:36 [INFO] [vm_service.py:149] 成功获取代理名称列表: 11 个代理（地区: 全部）
+2025-12-30 23:43:36 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:36 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:36 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:36 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:36 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:36] "GET /api/vm/proxy-names HTTP/1.1" 200 -
+2025-12-30 23:43:37 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:37 [INFO] [app.py:78] 📥 收到请求: GET /api/regions
+2025-12-30 23:43:37 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:37 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:37 [INFO] [region_service.py:31] 成功返回 6 个地区
+2025-12-30 23:43:37 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:37 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:37 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:37 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:37 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:37] "GET /api/regions HTTP/1.1" 200 -
+2025-12-30 23:43:38 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:38 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/account-list
+2025-12-30 23:43:38 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:38 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:38 [INFO] [vm_service.py:104] 成功获取账号列表: 12 个账号
+2025-12-30 23:43:38 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:38 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:38 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:38 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:38 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:38] "GET /api/vm/account-list HTTP/1.1" 200 -
+2025-12-30 23:43:45 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:45 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/get-config-value
+2025-12-30 23:43:45 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:45 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:45 [INFO] [app.py:92]    查询参数: {'field_name': 'AccountName'}
+2025-12-30 23:43:45 [INFO] [vm_service.py:75] 成功获取配置值: AccountName = Carousell_HK_008
+2025-12-30 23:43:45 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:45 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:43:45 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:43:45 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:45 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:45] "GET /api/vm/get-config-value?field_name=AccountName HTTP/1.1" 200 -
+2025-12-30 23:43:47 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:43:47 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/save
+2025-12-30 23:43:47 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:43:47 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:43:47 [INFO] [app.py:87]    请求数据: {}
+2025-12-30 23:43:47 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:43:47 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:43:47 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:43:47 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:43:47] "POST /api/vm/save HTTP/1.1" 200 -
+2025-12-30 23:43:47 [INFO] [vm_service.py:75] 成功获取配置值: AccountName = Carousell_HK_008
+2025-12-30 23:43:47 [INFO] [app.py:265] 执行 VM 保存命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh save Carousell_HK_008'
+2025-12-30 23:43:47 [INFO] [app.py:286] ✅ VM 账号 'Carousell_HK_008' 保存成功
+2025-12-30 23:44:06 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:44:06 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/account-list
+2025-12-30 23:44:06 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:44:06 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:44:06 [INFO] [vm_service.py:104] 成功获取账号列表: 12 个账号
+2025-12-30 23:44:06 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:44:06 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:44:06 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:44:06 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:44:06 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:44:06] "GET /api/vm/account-list HTTP/1.1" 200 -
+2025-12-30 23:44:09 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:44:09 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/load
+2025-12-30 23:44:09 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:44:09 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:44:09 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_001'}
+2025-12-30 23:44:09 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:44:09 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:44:09 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:44:09 [INFO] [app.py:329] 执行 VM 加载命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh load Carousell_HK_001'
+2025-12-30 23:44:09 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:44:09] "POST /api/vm/load HTTP/1.1" 200 -
+2025-12-30 23:44:28 [INFO] [app.py:350] ✅ VM 账号 'Carousell_HK_001' 加载成功
+2025-12-30 23:44:45 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:44:45 [INFO] [app.py:78] 📥 收到请求: GET /api/vm/account-list
+2025-12-30 23:44:45 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:44:45 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:44:45 [INFO] [vm_service.py:104] 成功获取账号列表: 12 个账号
+2025-12-30 23:44:45 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:44:45 [INFO] [app.py:99]    内容类型: application/json
+2025-12-30 23:44:45 [INFO] [app.py:107]    响应结果: success=True
+2025-12-30 23:44:45 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:44:45 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:44:45] "GET /api/vm/account-list HTTP/1.1" 200 -
+2025-12-30 23:44:49 [INFO] [app.py:77] ================================================================================
+2025-12-30 23:44:49 [INFO] [app.py:78] 📥 收到请求: POST /api/vm/load
+2025-12-30 23:44:49 [INFO] [app.py:79]    客户端: 127.0.0.1
+2025-12-30 23:44:49 [INFO] [app.py:80]    User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36
+2025-12-30 23:44:49 [INFO] [app.py:87]    请求数据: {'name': 'Carousell_HK_008'}
+2025-12-30 23:44:49 [INFO] [app.py:98] 📤 响应状态: 200 200 OK
+2025-12-30 23:44:49 [INFO] [app.py:99]    内容类型: text/event-stream; charset=utf-8
+2025-12-30 23:44:49 [INFO] [app.py:114] ================================================================================
+2025-12-30 23:44:49 [INFO] [app.py:329] 执行 VM 加载命令: D:\桌面\platform-tools\adb.exe shell su -c 'sh /data/local/tmp/vm.sh load Carousell_HK_008'
+2025-12-30 23:44:49 [INFO] [_internal.py:97] 127.0.0.1 - - [30/Dec/2025 23:44:49] "POST /api/vm/load HTTP/1.1" 200 -
+2025-12-30 23:45:07 [INFO] [app.py:350] ✅ VM 账号 'Carousell_HK_008' 加载成功

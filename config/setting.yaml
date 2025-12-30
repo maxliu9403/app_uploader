@@ -22,7 +22,7 @@ regions:
 vm_account_counters:
   Vinted_GB: 3
   Vinted_HK: 1
-  Carousell_HK: 1
+  Carousell_HK: 8
 proxy_name_counters:
   HK: 100
 config_file_path: D:\app_uploader\config.yaml

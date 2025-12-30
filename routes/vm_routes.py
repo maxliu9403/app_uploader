@@ -10,8 +10,8 @@ def create_blueprint(vm_service):
     """创建 VM 管理路由蓝图"""
     bp = Blueprint('vm', __name__, url_prefix='/api/vm')
     
-    @bp.route('/generate-name', methods=['GET'])
-    def generate_name():
+    @bp.route('/generate-account-name', methods=['GET'])
+    def generate_account_name():
         """生成 VM 账号名称"""
         try:
             app_type = request.args.get('app_type', '').strip()
@@ -21,6 +21,21 @@ def create_blueprint(vm_service):
                 return jsonify({'success': False, 'error': '缺少必需参数'}), 400
             
             success, result = vm_service.generate_account_name(app_type, region)
+            if success:
+                return jsonify({'success': True, 'data': result})
+            else:
+                return jsonify({'success': False, 'error': result}), 500
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+    
+    @bp.route('/proxy-names', methods=['GET'])
+    def get_proxy_names():
+        """获取代理节点名称列表（根据地区过滤）"""
+        try:
+            region = request.args.get('region', '').strip().upper()
+            
+            # 调用 vm_service 获取代理名称列表
+            success, result = vm_service.get_proxy_names_by_region(region)
             if success:
                 return jsonify({'success': True, 'data': result})
             else:
@@ -40,7 +55,8 @@ def create_blueprint(vm_service):
             
             success, result = vm_service.get_config_value(field_name, device_id or None)
             if success:
-                return jsonify({'success': True, 'data': result})
+                # 包装成对象格式，符合前端期望的 data.value 结构
+                return jsonify({'success': True, 'data': {'value': result}})
             else:
                 return jsonify({'success': False, 'error': result}), 500
         except Exception as e:

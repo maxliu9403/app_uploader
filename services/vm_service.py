@@ -11,10 +11,11 @@ logger = get_logger(__name__)
 class VMService:
     """VM 服务类"""
     
-    def __init__(self, path_manager, adb_helper, setting_manager):
+    def __init__(self, path_manager, adb_helper, setting_manager, config_manager=None):
         self.path_manager = path_manager
         self.adb_helper = adb_helper
         self.setting_manager = setting_manager
+        self.config_manager = config_manager
     
     def generate_account_name(self, app_type, region):
         """生成 VM 账号名称"""
@@ -107,6 +108,49 @@ class VMService:
                 return True, []
         except Exception as e:
             logger.error(f"获取账号列表失败: {str(e)}", exc_info=True)
+            return False, str(e)
+    
+    def get_proxy_names_by_region(self, region=None):
+        """获取代理节点名称列表（根据地区过滤）"""
+        try:
+            if not self.config_manager:
+                logger.warning("ConfigManager 未初始化，无法获取代理列表")
+                return False, "ConfigManager 未初始化"
+            
+            # 加载配置
+            config = self.config_manager.load()
+            proxies = config.get('proxies', [])
+            
+            if not proxies:
+                logger.info("配置文件中没有代理")
+                return True, []
+            
+            # 过滤代理
+            from utils.yaml_helper import is_transit_proxy
+            
+            proxy_names = []
+            for proxy in proxies:
+                # 跳过中转线路
+                if is_transit_proxy(proxy):
+                    continue
+                
+                proxy_name = proxy.get('name')
+                if not proxy_name:
+                    continue
+                
+                # 如果指定了地区，进行过滤
+                if region:
+                    proxy_region = proxy.get('Region') or proxy.get('region') or ''
+                    if proxy_region.upper() != region.upper():
+                        continue
+                
+                proxy_names.append(proxy_name)
+            
+            logger.info(f"成功获取代理名称列表: {len(proxy_names)} 个代理（地区: {region or '全部'}）")
+            return True, proxy_names
+            
+        except Exception as e:
+            logger.error(f"获取代理名称列表失败: {str(e)}", exc_info=True)
             return False, str(e)
     
     # 注意：create_account, load_account, save_account 等涉及 SSE 流式响应的方法
