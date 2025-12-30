@@ -47,6 +47,6 @@ Write-Host ""
 Start-Sleep -Seconds 2
 Start-Process "http://localhost:5000"
 
-# 启动 Flask 服务
-python proxy_manager.py
+# 启动 Flask 服务（已重构为 app.py）
+python app.py
 

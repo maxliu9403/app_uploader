@@ -80,9 +80,9 @@ REM 延迟后自动打开浏览器
 timeout /t 2 /nobreak >nul
 start "" "http://localhost:5000" >nul 2>&1
 
-REM 启动 Flask 服务
+REM 启动 Flask 服务（已重构为 app.py）
 color 0F
-python proxy_manager.py
+python app.py
 
 REM 如果服务意外退出
 if errorlevel 1 (
