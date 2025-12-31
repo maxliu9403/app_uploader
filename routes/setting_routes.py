@@ -11,7 +11,55 @@ def create_blueprint(path_manager, setting_manager):
     
     @bp.route('/path-settings', methods=['GET'])
     def get_path_settings():
-        """获取所有路径配置"""
+        """
+        获取所有路径配置
+        ---
+        tags:
+          - 配置管理
+        responses:
+          200:
+            description: 成功返回路径配置
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                data:
+                  type: object
+                  properties:
+                    config_file_path:
+                      type: string
+                      description: 配置文件路径
+                      example: "D:/app_uploader/config.yaml"
+                    vm_script_path:
+                      type: string
+                      description: VM脚本路径
+                      example: "/data/local/tmp/vm.sh"
+                    adb_path:
+                      type: string
+                      description: ADB工具路径
+                      example: "D:/platform-tools/adb.exe"
+                    vm_accounts_file_path:
+                      type: string
+                      description: VM账号文件路径
+                      example: "/sdcard/vm_accounts.txt"
+                    vm_model_config_path:
+                      type: string
+                      description: VM模型配置路径
+                      example: "/data/data/bin.mt.plus/model.conf"
+          500:
+            description: 服务器错误
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                error:
+                  type: string
+                  description: 错误信息
+        """
         try:
             settings = {
                 'config_file_path': path_manager.get_config_file(),
@@ -26,7 +74,62 @@ def create_blueprint(path_manager, setting_manager):
     
     @bp.route('/path-settings', methods=['POST'])
     def update_path_settings():
-        """更新路径配置"""
+        """
+        更新路径配置
+        ---
+        tags:
+          - 配置管理
+        parameters:
+          - name: body
+            in: body
+            required: true
+            description: 路径配置信息（可选字段，只更新提供的字段）
+            schema:
+              type: object
+              properties:
+                config_file_path:
+                  type: string
+                  description: 配置文件路径
+                  example: "D:/app_uploader/config.yaml"
+                vm_script_path:
+                  type: string
+                  description: VM脚本路径
+                  example: "/data/local/tmp/vm.sh"
+                adb_path:
+                  type: string
+                  description: ADB工具路径
+                  example: "D:/platform-tools/adb.exe"
+                vm_accounts_file_path:
+                  type: string
+                  description: VM账号文件路径
+                  example: "/sdcard/vm_accounts.txt"
+                vm_model_config_path:
+                  type: string
+                  description: VM模型配置路径
+                  example: "/data/data/bin.mt.plus/model.conf"
+        responses:
+          200:
+            description: 路径配置更新成功
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: true
+                message:
+                  type: string
+                  example: "路径配置已更新"
+          500:
+            description: 服务器错误
+            schema:
+              type: object
+              properties:
+                success:
+                  type: boolean
+                  example: false
+                error:
+                  type: string
+        """
         try:
             data = request.json
             setting = setting_manager.load()
@@ -50,4 +153,3 @@ def create_blueprint(path_manager, setting_manager):
             return jsonify({'success': False, 'error': str(e)}), 500
     
     return bp
-

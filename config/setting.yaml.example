@@ -1,0 +1,45 @@
+# ==================== 路径配置示例 ====================
+# 请根据实际环境修改以下路径
+
+# 主配置文件路径（Clash 配置）
+config_file_path: "D:/app_uploader/config.yaml"
+
+# ADB 工具路径（用于连接 Android 设备）
+# Windows 示例
+adb_path: "D:/platform-tools/adb.exe"
+# Linux/Mac 示例
+# adb_path: "/usr/local/bin/adb"
+
+# VM 脚本路径（设备上的脚本位置）
+vm_script_path: "/data/local/tmp/vm.sh"
+
+# VM 账号文件路径（设备上的账号列表）
+vm_accounts_file_path: "/sdcard/vm_accounts.txt"
+
+# VM 模型配置路径（设备上的配置文件）
+vm_model_config_path: "/data/data/bin.mt.plus/model.conf"
+
+# ==================== 设备配置 ====================
+# 保存的设备列表（可选）
+devices: []
+  # 示例：
+  # - device_id: "emulator-5554"
+  #   remark: "测试设备1"
+  # - device_id: "192.168.1.100:5555"
+  #   remark: "真实设备"
+
+# ==================== 地区配置 ====================
+# 地区代码和名称映射
+regions:
+  - code: "US"
+    name: "美国"
+  - code: "HK"
+    name: "香港"
+  - code: "JP"
+    name: "日本"
+  - code: "SG"
+    name: "新加坡"
+  - code: "UK"
+    name: "英国"
+  # 添加更多地区...
+

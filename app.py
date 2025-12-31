@@ -6,6 +6,7 @@ Proxy Manager - 重构后的主应用入口
 import os
 from flask import Flask, render_template, request, Response, jsonify
 from flask_cors import CORS
+from flasgger import Swagger
 
 # 核心模块
 from core.config import ConfigManager, SettingManager
@@ -37,6 +38,50 @@ logger = get_logger(__name__)
 app = Flask(__name__, template_folder='templates', static_folder='static')
 app.config['JSON_AS_ASCII'] = False
 CORS(app)
+
+# 配置 Swagger
+swagger_config = {
+    "headers": [],
+    "specs": [
+        {
+            "endpoint": 'apispec',
+            "route": '/apispec.json',
+            "rule_filter": lambda rule: True,
+            "model_filter": lambda tag: True,
+        }
+    ],
+    "static_url_path": "/flasgger_static",
+    "swagger_ui": True,
+    "specs_route": "/api/docs"
+}
+
+swagger_template = {
+    "swagger": "2.0",
+    "info": {
+        "title": "Proxy Manager API",
+        "description": "代理管理系统 API 文档 - 提供代理、中转线路、VM账号、设备和地区管理等功能",
+        "version": "1.0.0",
+        "contact": {
+            "name": "API Support"
+        }
+    },
+    "host": "localhost:5000",
+    "basePath": "/",
+    "schemes": [
+        "http",
+        "https"
+    ],
+    "tags": [
+        {"name": "代理管理", "description": "普通代理的增删改查操作"},
+        {"name": "中转线路", "description": "中转线路的管理操作"},
+        {"name": "VM账号", "description": "虚拟机账号的创建、加载、保存等操作"},
+        {"name": "设备管理", "description": "Android设备的管理和配置"},
+        {"name": "地区管理", "description": "地区代码和名称的管理"},
+        {"name": "配置管理", "description": "系统路径和配置的管理"}
+    ]
+}
+
+swagger = Swagger(app, config=swagger_config, template=swagger_template)
 
 # ==================== 初始化核心组件 ====================
 
@@ -133,7 +178,15 @@ def _sanitize_log_data(data):
 
 @app.route('/')
 def index():
-    """主页"""
+    """
+    主页
+    ---
+    tags:
+      - 页面
+    responses:
+      200:
+        description: 返回主页HTML
+    """
     logger.info("🏠 访问主页")
     return render_template('proxy_manager.html')
 
@@ -144,7 +197,55 @@ def index():
 def vm_create_account():
     """
     创建新的 VM 账号（SSE 流式响应）
-    保留原 proxy_manager.py 中的实现逻辑
+    ---
+    tags:
+      - VM账号
+    parameters:
+      - name: body
+        in: body
+        required: true
+        description: VM账号创建参数
+        schema:
+          type: object
+          required:
+            - name
+            - app_type
+            - node
+            - region
+          properties:
+            name:
+              type: string
+              description: VM账号名称
+              example: "TT_US_001"
+            app_type:
+              type: string
+              description: 应用类型（如TT、IG等）
+              example: "TT"
+            node:
+              type: string
+              description: 代理节点名称
+              example: "proxy_us_01"
+            region:
+              type: string
+              description: 地区代码
+              example: "US"
+            device_id:
+              type: string
+              description: 设备ID（可选）
+              example: "emulator-5554"
+    responses:
+      200:
+        description: SSE流式响应，实时返回创建进度和日志
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [log, success, error]
+              description: 消息类型
+            message:
+              type: string
+              description: 消息内容
     """
     import subprocess
     import shlex
@@ -223,6 +324,34 @@ def vm_create_account():
 def vm_save_account():
     """
     保存 VM 账号（SSE 流式响应）
+    ---
+    tags:
+      - VM账号
+    parameters:
+      - name: body
+        in: body
+        required: false
+        description: 设备ID（可选）
+        schema:
+          type: object
+          properties:
+            device_id:
+              type: string
+              description: 设备ID
+              example: "emulator-5554"
+    responses:
+      200:
+        description: SSE流式响应，实时返回保存进度和日志
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [log, success, error]
+              description: 消息类型
+            message:
+              type: string
+              description: 消息内容
     """
     import subprocess
     import shlex
@@ -298,6 +427,40 @@ def vm_save_account():
 def vm_load_account():
     """
     加载 VM 账号（SSE 流式响应）
+    ---
+    tags:
+      - VM账号
+    parameters:
+      - name: body
+        in: body
+        required: true
+        description: 加载账号参数
+        schema:
+          type: object
+          required:
+            - name
+          properties:
+            name:
+              type: string
+              description: 要加载的账号名称
+              example: "TT_US_001"
+            device_id:
+              type: string
+              description: 设备ID（可选）
+              example: "emulator-5554"
+    responses:
+      200:
+        description: SSE流式响应，实时返回加载进度和日志
+        schema:
+          type: object
+          properties:
+            type:
+              type: string
+              enum: [log, success, error]
+              description: 消息类型
+            message:
+              type: string
+              description: 消息内容
     """
     import subprocess
     import shlex

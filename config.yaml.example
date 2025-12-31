@@ -1,0 +1,102 @@
+# ==================== 基础设置 ====================
+socks-port: 7891
+mixed-port: 7890
+tproxy-port: 9898
+allow-lan: true
+mode: rule
+log-level: info
+ipv6: false
+external-controller: 0.0.0.0:9090
+secret: ''
+external-ui: ./dashboard
+
+# ==================== 性能优化 ====================
+tcp-concurrent: true
+# 针对安卓 App，模拟原生指纹最稳
+global-client-fingerprint: android
+keep-alive-interval: 30
+
+# ==================== DNS 设置 (防污染) ====================
+dns:
+  enable: true
+  listen: 0.0.0.0:1053
+  ipv6: false
+  enhanced-mode: fake-ip
+  fake-ip-range: 198.18.0.1/16
+  
+  # 代理域名直连解析
+  fake-ip-filter: 
+    - '+.arxlabs.io'
+    - 'connect.rom.miui.com'
+
+  default-nameserver: [223.5.5.5, 119.29.29.29]
+  nameserver: 
+    - https://dns.alidns.com/dns-query
+    - https://doh.pub/dns-query
+  fallback: 
+    - https://dns.google/dns-query
+    - https://1.1.1.1/dns-query
+  
+  fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4] }
+
+# ==================== Tun/TProxy 配合设置 ====================
+tun:
+  enable: false
+  stack: gvisor
+  auto-route: true
+  auto-detect-interface: true
+  dns-hijack: [any:53]
+  mtu: 1280
+  # 强制指定 IP 防止 172.19 泄露
+  inet4-address: [198.18.0.1/30]
+
+# ==================== 节点列表 ====================
+proxies:
+  # 1. 中转基座 (Trojan) - 请替换为你自己的服务器信息
+  - {"name":"中转线路示例","type":"trojan","server":"your-server.example.com","port":443,"password":"your-password","skip-cert-verify":true,"udp":true,"IsBase":true}
+
+  # 2. 代理节点示例 - 请替换为你自己的代理信息
+  - {"name":"HK_001","type":"socks5","server":"proxy.example.com","port":1080,"region":"HK","username":"your-username","password":"your-password","skip-cert-verify":true,"udp":true,"dialer-proxy":"中转线路示例"}
+  
+  # 添加更多代理节点...
+
+# ==================== 策略组 ====================
+proxy-groups:
+  - name: "Select-HK-IP"
+    type: select
+    proxies:
+      - "中转线路示例"
+      - "HK_001"
+      # 添加更多代理节点...
+       
+  - name: "PROXY"
+    type: select
+    proxies:
+      - "Select-HK-IP"
+       
+# ==================== 规则 ====================
+rules:
+  # 1. 安全阻断
+  - IP-CIDR6,::/0,REJECT,no-resolve
+  - DST-PORT,3478,REJECT
+  - DST-PORT,3479,REJECT
+  # 强制 UDP 443 (QUIC) 阻断，让 Chrome 走 TCP
+  - AND,((DST-PORT,443),(NETWORK,UDP)),REJECT
+  
+  # 2. 业务分流（根据实际需要修改）
+  - DOMAIN-KEYWORD,example,Select-HK-IP
+  - DOMAIN-SUFFIX,example.com,Select-HK-IP
+  
+  # 3. Google/Android 服务 (确保不走国内)
+  - DOMAIN-SUFFIX,googleapis.com,Select-HK-IP
+  - DOMAIN-SUFFIX,gstatic.com,Select-HK-IP
+  - DOMAIN-SUFFIX,google.com,Select-HK-IP
+  
+  # 4. 国内直连
+  - GEOIP,CN,DIRECT
+  - GEOSITE,CN,DIRECT
+  
+  # 5. 兜底
+  - MATCH,Select-HK-IP
+redir-port: 9797
+
