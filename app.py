@@ -100,7 +100,7 @@ adb_helper = ADBHelper(path_manager)
 # ==================== 初始化服务层 ====================
 
 proxy_service = ProxyService(config_manager, setting_manager, adb_helper)
-transit_service = TransitService(config_manager, adb_helper)
+transit_service = TransitService(config_manager, adb_helper, setting_manager)
 vm_service = VMService(path_manager, adb_helper, setting_manager, config_manager)
 device_service = DeviceService(adb_helper, setting_manager)
 region_service = RegionService(setting_manager)

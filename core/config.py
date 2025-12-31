@@ -85,6 +85,9 @@ class SettingManager:
 class ConfigManager:
     """网络配置管理器（config.yaml）"""
     
+    BASE_CONFIG_DIR = 'network_config'
+    CONFIG_TEMPLATE = 'config_temp.yaml'
+    
     def __init__(self, path_manager):
         """
         初始化配置管理器
@@ -94,15 +97,31 @@ class ConfigManager:
         """
         self.path_manager = path_manager
     
-    def get_config_file(self):
-        """获取配置文件路径"""
+    def get_config_file(self, device_id=None):
+        """获取配置文件路径
+        
+        Args:
+            device_id: 设备ID，如果提供则返回设备特定路径
+        
+        Returns:
+            str: 配置文件路径
+        """
+        if device_id:
+            return os.path.join(self.BASE_CONFIG_DIR, device_id, 'config.yaml')
         return self.path_manager.get_config_file_path()
     
-    def load(self):
-        """加载网络配置文件"""
+    def load(self, device_id=None):
+        """加载网络配置文件
+        
+        Args:
+            device_id: 设备ID，如果提供则加载设备特定配置
+        
+        Returns:
+            dict: 配置内容
+        """
         from utils.yaml_helper import YAMLHelper
         
-        config_file = self.get_config_file()
+        config_file = self.get_config_file(device_id)
         logger.info(f"开始加载配置文件: {config_file}")
         
         if not os.path.exists(config_file):
@@ -126,12 +145,24 @@ class ConfigManager:
         logger.info(f"配置文件加载成功，包含 {len(config.get('proxies', []))} 个代理")
         return config
     
-    def save(self, config):
-        """保存网络配置文件"""
+    def save(self, config, device_id=None):
+        """保存网络配置文件
+        
+        Args:
+            config: 配置内容
+            device_id: 设备ID，如果提供则保存到设备特定路径
+        
+        Returns:
+            bool: 是否保存成功
+        """
         from utils.yaml_helper import YAMLHelper
         
-        config_file = self.get_config_file()
-        logger.info("开始保存配置文件...")
+        config_file = self.get_config_file(device_id)
+        
+        # 确保目录存在
+        os.makedirs(os.path.dirname(config_file), exist_ok=True)
+        
+        logger.info(f"开始保存配置文件: {config_file}")
         
         # 确保 proxies 是列表，处理 None 的情况
         if config.get('proxies') is None:

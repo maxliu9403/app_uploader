@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>设备列表测试</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .test-section { margin: 20px 0; padding: 15px; border: 1px solid #ddd; border-radius: 5px; }
+        .success { color: green; }
+        .error { color: red; }
+        button { padding: 10px 20px; margin: 5px; cursor: pointer; }
+        pre { background: #f5f5f5; padding: 10px; border-radius: 3px; overflow-x: auto; }
+        table { border-collapse: collapse; width: 100%; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #4CAF50; color: white; }
+    </style>
+</head>
+<body>
+    <h1>🔍 设备列表渲染测试</h1>
+    
+    <div class="test-section">
+        <h2>测试1: 检查API响应</h2>
+        <button onclick="testAPI()">测试 /api/devices</button>
+        <div id="api-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试2: 检查DOM元素</h2>
+        <button onclick="testDOM()">检查DOM元素</button>
+        <div id="dom-result"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试3: 手动渲染设备列表</h2>
+        <button onclick="testRender()">手动渲染</button>
+        <div id="render-result"></div>
+        
+        <!-- 模拟的设备表格 -->
+        <table id="test-devices-table" style="display: none;">
+            <thead>
+                <tr>
+                    <th>当前设备</th>
+                    <th>备注</th>
+                    <th>设备ID</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="test-devices-tbody"></tbody>
+        </table>
+    </div>
+    
+    <div class="test-section">
+        <h2>测试4: 检查localStorage</h2>
+        <button onclick="testLocalStorage()">检查localStorage</button>
+        <button onclick="clearLocalStorage()">清除localStorage</button>
+        <div id="storage-result"></div>
+    </div>
+
+    <script>
+        // 测试1: API响应
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = '<p>正在请求...</p>';
+            
+            try {
+                const response = await fetch('/api/devices');
+                const data = await response.json();
+                
+                resultDiv.innerHTML = `
+                    <p class="success">✅ API响应成功</p>
+                    <pre>${JSON.stringify(data, null, 2)}</pre>
+                `;
+            } catch (error) {
+                resultDiv.innerHTML = `
+                    <p class="error">❌ API请求失败: ${error.message}</p>
+                `;
+            }
+        }
+        
+        // 测试2: DOM元素
+        function testDOM() {
+            const resultDiv = document.getElementById('dom-result');
+            const checks = [];
+            
+            // 检查主页面的元素
+            const elements = [
+                'devices-scan-loading',
+                'devices-scan-table',
+                'devices-scan-empty',
+                'devices-scan-tbody',
+                'device-count'
+            ];
+            
+            elements.forEach(id => {
+                const el = window.parent.document.getElementById(id);
+                if (el) {
+                    checks.push(`✅ ${id}: 存在`);
+                } else {
+                    checks.push(`❌ ${id}: 不存在`);
+                }
+            });
+            
+            resultDiv.innerHTML = `
+                <p><strong>DOM元素检查:</strong></p>
+                <pre>${checks.join('\n')}</pre>
+            `;
+        }
+        
+        // 测试3: 手动渲染
+        async function testRender() {
+            const resultDiv = document.getElementById('render-result');
+            const table = document.getElementById('test-devices-table');
+            const tbody = document.getElementById('test-devices-tbody');
+            
+            resultDiv.innerHTML = '<p>正在渲染...</p>';
+            
+            try {
+                const response = await fetch('/api/devices');
+                const result = await response.json();
+                
+                if (result.success && result.data.length > 0) {
+                    const devices = result.data;
+                    tbody.innerHTML = '';
+                    
+                    devices.forEach((device, index) => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td style="text-align: center;">
+                                <input type="radio" name="testDevice" value="${device.device_id}" 
+                                       ${index === 0 ? 'checked' : ''}>
+                            </td>
+                            <td>${device.remark || '-'}</td>
+                            <td><code>${device.device_id}</code></td>
+                            <td>${device.status}</td>
+                            <td>💾</td>
+                        `;
+                        tbody.appendChild(row);
+                    });
+                    
+                    table.style.display = 'table';
+                    resultDiv.innerHTML = `<p class="success">✅ 成功渲染 ${devices.length} 个设备</p>`;
+                } else {
+                    resultDiv.innerHTML = `<p class="error">❌ 没有设备数据</p>`;
+                }
+            } catch (error) {
+                resultDiv.innerHTML = `<p class="error">❌ 渲染失败: ${error.message}</p>`;
+            }
+        }
+        
+        // 测试4: localStorage
+        function testLocalStorage() {
+            const resultDiv = document.getElementById('storage-result');
+            const currentDeviceId = localStorage.getItem('currentDeviceId');
+            
+            resultDiv.innerHTML = `
+                <p><strong>localStorage内容:</strong></p>
+                <pre>currentDeviceId: ${currentDeviceId || '(未设置)'}</pre>
+                <p>所有localStorage项:</p>
+                <pre>${JSON.stringify(localStorage, null, 2)}</pre>
+            `;
+        }
+        
+        function clearLocalStorage() {
+            localStorage.clear();
+            alert('localStorage已清除');
+            testLocalStorage();
+        }
+        
+        // 页面加载时自动运行测试
+        window.onload = function() {
+            console.log('🧪 测试页面已加载');
+            testAPI();
+            testLocalStorage();
+        };
+    </script>
+</body>
+</html>

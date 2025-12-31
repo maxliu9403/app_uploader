@@ -54,6 +54,8 @@ tun:
 proxies:
   # 1. 中转基座 (Trojan)
   - {"name":"中转线路HK03","type":"trojan","server":"203.198.28.164","port":56303,"password":"4abbaf42-b2bd-4c63-ac65-d753f4c05dbf","skip-cert-verify":true,"udp":true,"IsBase":true}
+  - {"name":"中转线路香港K40","type":"trojan","server":"203.198.28.164","port":56303,"IsBase":true,"password":"4abbaf42-b2bd-4c63-ac65-d753f4c05dbf","skip-cert-verify":true,"udp":true}
+  - {"name":"香港中转K40","type":"trojan","server":"203.198.28.164","port":56303,"IsBase":true,"password":"4abbaf42-b2bd-4c63-ac65-d753f4c05dbf","skip-cert-verify":true,"udp":true}
 
   # 2. 香港出口 (绑定中转)
   - {"name":"HK_061","type":"socks5","server":"us.arxlabs.io","port":3010,"region":"HK","username":"hmq88888-region-HK-sid-5m6AWGsB-t-110","password":"qaz123wsx","skip-cert-verify":true,"udp":true,"dialer-proxy":"中转线路HK03"}
@@ -74,6 +76,7 @@ proxy-groups:
     type: select
     proxies:
       - "中转线路HK03"
+      - "中转线路香港K40"
       - "HK_061"
       - "HK_091"
       - "HK_092"
@@ -85,6 +88,7 @@ proxy-groups:
       - "HK_098"
       - "HK_099"
       - "HK_100"
+      - "香港中转K40"
        
   - name: "PROXY"
     type: select

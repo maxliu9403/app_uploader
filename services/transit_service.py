@@ -5,6 +5,7 @@ Transit Service - 中转线路业务逻辑
 
 from core.logger import get_logger
 from utils.yaml_helper import format_proxy_for_display, is_transit_proxy
+import os
 
 logger = get_logger(__name__)
 
@@ -12,16 +13,21 @@ logger = get_logger(__name__)
 class TransitService:
     """中转线路服务类"""
     
-    def __init__(self, config_manager, adb_helper):
+    def __init__(self, config_manager, adb_helper, setting_manager):
         """初始化中转线路服务"""
         self.config_manager = config_manager
         self.adb_helper = adb_helper
+        self.setting_manager = setting_manager
     
-    def get_all_transits(self):
-        """获取所有中转线路"""
+    def get_all_transits(self, device_id=None):
+        """获取所有中转线路
+        
+        Args:
+            device_id: 设备ID，如果提供则获取该设备的中转线路
+        """
         try:
-            logger.info("🔍 开始获取所有中转线路...")
-            config = self.config_manager.load()
+            logger.info(f"🔍 开始获取所有中转线路... (设备: {device_id or '默认'})")
+            config = self.config_manager.load(device_id)
             all_proxies = config.get('proxies') or []
             if all_proxies is None:
                 all_proxies = []
@@ -44,10 +50,14 @@ class TransitService:
             logger.error(f"❌ 获取中转线路列表失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def get_transit_names(self):
-        """获取中转线路名称列表"""
+    def get_transit_names(self, device_id=None):
+        """获取中转线路名称列表
+        
+        Args:
+            device_id: 设备ID，如果提供则获取该设备的中转线路名称
+        """
         try:
-            success, transits = self.get_all_transits()
+            success, transits = self.get_all_transits(device_id)
             if success:
                 names = [t.get('name', '') for t in transits if t.get('name')]
                 return True, names
@@ -55,15 +65,22 @@ class TransitService:
         except Exception as e:
             return False, str(e)
     
-    def add_transit(self, data):
-        """添加中转线路"""
+    def add_transit(self, data, device_id=None):
+        """添加中转线路
+        
+        Args:
+            data: 中转线路配置
+            device_id: 设备ID，如果提供则添加到该设备的配置
+        """
         try:
-            logger.info("➕ 开始添加新中转线路...")
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            logger.info(f"➕ 开始添加新中转线路... (设备: {device_id or '默认'})")
             logger.info(f"   线路名称: {data.get('name', 'N/A')}")
             logger.info(f"   服务器: {data.get('server', 'N/A')}:{data.get('port', 'N/A')}")
             logger.info(f"   类型: {data.get('type', 'socks5')}")
             
-            config = self.config_manager.load()
+            config = self.config_manager.load(device_id)
             
             # 确保 proxies 是列表
             if 'proxies' not in config or config['proxies'] is None:
@@ -89,11 +106,11 @@ class TransitService:
             
             # 保存配置
             logger.info("   💾 保存配置文件...")
-            self.config_manager.save(config)
+            self.config_manager.save(config, device_id)
             
             # 推送到设备
             logger.info("   📱 推送配置到设备...")
-            push_result = self._push_config_to_devices()
+            push_result = self._push_config_to_devices(device_id)
             
             logger.info(f"✅ 中转线路 '{new_proxy['name']}' 添加成功！")
             return True, {'proxy': new_proxy, 'push_result': push_result}
@@ -101,11 +118,19 @@ class TransitService:
             logger.error(f"❌ 添加中转线路失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def update_transit(self, index, data):
-        """更新中转线路"""
+    def update_transit(self, index, data, device_id=None):
+        """更新中转线路
+        
+        Args:
+            index: 中转线路索引
+            data: 更新的配置
+            device_id: 设备ID，如果提供则更新该设备的中转线路
+        """
         try:
-            config = self.config_manager.load()
-            success, transits = self.get_all_transits()
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            config = self.config_manager.load(device_id)
+            success, transits = self.get_all_transits(device_id)
             
             if not success or index < 0 or index >= len(transits):
                 return False, '索引超出范围'
@@ -126,10 +151,10 @@ class TransitService:
             self._update_proxy_groups(config)
             
             # 保存配置
-            self.config_manager.save(config)
+            self.config_manager.save(config, device_id)
             
             # 推送到设备
-            push_result = self._push_config_to_devices()
+            push_result = self._push_config_to_devices(device_id)
             
             logger.info(f"中转线路 '{updated_proxy['name']}' 更新成功")
             return True, {'proxy': updated_proxy, 'push_result': push_result}
@@ -137,13 +162,20 @@ class TransitService:
             logger.error(f"更新中转线路失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def delete_transit(self, index):
-        """删除中转线路"""
+    def delete_transit(self, index, device_id=None):
+        """删除中转线路
+        
+        Args:
+            index: 中转线路索引
+            device_id: 设备ID，如果提供则删除该设备的中转线路
+        """
         try:
-            logger.info(f"🗑️  开始删除中转线路 (索引: {index})...")
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            logger.info(f"🗑️  开始删除中转线路 (索引: {index}, 设备: {device_id or '默认'})...")
             
-            config = self.config_manager.load()
-            success, transits = self.get_all_transits()
+            config = self.config_manager.load(device_id)
+            success, transits = self.get_all_transits(device_id)
             
             if not success or index < 0 or index >= len(transits):
                 logger.warning(f"   ❌ 索引超出范围: {index} (总数: {len(transits) if success else 0})")
@@ -173,13 +205,13 @@ class TransitService:
             
             # 保存配置
             logger.info("   💾 保存配置文件...")
-            self.config_manager.save(config)
+            self.config_manager.save(config, device_id)
             
             # 推送到设备
             logger.info("   📱 推送配置到设备...")
-            push_result = self._push_config_to_devices()
+            push_result = self._push_config_to_devices(device_id)
             
-            logger.info(f"✅ 中转线路 '{proxy_name}' 删除成功！")
+            logger.info(f"✅ 中转线路 '{proxy_name}' (索引 {index}) 删除成功！")
             return True, {'proxy': deleted_proxy, 'push_result': push_result}
         except Exception as e:
             logger.error(f"❌ 删除中转线路失败: {str(e)}", exc_info=True)
@@ -245,34 +277,61 @@ class TransitService:
                 used_by.append(formatted.get('name', f'代理#{idx}'))
         return used_by
     
-    def _push_config_to_devices(self):
-        """推送配置到所有设备"""
+    def _push_config_to_devices(self, device_id=None):
+        """推送配置到设备
+
+        Args:
+            device_id: 指定设备ID时只推送该设备；不指定则推送所有已连接设备（兼容旧行为）
+        """
         try:
-            config_file_path = self.config_manager.get_config_file()
+            logs = []
+            if not device_id:
+                return {'success': False, 'message': 'device_id 是必传参数，未提供 device_id，已取消推送', 'logs': logs}
+
             devices = self.adb_helper.get_devices()
-            
-            if not devices:
-                return {'success': False, 'message': '没有已连接的设备'}
-            
-            success_count = 0
-            for device in devices:
-                success, _ = self.adb_helper.push_file(
+            device_status_map = {}
+            for d in devices or []:
+                d_id = d.get('device_id') or d.get('id')
+                if d_id:
+                    device_status_map[d_id] = d.get('status')
+
+            status = device_status_map.get(device_id)
+            if not status:
+                logs.append(f"未在 adb devices 中找到设备: {device_id}")
+                return {'success': False, 'message': '推送失败：设备不在线', 'logs': logs}
+            if status != 'device':
+                logs.append(f"设备状态异常: {device_id} -> {status}")
+                return {'success': False, 'message': '推送失败：设备不在线', 'logs': logs}
+
+            logs.append('设备在线检查通过')
+
+            # 指定设备：只推送当前设备
+            if device_id:
+                config_file_path = self.config_manager.get_config_file(device_id)
+                if not os.path.exists(config_file_path):
+                    logs.append(f"未找到设备配置文件: {config_file_path}")
+                    return {'success': False, 'message': f'未找到设备配置文件: {config_file_path}', 'logs': logs}
+
+                logs.append('开始推送配置文件到设备')
+                success, msg = self.adb_helper.push_file(
                     local_path=config_file_path,
                     remote_path='/data/adb/box/clash/config.yaml',
-                    device_id=device['id'],
+                    device_id=device_id,
                     use_su=True
                 )
+
+                logs.append(f"adb push 结果: {msg}")
+
                 if success:
-                    success_count += 1
-            
-            if success_count == len(devices):
-                return {'success': True, 'message': f'成功推送到 {success_count} 个设备'}
-            elif success_count > 0:
-                return {'success': True, 'message': f'部分成功：{success_count}/{len(devices)} 个设备'}
-            else:
-                return {'success': False, 'message': '所有设备推送失败'}
+                    return {'success': True, 'message': '成功推送到 1 个设备', 'logs': logs}
+
+                lowered = (msg or '').lower()
+                if 'offline' in lowered or 'device offline' in lowered:
+                    return {'success': False, 'message': '推送失败：设备不在线', 'logs': logs}
+
+                return {'success': False, 'message': f'推送失败: {msg}', 'logs': logs}
         except Exception as e:
-            return {'success': False, 'message': str(e)}
+            return {'success': False, 'message': str(e), 'logs': [str(e)]}
     
     def _update_proxy_groups(self, config):
         """更新策略组"""

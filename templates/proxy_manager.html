@@ -371,6 +371,45 @@
             border: 1px solid #fecaca;
         }
 
+        .status-indicator {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 999px;
+            display: inline-block;
+        }
+
+        .status-dot.online {
+            background: #10b981;
+        }
+
+        .status-dot.offline {
+            background: #ef4444;
+        }
+
+        .status-dot.other {
+            background: #6b7280;
+        }
+
+        .status-text.online {
+            color: #10b981;
+        }
+
+        .status-text.offline {
+            color: #ef4444;
+        }
+
+        .status-text.other {
+            color: #6b7280;
+        }
+
         .loading {
             text-align: center;
             padding: 40px;
@@ -673,15 +712,61 @@
                 border-bottom-color: transparent;
             }
         }
+
+        /* 设备选择器样式 */
+        .device-selector {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            padding: 8px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        .device-selector label {
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0.9;
+        }
+
+        .device-selector select {
+            padding: 6px 12px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #374151;
+            font-size: 14px;
+            cursor: pointer;
+            min-width: 200px;
+        }
+
+        .device-selector select:focus {
+            outline: none;
+            border-color: white;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.3);
+        }
+
+        .device-selector select:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="header">
             <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div>
+                <div style="flex: 1;">
                     <h1>🔧 Proxy Manager</h1>
                     <p>管理 config.yaml 中的代理配置</p>
+                    <!-- 设备选择器（只读展示） -->
+                    <div class="device-selector">
+                        <label>📱 当前设备:</label>
+                        <span id="currentDeviceDisplay" style="color: #10b981; font-weight: 600; font-size: 14px;">
+                            加载中...
+                        </span>
+                    </div>
                 </div>
                 <button class="btn btn-secondary" onclick="showPathSettingsModal()" style="padding: 10px 20px;">
                     ⚙️ 路径设置
@@ -733,6 +818,7 @@
                         <table id="devices-scan-table" class="data-table" style="display: none;">
                             <thead>
                                 <tr>
+                                    <th style="width: 80px;">当前设备</th>
                                     <th>备注</th>
                                     <th>设备ID</th>
                                     <th>状态</th>
@@ -1421,6 +1507,7 @@ user3:pass3:proxy3.com:8080
         let currentEditIndex = null;
         let currentEditProxyName = null; // 当前正在编辑的代理的原始名称
         let currentTransitEditIndex = null;
+        let currentTransitEditName = null;
         let transitProxyNames = []; // 中转线路名称列表
         let vmEventSource = null; // Server-Sent Events 连接
         let regionsList = []; // 地区列表
@@ -1431,13 +1518,19 @@ user3:pass3:proxy3.com:8080
             const table = document.getElementById('proxy-table');
             const emptyState = document.getElementById('empty-state');
             const countEl = document.getElementById('proxy-count');
-
+            
             loading.style.display = 'block';
             table.style.display = 'none';
             emptyState.style.display = 'none';
-
+            
             try {
-                const response = await fetch('/api/proxies');
+                // 获取当前设备ID并添加到URL
+                const deviceId = getCurrentDeviceId();
+                const url = deviceId ? 
+                    `/api/proxies?device_id=${encodeURIComponent(deviceId)}` : 
+                    '/api/proxies';
+                
+                const response = await fetch(url);
                 const result = await response.json();
 
                 if (result.success) {
@@ -1476,7 +1569,7 @@ user3:pass3:proxy3.com:8080
             // 获取所有有效的中转线路名称（从API获取）
             let validTransitNames = new Set();
             try {
-                const response = await fetch('/api/transit-proxies/names');
+                const response = await fetch(buildUrlWithDeviceId('/api/transit-proxies/names'));
                 const result = await response.json();
                 if (result.success) {
                     validTransitNames = new Set(result.data);
@@ -1584,7 +1677,7 @@ user3:pass3:proxy3.com:8080
         // 加载中转线路名称列表
         async function loadTransitProxyNames() {
             try {
-                const response = await fetch('/api/transit-proxies/names');
+                const response = await fetch(buildUrlWithDeviceId('/api/transit-proxies/names'));
                 const result = await response.json();
                 if (result.success) {
                     transitProxyNames = result.data;
@@ -1782,6 +1875,16 @@ user3:pass3:proxy3.com:8080
             event.preventDefault();
             const form = event.target;
             const formData = new FormData(form);
+
+            const deviceId = getCurrentDeviceId();
+            if (!deviceId) {
+                showAlert('error', '请先选择设备');
+                return;
+            }
+
+            if (!confirm(`高危操作：确定批量修改该设备的网络配置（代理线路）吗？\n\n目标设备：${formatDeviceLabel(deviceId)}`)) {
+                return;
+            }
             
             const data = {
                 proxy_lines: formData.get('proxy_lines'),
@@ -1792,7 +1895,7 @@ user3:pass3:proxy3.com:8080
             };
             
             try {
-                const response = await fetch('/api/proxies/batch', {
+                const response = await fetch(buildUrlWithDeviceId('/api/proxies/batch'), {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -1803,7 +1906,10 @@ user3:pass3:proxy3.com:8080
                 const result = await response.json();
                 
                 if (result.success) {
-                    let message = result.message;
+                    let message = formatOperationSummary('代理批量导入', result, result.push_result);
+                    if (result.message) {
+                        message += `\n${result.message}`;
+                    }
                     if (result.data && result.data.failed_lines && result.data.failed_lines.length > 0) {
                         message += '\n\n失败的行:\n' + result.data.failed_lines.join('\n');
                     }
@@ -1821,7 +1927,7 @@ user3:pass3:proxy3.com:8080
         // 编辑代理
         async function editProxy(index) {
             try {
-                const response = await fetch('/api/proxies');
+                const response = await fetch(buildUrlWithDeviceId('/api/proxies'));
                 const result = await response.json();
 
                 if (result.success && result.data[index]) {
@@ -1875,6 +1981,17 @@ user3:pass3:proxy3.com:8080
             const form = event.target;
             const formData = new FormData(form);
 
+            const deviceId = getCurrentDeviceId();
+            if (!deviceId) {
+                showAlert('error', '请先选择设备');
+                return;
+            }
+
+            const actionText = currentEditProxyName !== null ? '编辑' : '新增';
+            if (!confirm(`高危操作：是否${actionText}该设备的网络配置（代理线路）？\n\n目标设备：${formatDeviceLabel(deviceId)}`)) {
+                return;
+            }
+
             const data = {
                 name: formData.get('name'),
                 type: formData.get('type'),
@@ -1915,6 +2032,8 @@ user3:pass3:proxy3.com:8080
                     method = 'POST';
                 }
 
+                url = buildUrlWithDeviceId(url);
+
                 const response = await fetch(url, {
                     method: method,
                     headers: {
@@ -1926,7 +2045,8 @@ user3:pass3:proxy3.com:8080
                 const result = await response.json();
 
                 if (result.success) {
-                    showAlert('success', result.message);
+                    const actionLabel = currentEditProxyName !== null ? '代理更新' : '代理新增';
+                    showAlert('success', formatOperationSummary(actionLabel, result, result.push_result));
                     closeModal();
                     loadProxies();
                 } else {
@@ -1939,13 +2059,18 @@ user3:pass3:proxy3.com:8080
 
         // 删除代理
         async function deleteProxy(index) {
-            if (!confirm('确定要删除这个代理吗？')) {
+            const deviceId = getCurrentDeviceId();
+            if (!deviceId) {
+                showAlert('error', '请先选择设备');
+                return;
+            }
+            if (!confirm(`高危操作：确定删除该设备的网络配置中的代理线路吗？\n\n目标设备：${formatDeviceLabel(deviceId)}`)) {
                 return;
             }
 
             try {
                 // 先获取代理列表，找到对应的代理名称
-                const listResponse = await fetch('/api/proxies');
+                const listResponse = await fetch(buildUrlWithDeviceId('/api/proxies'));
                 const listResult = await listResponse.json();
                 
                 if (!listResult.success || !listResult.data[index]) {
@@ -1956,14 +2081,15 @@ user3:pass3:proxy3.com:8080
                 const proxyName = listResult.data[index].name;
                 
                 // 使用代理名称删除
-                const response = await fetch(`/api/proxies/by-name/${encodeURIComponent(proxyName)}`, {
+                const url = buildUrlWithDeviceId(`/api/proxies/by-name/${encodeURIComponent(proxyName)}`);
+                const response = await fetch(url, {
                     method: 'DELETE'
                 });
 
                 const result = await response.json();
 
                 if (result.success) {
-                    showAlert('success', result.message);
+                    showAlert('success', formatOperationSummary('代理删除', result, result.push_result));
                     await loadProxies();
                 } else {
                     showAlert('error', '删除失败: ' + result.error);
@@ -1992,7 +2118,29 @@ user3:pass3:proxy3.com:8080
             setTimeout(() => {
                 alert.classList.remove('show');
                 setTimeout(() => alert.remove(), 300);
-            }, 3000);
+            }, 5000);
+        }
+
+        function formatOperationSummary(actionLabel, result, pushResult) {
+            const opStatus = result && result.success ? '成功' : '失败';
+
+            let pushStatus = '未推送';
+            let extra = '';
+
+            if (pushResult) {
+                pushStatus = pushResult.success ? '成功' : '失败';
+
+                if (!pushResult.success) {
+                    const msg = (pushResult.message || '').trim();
+                    if (msg.includes('设备不在线')) {
+                        extra = '，设备不在线';
+                    } else if (msg) {
+                        extra = `，${msg.replace(/^推送失败[:：]?/, '').trim()}`;
+                    }
+                }
+            }
+
+            return `${actionLabel}状态【${opStatus}】，adb 推送状态：【${pushStatus}】${extra}`;
         }
 
         // 点击模态框外部关闭
@@ -2016,7 +2164,13 @@ user3:pass3:proxy3.com:8080
             emptyState.style.display = 'none';
 
             try {
-                const response = await fetch('/api/transit-proxies');
+                // 获取当前设备ID并添加到URL
+                const deviceId = getCurrentDeviceId();
+                const url = deviceId ? 
+                    `/api/transit-proxies?device_id=${encodeURIComponent(deviceId)}` : 
+                    '/api/transit-proxies';
+                
+                const response = await fetch(url);
                 const result = await response.json();
 
                 if (result.success) {
@@ -2072,25 +2226,39 @@ user3:pass3:proxy3.com:8080
         // 显示添加中转线路模态框
         function showAddTransitModal() {
             currentTransitEditIndex = null;
+            currentTransitEditName = null;
             document.getElementById('transit-modal-title').textContent = '添加中转线路';
             document.getElementById('transit-form').reset();
             document.querySelector('#transit-form select[name="type"]').value = 'socks5';
             document.querySelector('#transit-form select[name="skip-cert-verify"]').value = 'true';
+            const nameInput = document.querySelector('#transit-form input[name="name"]');
+            if (nameInput) {
+                nameInput.readOnly = false;
+                nameInput.style.backgroundColor = '';
+                nameInput.style.cursor = '';
+            }
             document.getElementById('transit-modal').classList.add('active');
         }
 
         // 编辑中转线路
         async function editTransitProxy(index) {
             try {
-                const response = await fetch('/api/transit-proxies');
+                const response = await fetch(buildUrlWithDeviceId('/api/transit-proxies'));
                 const result = await response.json();
 
                 if (result.success && result.data[index]) {
                     const proxy = result.data[index];
                     currentTransitEditIndex = index;
+                    currentTransitEditName = proxy.name || '';
 
                     document.getElementById('transit-modal-title').textContent = '编辑中转线路';
-                    document.querySelector('#transit-form input[name="name"]').value = proxy.name || '';
+                    const nameInput = document.querySelector('#transit-form input[name="name"]');
+                    if (nameInput) {
+                        nameInput.value = proxy.name || '';
+                        nameInput.readOnly = true;
+                        nameInput.style.backgroundColor = '#f3f4f6';
+                        nameInput.style.cursor = 'not-allowed';
+                    }
                     document.querySelector('#transit-form select[name="type"]').value = proxy.type || 'socks5';
                     document.querySelector('#transit-form input[name="server"]').value = proxy.server || '';
                     document.querySelector('#transit-form input[name="port"]').value = proxy.port || '';
@@ -2123,6 +2291,17 @@ user3:pass3:proxy3.com:8080
             const form = event.target;
             const formData = new FormData(form);
 
+            const deviceId = getCurrentDeviceId();
+            if (!deviceId) {
+                showTransitAlert('error', '请先选择设备');
+                return;
+            }
+
+            const actionText = currentTransitEditIndex !== null ? '编辑' : '新增';
+            if (!confirm(`高危操作：是否${actionText}该设备的网络配置（中转线路）？\n\n目标设备：${formatDeviceLabel(deviceId)}`)) {
+                return;
+            }
+
             const data = {
                 name: formData.get('name'),
                 type: formData.get('type'),
@@ -2130,6 +2309,11 @@ user3:pass3:proxy3.com:8080
                 port: formData.get('port'),
                 'skip-cert-verify': formData.get('skip-cert-verify') === 'true'
             };
+
+            // 编辑模式：禁止修改名称，强制使用原名称
+            if (currentTransitEditIndex !== null) {
+                data.name = currentTransitEditName || data.name;
+            }
 
             if (formData.get('username')) data.username = formData.get('username');
             if (formData.get('password')) data.password = formData.get('password');
@@ -2149,9 +2333,10 @@ user3:pass3:proxy3.com:8080
             }
 
             try {
-                const url = currentTransitEditIndex !== null 
+                const baseUrl = currentTransitEditIndex !== null 
                     ? `/api/transit-proxies/${currentTransitEditIndex}` 
                     : '/api/transit-proxies';
+                const url = buildUrlWithDeviceId(baseUrl);
                 const method = currentTransitEditIndex !== null ? 'PUT' : 'POST';
 
                 const response = await fetch(url, {
@@ -2165,7 +2350,8 @@ user3:pass3:proxy3.com:8080
                 const result = await response.json();
 
                 if (result.success) {
-                    showTransitAlert('success', result.message);
+                    const actionLabel = currentTransitEditIndex !== null ? '线路更新' : '线路新增';
+                    showTransitAlert('success', formatOperationSummary(actionLabel, result, result.push_result));
                     closeTransitModal();
                     await loadTransitProxies();
                     // 刷新代理页面的中转线路名称列表和过滤器
@@ -2184,19 +2370,25 @@ user3:pass3:proxy3.com:8080
 
         // 删除中转线路
         async function deleteTransitProxy(index) {
-            if (!confirm('确定要删除这个中转线路吗？如果该线路被其他代理使用，将无法删除。')) {
+            const deviceId = getCurrentDeviceId();
+            if (!deviceId) {
+                showTransitAlert('error', '请先选择设备');
+                return;
+            }
+            if (!confirm(`高危操作：确定删除该设备的网络配置中的中转线路吗？\n\n目标设备：${formatDeviceLabel(deviceId)}\n\n如果该线路被其他代理使用，将无法删除。`)) {
                 return;
             }
 
             try {
-                const response = await fetch(`/api/transit-proxies/${index}`, {
+                const url = buildUrlWithDeviceId(`/api/transit-proxies/${index}`);
+                const response = await fetch(url, {
                     method: 'DELETE'
                 });
 
                 const result = await response.json();
 
                 if (result.success) {
-                    showTransitAlert('success', result.message);
+                    showTransitAlert('success', formatOperationSummary('线路删除', result, result.push_result));
                     await loadTransitProxies();
                     // 刷新代理页面的中转线路名称列表和过滤器
                     await loadTransitProxyNames();
@@ -2216,6 +2408,13 @@ user3:pass3:proxy3.com:8080
         function closeTransitModal() {
             document.getElementById('transit-modal').classList.remove('active');
             currentTransitEditIndex = null;
+            currentTransitEditName = null;
+            const nameInput = document.querySelector('#transit-form input[name="name"]');
+            if (nameInput) {
+                nameInput.readOnly = false;
+                nameInput.style.backgroundColor = '';
+                nameInput.style.cursor = '';
+            }
         }
 
         // 显示中转线路提示信息
@@ -2230,7 +2429,7 @@ user3:pass3:proxy3.com:8080
             setTimeout(() => {
                 alert.classList.remove('show');
                 setTimeout(() => alert.remove(), 300);
-            }, 3000);
+            }, 5000);
         }
 
         // 点击中转线路模态框外部关闭
@@ -2774,7 +2973,7 @@ user3:pass3:proxy3.com:8080
             setTimeout(() => {
                 alert.classList.remove('show');
                 setTimeout(() => alert.remove(), 300);
-            }, 3000);
+            }, 5000);
         }
 
         // 点击 VM 模态框外部关闭
@@ -2861,118 +3060,206 @@ user3:pass3:proxy3.com:8080
 
         // ==================== 设备管理功能 ====================
         
+        function formatDeviceStatus(status) {
+            const raw = (status || '').toString();
+            const normalized = raw.trim().toLowerCase();
+
+            if (normalized === 'device') {
+                return '<span class="status-indicator"><span class="status-dot online"></span><span class="status-text online">上线</span></span>';
+            }
+
+            if (normalized === 'offline') {
+                return '<span class="status-indicator"><span class="status-dot offline"></span><span class="status-text offline">离线</span></span>';
+            }
+
+            const safe = raw || '-';
+            return `<span class="status-indicator"><span class="status-dot other"></span><span class="status-text other">${safe}</span></span>`;
+        }
+
         // 刷新已连接设备列表（实时扫描）
         async function refreshDeviceList() {
             const loading = document.getElementById('devices-scan-loading');
             const table = document.getElementById('devices-scan-table');
-            const empty = document.getElementById('devices-scan-empty');
+            const emptyState = document.getElementById('devices-scan-empty');
             const tbody = document.getElementById('devices-scan-tbody');
             const countEl = document.getElementById('device-count');
-            
+
             loading.style.display = 'block';
             table.style.display = 'none';
-            empty.style.display = 'none';
-            
+            emptyState.style.display = 'none';
+
             try {
-                // 同时获取设备列表和设备配置
                 const [devicesResponse, configsResponse] = await Promise.all([
                     fetch('/api/devices'),
                     fetch('/api/device-configs')
                 ]);
-                
+
                 const devicesResult = await devicesResponse.json();
                 const configsResult = await configsResponse.json();
-                
-                loading.style.display = 'none';
-                
-                if (devicesResult.success) {
-                    const devices = devicesResult.data || [];
-                    const deviceConfigs = configsResult.success ? (configsResult.data || []) : [];
-                    
-                    // 创建设备ID到备注的映射
-                    const remarkMap = {};
-                    deviceConfigs.forEach(config => {
-                        remarkMap[config.device_id] = config.remark || '';
+
+                console.log('📱 已连接设备响应:', devicesResult);
+                console.log('📦 设备配置响应:', configsResult);
+
+                const connectedDevices = devicesResult.success ? (devicesResult.data || []) : [];
+                const savedConfigs = configsResult.success ? (configsResult.data || []) : [];
+
+                // 连接状态映射：connectedDevice.id -> connectedDevice.status
+                const connectedStatusMap = new Map();
+                connectedDevices.forEach(d => {
+                    if (d && d.id) connectedStatusMap.set(d.id, d.status || 'device');
+                });
+
+                // 以“设备配置列表”为主渲染（即使设备未连接也要展示），再补充未保存但已连接的设备
+                const mergedList = [];
+                const seen = new Set();
+
+                savedConfigs.forEach(cfg => {
+                    const deviceId = cfg.device_id;
+                    if (!deviceId || seen.has(deviceId)) return;
+                    seen.add(deviceId);
+                    mergedList.push({
+                        device_id: deviceId,
+                        remark: cfg.remark || '',
+                        status: connectedStatusMap.get(deviceId) || 'offline'
                     });
-                    
-                    countEl.textContent = `共 ${devices.length} 个设备`;
-                    
-                    if (devices.length === 0) {
-                        empty.style.display = 'block';
-                        table.style.display = 'none';
-                    } else {
-                        empty.style.display = 'none';
-                        table.style.display = 'table';
-                        tbody.innerHTML = '';
-                        
-                        devices.forEach((device) => {
-                            const row = document.createElement('tr');
-                            const deviceId = device.id;
-                            const remark = remarkMap[deviceId] || '';
-                            const safeDeviceId = deviceId.replace(/[^a-zA-Z0-9]/g, '_');
-                            
-                            // 设备状态徽章
-                            let statusBadge = '';
-                            if (device.status === 'device') {
-                                statusBadge = '<span class="badge" style="background: #10b981; color: white;">✓ 已连接</span>';
-                            } else if (device.status === 'unauthorized') {
-                                statusBadge = '<span class="badge" style="background: #f59e0b; color: white;">⚠ 未授权</span>';
-                            } else if (device.status === 'offline') {
-                                statusBadge = '<span class="badge" style="background: #ef4444; color: white;">✗ 离线</span>';
-                            } else {
-                                statusBadge = `<span class="badge" style="background: #6b7280; color: white;">${device.status || '未知'}</span>`;
-                            }
-                            
-                            // 备注列（只读显示）- 第一列
-                            const remarkCell = document.createElement('td');
-                            if (remark) {
-                                remarkCell.textContent = remark;
-                                remarkCell.style.color = '#374151';
-                            } else {
-                                remarkCell.innerHTML = '<span style="color: #9ca3af; font-style: italic;">无备注</span>';
-                            }
-                            
-                            // 设备ID列
-                            const deviceIdCell = document.createElement('td');
-                            deviceIdCell.style.fontFamily = 'monospace';
-                            deviceIdCell.style.fontWeight = '600';
-                            deviceIdCell.textContent = deviceId;
-                            
-                            // 状态列
-                            const statusCell = document.createElement('td');
-                            statusCell.innerHTML = statusBadge;
-                            
-                            // 操作列（编辑按钮）
-                            const actionCell = document.createElement('td');
-                            // 使用data属性传递值，避免转义问题
-                            const editBtn = document.createElement('button');
-                            editBtn.className = 'btn btn-sm btn-success';
-                            editBtn.textContent = '✏️ 编辑';
-                            editBtn.title = '编辑备注';
-                            editBtn.setAttribute('data-device-id', deviceId);
-                            editBtn.setAttribute('data-remark', remark);
-                            editBtn.onclick = function() {
-                                const deviceId = this.getAttribute('data-device-id');
-                                const remark = this.getAttribute('data-remark') || '';
-                                showEditRemarkModal(deviceId, remark);
-                            };
-                            actionCell.appendChild(editBtn);
-                            
-                            // 按顺序添加所有列
-                            row.appendChild(remarkCell);
-                            row.appendChild(deviceIdCell);
-                            row.appendChild(statusCell);
-                            row.appendChild(actionCell);
-                            
-                            tbody.appendChild(row);
+                });
+
+                connectedDevices.forEach(d => {
+                    const deviceId = d.id;
+                    if (!deviceId || seen.has(deviceId)) return;
+                    seen.add(deviceId);
+                    mergedList.push({
+                        device_id: deviceId,
+                        remark: '',
+                        status: d.status || 'device'
+                    });
+                });
+
+                countEl.textContent = `共 ${mergedList.length} 个设备`;
+
+                if (mergedList.length === 0) {
+                    loading.style.display = 'none';
+                    emptyState.style.display = 'block';
+                    return;
+                }
+
+                // 获取当前设备ID（localStorage）
+                let currentDeviceId = getCurrentDeviceId();
+                console.log('📌 当前设备ID:', currentDeviceId);
+
+                // 如果没有当前设备，默认选择第一个“已保存配置”，否则选择第一个merged
+                if (!currentDeviceId) {
+                    const firstPreferred = mergedList[0]?.device_id || null;
+                    if (firstPreferred) {
+                        currentDeviceId = firstPreferred;
+                        localStorage.setItem('currentDeviceId', firstPreferred);
+                        console.log('✨ 自动选择第一个设备:', firstPreferred);
+                        await updateDeviceSelectorDisplay();
+                    }
+                }
+
+                tbody.innerHTML = '';
+                mergedList.forEach((device, index) => {
+                    deviceRemarkMap.set(device.device_id, device.remark || '');
+                    const isCurrentDevice = device.device_id === currentDeviceId;
+                    console.log(`  设备 ${index + 1}: ${device.device_id}, 备注: ${device.remark || '无'}, 状态: ${device.status}, 当前: ${isCurrentDevice}`);
+
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td style="text-align: center;">
+                            <input type="radio" 
+                                   name="currentDevice" 
+                                   value="${device.device_id}" 
+                                   ${isCurrentDevice ? 'checked' : ''}
+                                   onchange="setCurrentDevice('${device.device_id}')"
+                                   style="cursor: pointer; width: 18px; height: 18px;">
+                        </td>
+                        <td>${device.remark || '-'}</td>
+                        <td><code>${device.device_id}</code></td>
+                        <td>${formatDeviceStatus(device.status)}</td>
+                        <td>
+                            <button class="btn-icon device-edit-remark" data-device-id="${device.device_id}" data-remark="${(device.remark || '').replace(/"/g, '&quot;')}" title="编辑备注">
+                                ✏️
+                            </button>
+                            <button class="btn-icon" onclick="saveDeviceConfig('${device.device_id}')" title="保存配置">
+                                💾
+                            </button>
+                        </td>
+                    `;
+
+                    const editBtn = row.querySelector('.device-edit-remark');
+                    if (editBtn) {
+                        editBtn.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            const dId = editBtn.getAttribute('data-device-id');
+                            const remark = editBtn.getAttribute('data-remark') || '';
+                            showEditRemarkModal(dId, remark);
                         });
                     }
-                } else {
-                    showDeviceAlert('error', '扫描失败: ' + (devicesResult.error || '未知错误'));
+                    tbody.appendChild(row);
+                });
+
+                loading.style.display = 'none';
+                table.style.display = 'table';
+
+                console.log('✅ 设备列表渲染完成');
+            } catch (error) {
+                console.error('❌ 刷新设备列表失败:', error);
+                showDeviceAlert('error', '刷新设备列表失败: ' + error.message);
+                loading.style.display = 'none';
+                emptyState.style.display = 'block';
+            }
+        }
+        
+        // 设置当前设备
+        async function setCurrentDevice(deviceId) {
+            try {
+                console.log(`🔄 切换当前设备为: ${deviceId}`);
+
+                const currentDeviceId = localStorage.getItem('currentDeviceId');
+                if (currentDeviceId && currentDeviceId !== deviceId) {
+                    const fromLabel = formatDeviceLabel(currentDeviceId);
+                    const toLabel = formatDeviceLabel(deviceId);
+                    const ok = confirm(`高危操作：确定将当前设备从\n${fromLabel}\n切换为\n${toLabel}\n\n切换后，所有代理/中转线路的新增、编辑、删除都会修改该设备的网络配置。`);
+                    if (!ok) {
+                        return;
+                    }
+                }
+                
+                // 保存到localStorage
+                localStorage.setItem('currentDeviceId', deviceId);
+
+                try {
+                    await fetch('/api/current-device', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ device_id: deviceId })
+                    });
+                } catch (e) {
+                    console.warn('⚠️ 保存当前设备到后端失败:', e);
+                }
+                
+                // 更新设备选择器显示
+                await updateDeviceSelectorDisplay();
+                
+                // 显示成功提示
+                showDeviceAlert('success', `已切换到设备: ${deviceId}`);
+                
+                // 如果当前在代理或中转线路标签页，重新加载数据
+                const currentTab = document.querySelector('.tab-btn.active');
+                if (currentTab) {
+                    const tabText = currentTab.textContent.trim();
+                    if (tabText.includes('代理列表')) {
+                        loadProxies();
+                    } else if (tabText.includes('中转线路')) {
+                        loadTransitProxies();
+                    }
                 }
             } catch (error) {
-                loading.style.display = 'none';
-                showDeviceAlert('error', '网络错误: ' + error.message);
+                console.error('❌ 切换设备失败:', error);
+                showDeviceAlert('error', '切换设备失败: ' + error.message);
             }
         }
         
@@ -3041,7 +3328,7 @@ user3:pass3:proxy3.com:8080
             
             setTimeout(() => {
                 alert.remove();
-            }, 3000);
+            }, 5000);
         }
         
         // ==================== 旧设备列表功能（已废弃，保留用于兼容） ====================
@@ -3129,19 +3416,11 @@ user3:pass3:proxy3.com:8080
             }
         }
 
-        // 页面加载时初始化
-        // 设置设备管理标签页为激活状态
-        const deviceTabBtn = document.querySelectorAll('.tab-btn')[0];
-        if (deviceTabBtn) {
-            deviceTabBtn.classList.add('active');
-            deviceTabBtn.style.color = '#667eea';
-            deviceTabBtn.style.borderBottomColor = '#667eea';
+        // 加载设备配置列表（用于设备管理标签页）
+        async function loadDeviceConfigs() {
+            // 这个函数暂时为空，设备配置通过refreshDeviceList显示
+            console.log('📋 加载设备配置...');
         }
-        
-        refreshDeviceList(); // 刷新设备列表
-        loadProxies();
-        loadTransitProxyNames(); // 预加载中转线路名称列表
-        loadRegions(); // 预加载地区列表
         // ==================== 分页和搜索功能 ====================
         
         // 分页状态管理
@@ -3150,6 +3429,8 @@ user3:pass3:proxy3.com:8080
             transit: { currentPage: 1, pageSize: 20, searchTerm: '', allData: [] },
             devices: { currentPage: 1, pageSize: 20, searchTerm: '', allData: [] }
         };
+
+        const deviceRemarkMap = new Map();
         
         // 通用分页函数
         function paginateData(data, page, pageSize) {
@@ -3345,6 +3626,224 @@ user3:pass3:proxy3.com:8080
             renderPaginationInfo('device-pagination-info', filteredData.length, state.currentPage, state.pageSize);
             renderPagination('device-pagination', filteredData.length, state.currentPage, state.pageSize, 'goToDevicePage');
         }
+        
+        // ==================== 设备选择器管理 ====================
+        
+        // 获取当前设备ID
+        function getCurrentDeviceId() {
+            const value = localStorage.getItem('currentDeviceId');
+            // 避免返回'undefined'字符串或空字符串，返回null
+            return (value && value !== 'undefined' && value !== '') ? value : null;
+        }
+
+        function formatDeviceLabel(deviceId) {
+            const id = (deviceId && deviceId !== 'undefined' && deviceId !== '') ? deviceId : '';
+            const remark = deviceRemarkMap.get(id) || '';
+            const remarkText = remark ? remark : '无';
+            return `【${remarkText}】(${id})`;
+        }
+        
+        // 构建带device_id的URL
+        function buildUrlWithDeviceId(baseUrl) {
+            const deviceId = getCurrentDeviceId();
+            if (deviceId) {
+                const separator = baseUrl.includes('?') ? '&' : '?';
+                return `${baseUrl}${separator}device_id=${encodeURIComponent(deviceId)}`;
+            }
+            return baseUrl;
+        }
+        
+        // 更新设备选择器显示
+        async function updateDeviceSelectorDisplay() {
+            try {
+                console.log('🔄 更新设备选择器显示...');
+                
+                // 先尝试获取已连接的设备（会自动创建配置文件夹）
+                const devicesResponse = await fetch('/api/devices');
+                const devicesResult = await devicesResponse.json();
+                console.log('📥 已连接设备:', devicesResult);
+                
+                // 获取已保存的设备配置
+                const configsResponse = await fetch('/api/device-configs');
+                const configsResult = await configsResponse.json();
+                console.log('📥 设备配置列表:', configsResult);
+                
+                const display = document.getElementById('currentDeviceDisplay');
+                
+                if (configsResult.success) {
+                    const devices = configsResult.data || [];
+                    console.log(`📱 找到 ${devices.length} 个设备配置`);
+
+                    devices.forEach(d => {
+                        if (d && d.device_id) deviceRemarkMap.set(d.device_id, d.remark || '');
+                    });
+                    
+                    if (devices.length === 0) {
+                        display.textContent = '无设备 - 请先刷新设备列表';
+                        display.style.color = '#ef4444';
+                        console.warn('⚠️ 没有设备配置，请到设备管理标签刷新设备列表');
+                        return;
+                    }
+                    
+                    // 从localStorage获取当前设备
+                    const currentDeviceId = localStorage.getItem('currentDeviceId');
+                    const currentDevice = devices.find(d => d.device_id === currentDeviceId);
+                    
+                    if (currentDevice) {
+                        display.textContent = currentDevice.remark ? 
+                            `${currentDevice.device_id} (${currentDevice.remark})` : 
+                            currentDevice.device_id;
+                        display.style.color = '#10b981';
+                        console.log(`✅ 当前设备: ${currentDevice.device_id}`);
+                    } else if (devices.length > 0) {
+                        // 如果没有当前设备或当前设备不存在，默认选择第一个
+                        const firstDevice = devices[0];
+                        localStorage.setItem('currentDeviceId', firstDevice.device_id);
+                        display.textContent = firstDevice.remark ? 
+                            `${firstDevice.device_id} (${firstDevice.remark})` : 
+                            firstDevice.device_id;
+                        display.style.color = '#10b981';
+                        console.log(`✅ 默认选择第一个设备: ${firstDevice.device_id}`);
+                    }
+                } else {
+                    console.error('❌ 加载设备配置失败:', configsResult.error);
+                    display.textContent = '加载失败 - 请刷新页面';
+                    display.style.color = '#ef4444';
+                }
+            } catch (error) {
+                console.error('❌ 更新设备选择器显示异常:', error);
+                const display = document.getElementById('currentDeviceDisplay');
+                if (display) {
+                    display.textContent = '加载异常 - 请检查网络';
+                    display.style.color = '#ef4444';
+                }
+            }
+        }
+        
+        // 加载设备列表到选择器
+        async function loadDeviceList() {
+            try {
+                console.log('🔄 开始加载设备配置列表...');
+
+                const selector = document.getElementById('deviceSelector');
+                if (!selector) {
+                    console.log('ℹ️ deviceSelector 不存在，跳过旧版 loadDeviceList()');
+                    return;
+                }
+                
+                // 先尝试获取已连接的设备（会自动创建配置文件夹）
+                const devicesResponse = await fetch('/api/devices');
+                const devicesResult = await devicesResponse.json();
+                console.log('📥 已连接设备:', devicesResult);
+                
+                // 获取已保存的设备配置（用于设备选择器）
+                const configsResponse = await fetch('/api/device-configs');
+                const configsResult = await configsResponse.json();
+                console.log('📥 设备配置列表:', configsResult);
+                
+                if (configsResult.success) {
+                    const devices = configsResult.data || [];
+                    
+                    console.log(`📱 找到 ${devices.length} 个设备配置`);
+                    
+                    if (devices.length === 0) {
+                        selector.innerHTML = '<option value="">无设备配置 - 请先刷新设备列表</option>';
+                        selector.disabled = true;
+                        console.warn('⚠️ 没有设备配置，请到设备管理标签刷新设备列表');
+                        return;
+                    }
+                    
+                    selector.disabled = false;
+                    selector.innerHTML = '';
+                    
+                    devices.forEach(device => {
+                        const option = document.createElement('option');
+                        option.value = device.device_id;
+                        option.textContent = device.remark ? 
+                            `${device.device_id} (${device.remark})` : 
+                            device.device_id;
+                        selector.appendChild(option);
+                        console.log(`  ✅ 添加设备: ${device.device_id}`);
+                    });
+                    
+                    // 从localStorage恢复上次选择的设备
+                    const lastDevice = localStorage.getItem('currentDeviceId');
+                    if (lastDevice && devices.some(d => d.device_id === lastDevice)) {
+                        selector.value = lastDevice;
+                        console.log(`✅ 恢复上次选择的设备: ${lastDevice}`);
+                    } else if (devices.length > 0) {
+                        selector.value = devices[0].device_id;
+                        localStorage.setItem('currentDeviceId', devices[0].device_id);
+                        console.log(`✅ 默认选择第一个设备: ${devices[0].device_id}`);
+                    }
+                } else {
+                    console.error('❌ 加载设备配置失败:', configsResult.error);
+                    selector.innerHTML = '<option value="">加载失败 - 请刷新页面</option>';
+                    selector.disabled = true;
+                }
+            } catch (error) {
+                console.error('❌ 加载设备配置异常:', error);
+                const selector = document.getElementById('deviceSelector');
+                if (selector) {
+                    selector.innerHTML = '<option value="">加载异常 - 请检查网络</option>';
+                    selector.disabled = true;
+                }
+            }
+        }
+        
+        // 切换设备
+        function switchDevice() {
+            const selector = document.getElementById('deviceSelector');
+            if (!selector) {
+                console.log('ℹ️ deviceSelector 不存在，跳过旧版 switchDevice()');
+                return;
+            }
+            const deviceId = selector.value;
+            
+            if (deviceId) {
+                localStorage.setItem('currentDeviceId', deviceId);
+                showNotification(`已切换到设备: ${deviceId}`, 'success');
+                
+                // 重新加载数据
+                const currentTab = document.querySelector('.tab-btn.active').textContent.trim();
+                if (currentTab.includes('代理列表')) {
+                    loadProxies();
+                } else if (currentTab.includes('中转线路')) {
+                    loadTransit();
+                }
+            }
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('🚀 页面加载完成，开始初始化...');
+
+            try {
+                const currentDeviceId = localStorage.getItem('currentDeviceId');
+                if (!currentDeviceId || currentDeviceId === 'undefined' || currentDeviceId === '') {
+                    const resp = await fetch('/api/current-device');
+                    const result = await resp.json();
+                    if (result.success && result.data && result.data.device_id) {
+                        localStorage.setItem('currentDeviceId', result.data.device_id);
+                    }
+                }
+            } catch (e) {
+                console.warn('⚠️ 读取后端当前设备失败:', e);
+            }
+            
+            // 更新设备选择器显示
+            await updateDeviceSelectorDisplay();
+            
+            // 加载初始数据
+            console.log('📊 开始加载初始数据...');
+            
+            // 默认在设备管理标签页
+            refreshDeviceList();
+            
+            // 预加载其他数据
+            loadTransitProxyNames();
+            loadRegions();
+        });
         
     </script>
 </body>

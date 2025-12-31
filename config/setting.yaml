@@ -24,7 +24,8 @@ vm_account_counters:
   Vinted_HK: 3
   Carousell_HK: 8
 proxy_name_counters:
-  HK: 100
+  HK: 111
+  UK: 10
 config_file_path: D:\app_uploader\config.yaml
 vm_script_path: /data/local/tmp/vm.sh
 adb_path: D:\桌面\platform-tools\adb.exe
@@ -33,3 +34,6 @@ vm_model_config_path: /storage/emulated/0/MultiApp_Farm/Profiles/
 devices:
 - device_id: 72e8932c
   remark: HK2
+- device_id: ad9accd8
+  remark: HK3
+current_device_id: ad9accd8

@@ -5,6 +5,7 @@ Proxy Service - 代理业务逻辑
 
 from core.logger import get_logger
 from utils.yaml_helper import format_proxy_for_display, is_transit_proxy
+import os
 
 logger = get_logger(__name__)
 
@@ -25,16 +26,19 @@ class ProxyService:
         self.setting_manager = setting_manager
         self.adb_helper = adb_helper
     
-    def get_all_proxies(self):
+    def get_all_proxies(self, device_id=None):
         """
         获取所有普通代理（排除中转线路）
+        
+        Args:
+            device_id: 设备ID，如果提供则获取该设备的代理
         
         Returns:
             tuple: (success, data/error_message)
         """
         try:
-            logger.info("🔍 开始获取所有普通代理...")
-            config = self.config_manager.load()
+            logger.info(f"🔍 开始获取所有普通代理... (设备: {device_id or '默认'})")
+            config = self.config_manager.load(device_id)
             all_proxies = config.get('proxies') or []
             if all_proxies is None:
                 all_proxies = []
@@ -58,25 +62,28 @@ class ProxyService:
             logger.error(f"❌ 获取代理列表失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def add_proxy(self, data):
+    def add_proxy(self, data, device_id=None):
         """
         添加新代理
         
         Args:
             data: 代理配置字典
+            device_id: 设备ID，如果提供则添加到该设备的配置
             
         Returns:
             tuple: (success, data/error_message)
         """
         try:
-            logger.info("➕ 开始添加新代理...")
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            logger.info(f"➕ 开始添加新代理... (设备: {device_id or '默认'})")
             logger.info(f"   代理名称: {data.get('name', 'N/A')}")
             logger.info(f"   代理类型: {data.get('type', 'socks5')}")
             logger.info(f"   服务器: {data.get('server', 'N/A')}:{data.get('port', 'N/A')}")
             logger.info(f"   地区: {data.get('region', 'N/A')}")
             logger.info(f"   中转线路: {data.get('dialer-proxy', '无')}")
             
-            config = self.config_manager.load()
+            config = self.config_manager.load(device_id)
             
             # 确保 proxies 是列表
             if 'proxies' not in config or config['proxies'] is None:
@@ -104,12 +111,12 @@ class ProxyService:
             
             # 保存配置
             logger.info("   💾 保存配置文件...")
-            self.config_manager.save(config)
+            self.config_manager.save(config, device_id)
             logger.info("   ✅ 配置文件保存成功")
             
             # 推送到设备
             logger.info("   📱 推送配置到设备...")
-            push_result = self._push_config_to_devices()
+            push_result = self._push_config_to_devices(device_id)
             if push_result.get('success'):
                 logger.info(f"   ✅ {push_result.get('message')}")
             else:
@@ -121,23 +128,26 @@ class ProxyService:
             logger.error(f"❌ 添加代理失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def update_proxy(self, index, data):
+    def update_proxy(self, index, data, device_id=None):
         """
         更新代理
         
         Args:
             index: 代理索引
             data: 更新的数据
+            device_id: 设备ID，如果提供则更新该设备的代理
             
         Returns:
             tuple: (success, data/error_message)
         """
         try:
-            logger.info(f"✏️  开始更新代理 (索引: {index})...")
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            logger.info(f"✏️  开始更新代理 (索引: {index}, 设备: {device_id or '默认'})...")
             logger.info(f"   新名称: {data.get('name', 'N/A')}")
             logger.info(f"   新服务器: {data.get('server', 'N/A')}:{data.get('port', 'N/A')}")
             
-            config = self.config_manager.load()
+            config = self.config_manager.load(device_id)
             
             proxies = config.get('proxies') or []
             if proxies is None:
@@ -172,11 +182,11 @@ class ProxyService:
             
             # 保存配置
             logger.info("   💾 保存配置文件...")
-            self.config_manager.save(config)
+            self.config_manager.save(config, device_id)
             
             # 推送到设备
             logger.info("   📱 推送配置到设备...")
-            push_result = self._push_config_to_devices()
+            push_result = self._push_config_to_devices(device_id)
             
             logger.info(f"✅ 代理 '{updated_proxy['name']}' (索引 {index}) 更新成功！")
             return True, {'proxy': updated_proxy, 'push_result': push_result}
@@ -184,23 +194,26 @@ class ProxyService:
             logger.error(f"❌ 更新代理失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def update_proxy_by_name(self, old_name, data):
+    def update_proxy_by_name(self, proxy_name, data, device_id=None):
         """
-        通过名称更新代理（解决前端过滤列表索引与后端配置索引不匹配的问题）
+        根据名称更新代理
         
         Args:
-            old_name: 原代理名称
-            data: 更新的数据
+            proxy_name: 代理名称
+            data: 新的代理配置
+            device_id: 设备ID，如果提供则更新该设备的代理
             
         Returns:
             tuple: (success, data/error_message)
         """
         try:
-            logger.info(f"✏️  开始更新代理 (原名称: {old_name})...")
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            logger.info(f"✏️  开始更新代理 (名称: {proxy_name}, 设备: {device_id or '默认'})...")
             logger.info(f"   新名称: {data.get('name', 'N/A')}")
             logger.info(f"   新服务器: {data.get('server', 'N/A')}:{data.get('port', 'N/A')}")
             
-            config = self.config_manager.load()
+            config = self.config_manager.load(device_id)
             
             proxies = config.get('proxies') or []
             if proxies is None:
@@ -211,13 +224,13 @@ class ProxyService:
             found_index = None
             for idx, proxy in enumerate(proxies):
                 formatted = format_proxy_for_display(proxy)
-                if formatted.get('name') == old_name:
+                if formatted.get('name') == proxy_name:
                     found_index = idx
                     break
             
             if found_index is None:
-                logger.warning(f"   ❌ 未找到名为 '{old_name}' 的代理")
-                return False, f'未找到名为 "{old_name}" 的代理'
+                logger.warning(f"   ❌ 未找到名为 '{proxy_name}' 的代理")
+                return False, f'未找到名为 "{proxy_name}" 的代理'
             
             logger.info(f"   找到代理，配置文件索引: {found_index}")
             
@@ -233,7 +246,7 @@ class ProxyService:
             updated_proxy = self._build_proxy_config(data, config['proxies'][found_index])
             
             # 更新配置
-            old_proxy_name = config['proxies'][found_index].get('name', old_name)
+            old_proxy_name = config['proxies'][found_index].get('name', proxy_name)
             config['proxies'][found_index] = updated_proxy
             
             # 如果名称改变了，需要更新策略组中的引用
@@ -247,19 +260,57 @@ class ProxyService:
             
             # 保存配置
             logger.info("   💾 保存配置文件...")
-            self.config_manager.save(config)
+            self.config_manager.save(config, device_id)
             
             # 推送到设备
             logger.info("   📱 推送配置到设备...")
-            push_result = self._push_config_to_devices()
+            push_result = self._push_config_to_devices(device_id)
             
             logger.info(f"✅ 代理 '{updated_proxy['name']}' 更新成功！")
             return True, {'proxy': updated_proxy, 'push_result': push_result}
         except Exception as e:
             logger.error(f"❌ 更新代理失败: {str(e)}", exc_info=True)
             return False, str(e)
+
+    def delete_proxy(self, index, device_id=None):
+        try:
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            logger.info(f"🗑️  开始删除代理 (索引: {index}, 设备: {device_id or '默认'})...")
+
+            success, proxies = self.get_all_proxies(device_id)
+            if not success:
+                return False, proxies
+
+            if index < 0 or index >= len(proxies):
+                return False, '索引超出范围'
+
+            original_index = proxies[index].get('_index')
+            if original_index is None:
+                return False, '索引映射失败'
+
+            config = self.config_manager.load(device_id)
+            all_proxies = config.get('proxies') or []
+            if all_proxies is None:
+                all_proxies = []
+                config['proxies'] = []
+
+            if original_index < 0 or original_index >= len(all_proxies):
+                return False, '索引超出范围'
+
+            deleted_proxy = all_proxies.pop(original_index)
+            proxy_name = format_proxy_for_display(deleted_proxy).get('name', '未知')
+
+            self._update_proxy_groups(config)
+            self.config_manager.save(config, device_id)
+
+            push_result = self._push_config_to_devices(device_id)
+            return True, {'proxy': deleted_proxy, 'push_result': push_result}
+        except Exception as e:
+            logger.error(f"❌ 删除代理失败: {str(e)}", exc_info=True)
+            return False, str(e)
     
-    def delete_proxy_by_name(self, proxy_name):
+    def delete_proxy_by_name(self, proxy_name, device_id=None):
         """
         通过名称删除代理（解决前端过滤列表索引与后端配置索引不匹配的问题）
         
@@ -270,9 +321,11 @@ class ProxyService:
             tuple: (success, data/error_message)
         """
         try:
-            logger.info(f"🗑️  开始删除代理 (名称: {proxy_name})...")
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            logger.info(f"🗑️  开始删除代理 (名称: {proxy_name}, 设备: {device_id or '默认'})...")
             
-            config = self.config_manager.load()
+            config = self.config_manager.load(device_id)
             
             proxies = config.get('proxies') or []
             if proxies is None:
@@ -302,11 +355,11 @@ class ProxyService:
             
             # 保存配置
             logger.info("   💾 保存配置文件...")
-            self.config_manager.save(config)
+            self.config_manager.save(config, device_id)
             
             # 推送到设备
             logger.info("   📱 推送配置到设备...")
-            push_result = self._push_config_to_devices()
+            push_result = self._push_config_to_devices(device_id)
             
             logger.info(f"✅ 代理 '{proxy_name}' 删除成功！")
             return True, {'proxy': deleted_proxy, 'push_result': push_result}
@@ -314,68 +367,21 @@ class ProxyService:
             logger.error(f"❌ 删除代理失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def delete_proxy(self, index):
-        """
-        删除代理
-        
-        Args:
-            index: 代理索引
-            
-        Returns:
-            tuple: (success, data/error_message)
-        """
-        try:
-            logger.info(f"🗑️  开始删除代理 (索引: {index})...")
-            
-            config = self.config_manager.load()
-            
-            proxies = config.get('proxies') or []
-            if proxies is None:
-                proxies = []
-                config['proxies'] = []
-            
-            if index < 0 or index >= len(proxies):
-                logger.warning(f"   ❌ 索引超出范围: {index} (总数: {len(proxies)})")
-                return False, '索引超出范围'
-            
-            deleted_proxy = config['proxies'][index]
-            proxy_name = format_proxy_for_display(deleted_proxy).get('name', '未知')
-            logger.info(f"   代理名称: {proxy_name}")
-            logger.info(f"   服务器: {deleted_proxy.get('server', 'N/A')}:{deleted_proxy.get('port', 'N/A')}")
-            
-            config['proxies'].pop(index)
-            logger.info(f"   配置列表中剩余 {len(config['proxies'])} 个代理")
-            
-            # 更新策略组
-            logger.info("   🔄 更新策略组...")
-            self._update_proxy_groups(config)
-            
-            # 保存配置
-            logger.info("   💾 保存配置文件...")
-            self.config_manager.save(config)
-            
-            # 推送到设备
-            logger.info("   📱 推送配置到设备...")
-            push_result = self._push_config_to_devices()
-            
-            logger.info(f"✅ 代理 '{proxy_name}' (索引 {index}) 删除成功！")
-            return True, {'proxy': deleted_proxy, 'push_result': push_result}
-        except Exception as e:
-            logger.error(f"❌ 删除代理失败: {str(e)}", exc_info=True)
-            return False, str(e)
-    
-    def batch_add_proxies(self, data):
+    def batch_add_proxies(self, data, device_id=None):
         """
         批量添加代理
         
         Args:
             data: 批量导入数据
+            device_id: 设备ID，如果提供则添加到该设备的配置
             
         Returns:
             tuple: (success, result/error_message)
         """
         try:
-            logger.info("📦 开始批量添加代理...")
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            logger.info(f"📦 开始批量添加代理... (设备: {device_id or '默认'})")
             
             # 解析参数
             proxy_lines = data.get('proxy_lines', '').strip()
@@ -424,7 +430,7 @@ class ProxyService:
             
             # 加载配置
             logger.info("   📂 加载配置文件...")
-            config = self.config_manager.load()
+            config = self.config_manager.load(device_id)
             if 'proxies' not in config or config['proxies'] is None:
                 config['proxies'] = []
             logger.info(f"   当前配置中有 {len(config['proxies'])} 个代理")
@@ -487,12 +493,12 @@ class ProxyService:
             
             # 保存配置
             logger.info("   💾 保存配置文件...")
-            self.config_manager.save(config)
+            self.config_manager.save(config, device_id)
             logger.info(f"   配置文件中现有 {len(config['proxies'])} 个代理")
             
             # 推送到设备
             logger.info("   📱 推送配置到设备...")
-            push_result = self._push_config_to_devices()
+            push_result = self._push_config_to_devices(device_id)
             
             result_message = f'成功添加 {len(added_proxies)} 个代理'
             if failed_lines:
@@ -706,39 +712,58 @@ class ProxyService:
         except Exception as e:
             logger.error(f"更新策略组失败: {str(e)}", exc_info=True)
     
-    def _push_config_to_devices(self):
-        """推送配置到所有设备"""
+    def _push_config_to_devices(self, device_id=None):
+        """推送配置到设备
+
+        Args:
+            device_id: 指定设备ID时只推送该设备；不指定则推送所有已连接设备（兼容旧行为）
+        """
         try:
-            config_file_path = self.config_manager.get_config_file()
+            logs = []
+            if not device_id:
+                return {'success': False, 'message': 'device_id 是必传参数，未提供 device_id，已取消推送', 'logs': logs}
+
             devices = self.adb_helper.get_devices()
-            
-            if not devices:
-                return {'success': False, 'message': '没有已连接的设备'}
-            
-            success_count = 0
-            failed_devices = []
-            
-            for device in devices:
-                device_id = device['id']
-                success, msg = self.adb_helper.push_file(
-                    local_path=config_file_path,
-                    remote_path='/data/adb/box/clash/config.yaml',
-                    device_id=device_id,
-                    use_su=True
-                )
-                
-                if success:
-                    success_count += 1
-                else:
-                    failed_devices.append(f"{device_id}: {msg}")
-            
-            if success_count == len(devices):
-                return {'success': True, 'message': f'成功推送到 {success_count} 个设备'}
-            elif success_count > 0:
-                return {'success': True, 'message': f'部分成功：{success_count}/{len(devices)} 个设备'}
-            else:
-                return {'success': False, 'message': f'所有设备推送失败: {", ".join(failed_devices)}'}
+            device_status_map = {}
+            for d in devices or []:
+                d_id = d.get('device_id') or d.get('id')
+                if d_id:
+                    device_status_map[d_id] = d.get('status')
+
+            status = device_status_map.get(device_id)
+            if not status:
+                logs.append(f"未在 adb devices 中找到设备: {device_id}")
+                return {'success': False, 'message': '推送失败：设备不在线', 'logs': logs}
+            if status != 'device':
+                logs.append(f"设备状态异常: {device_id} -> {status}")
+                return {'success': False, 'message': '推送失败：设备不在线', 'logs': logs}
+
+            logs.append('设备在线检查通过')
+
+            config_file_path = self.config_manager.get_config_file(device_id)
+            if not os.path.exists(config_file_path):
+                logs.append(f"未找到设备配置文件: {config_file_path}")
+                return {'success': False, 'message': f'未找到设备配置文件: {config_file_path}', 'logs': logs}
+
+            logs.append('开始推送配置文件到设备')
+
+            success, msg = self.adb_helper.push_file(
+                local_path=config_file_path,
+                remote_path='/data/adb/box/clash/config.yaml',
+                device_id=device_id,
+                use_su=True
+            )
+
+            logs.append(f"adb push 结果: {msg}")
+
+            if success:
+                return {'success': True, 'message': '成功推送到 1 个设备', 'logs': logs}
+
+            lowered = (msg or '').lower()
+            if 'offline' in lowered or 'device offline' in lowered:
+                return {'success': False, 'message': '推送失败：设备不在线', 'logs': logs}
+
+            return {'success': False, 'message': f'推送失败: {msg}', 'logs': logs}
         except Exception as e:
             logger.error(f"推送配置失败: {str(e)}", exc_info=True)
-            return {'success': False, 'message': str(e)}
-
+            return {'success': False, 'message': str(e), 'logs': [str(e)]}

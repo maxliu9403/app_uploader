@@ -228,5 +228,27 @@ def create_blueprint(device_service):
                 return jsonify({'success': False, 'error': error}), 400
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)}), 500
+
+    @bp.route('/current-device', methods=['GET'])
+    def get_current_device():
+        try:
+            success, data = device_service.get_current_device_id()
+            if success:
+                return jsonify({'success': True, 'data': {'device_id': data}})
+            return jsonify({'success': False, 'error': data}), 500
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @bp.route('/current-device', methods=['POST'])
+    def set_current_device():
+        try:
+            data = request.json or {}
+            device_id = (data.get('device_id') or '').strip()
+            success, result = device_service.set_current_device_id(device_id)
+            if success:
+                return jsonify({'success': True, 'data': result})
+            return jsonify({'success': False, 'error': result}), 400
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
     
     return bp

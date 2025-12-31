@@ -67,7 +67,8 @@ def create_blueprint(proxy_service):
                   description: 错误信息
         """
         try:
-            success, data = proxy_service.get_all_proxies()
+            device_id = request.args.get('device_id')
+            success, data = proxy_service.get_all_proxies(device_id)
             if success:
                 return jsonify({'success': True, 'data': data})
             else:
@@ -154,7 +155,10 @@ def create_blueprint(proxy_service):
         """
         try:
             data = request.json
-            success, result = proxy_service.add_proxy(data)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = proxy_service.add_proxy(data, device_id)
             if success:
                 return jsonify({
                     'success': True,
@@ -229,7 +233,10 @@ def create_blueprint(proxy_service):
         """
         try:
             data = request.json
-            success, result = proxy_service.batch_add_proxies(data)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = proxy_service.batch_add_proxies(data, device_id)
             if success:
                 return jsonify({
                     'success': True,
@@ -310,7 +317,10 @@ def create_blueprint(proxy_service):
         """
         try:
             data = request.json
-            success, result = proxy_service.update_proxy(index, data)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = proxy_service.update_proxy(index, data, device_id)
             if success:
                 return jsonify({
                     'success': True,
@@ -383,7 +393,10 @@ def create_blueprint(proxy_service):
         """
         try:
             data = request.json
-            success, result = proxy_service.update_proxy_by_name(proxy_name, data)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = proxy_service.update_proxy_by_name(proxy_name, data, device_id)
             if success:
                 return jsonify({
                     'success': True,
@@ -433,7 +446,10 @@ def create_blueprint(proxy_service):
             description: 服务器错误
         """
         try:
-            success, result = proxy_service.delete_proxy(index)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = proxy_service.delete_proxy(index, device_id)
             if success:
                 return jsonify({
                     'success': True,
@@ -483,7 +499,10 @@ def create_blueprint(proxy_service):
             description: 服务器错误
         """
         try:
-            success, result = proxy_service.delete_proxy_by_name(proxy_name)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = proxy_service.delete_proxy_by_name(proxy_name, device_id)
             if success:
                 return jsonify({
                     'success': True,

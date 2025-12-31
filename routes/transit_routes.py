@@ -58,7 +58,8 @@ def create_blueprint(transit_service):
                   description: 错误信息
         """
         try:
-            success, data = transit_service.get_all_transits()
+            device_id = request.args.get('device_id')
+            success, data = transit_service.get_all_transits(device_id)
             if success:
                 return jsonify({'success': True, 'data': data})
             else:
@@ -92,7 +93,8 @@ def create_blueprint(transit_service):
             description: 服务器错误
         """
         try:
-            success, data = transit_service.get_transit_names()
+            device_id = request.args.get('device_id')
+            success, data = transit_service.get_transit_names(device_id)
             if success:
                 return jsonify({'success': True, 'data': data})
             else:
@@ -166,7 +168,10 @@ def create_blueprint(transit_service):
         """
         try:
             data = request.json
-            success, result = transit_service.add_transit(data)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = transit_service.add_transit(data, device_id)
             if success:
                 return jsonify({
                     'success': True,
@@ -239,7 +244,10 @@ def create_blueprint(transit_service):
         """
         try:
             data = request.json
-            success, result = transit_service.update_transit(index, data)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = transit_service.update_transit(index, data, device_id)
             if success:
                 return jsonify({
                     'success': True,
@@ -289,7 +297,10 @@ def create_blueprint(transit_service):
             description: 服务器错误
         """
         try:
-            success, result = transit_service.delete_transit(index)
+            device_id = request.args.get('device_id')
+            if not device_id:
+                return jsonify({'success': False, 'error': 'device_id 是必传参数'}), 400
+            success, result = transit_service.delete_transit(index, device_id)
             if success:
                 return jsonify({
                     'success': True,
