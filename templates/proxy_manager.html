@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proxy Manager - 代理配置管理</title>
+    <title>多账号后台管理系统</title>
     <style>
         * {
             margin: 0;
@@ -242,6 +242,33 @@
             gap: 8px;
         }
 
+        .btn-icon {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-icon:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
+            background: linear-gradient(135deg, #5568d3 0%, #6a3d8f 100%);
+        }
+
+        .btn-icon:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 6px rgba(102, 126, 234, 0.4);
+        }
+
         .btn-sm {
             padding: 6px 12px;
             font-size: 12px;
@@ -398,6 +425,10 @@
             background: #6b7280;
         }
 
+        .status-dot.unauthorized {
+            background: #f59e0b;
+        }
+
         .status-text.online {
             color: #10b981;
         }
@@ -408,6 +439,10 @@
 
         .status-text.other {
             color: #6b7280;
+        }
+
+        .status-text.unauthorized {
+            color: #f59e0b;
         }
 
         .loading {
@@ -755,23 +790,22 @@
 </head>
 <body>
     <div class="container">
-        <div class="header">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="flex: 1;">
-                    <h1>🔧 Proxy Manager</h1>
-                    <p>管理 config.yaml 中的代理配置</p>
+        <div class="header" style="position: relative;">
+            <div style="display: flex; justify-content: center; align-items: center; flex-direction: column; gap: 15px;">
+                <div style="text-align: center;">
+                    <h1>多账号后台管理系统</h1>
                     <!-- 设备选择器（只读展示） -->
-                    <div class="device-selector">
+                    <div class="device-selector" style="justify-content: center; margin-top: 10px;">
                         <label>📱 当前设备:</label>
-                        <span id="currentDeviceDisplay" style="color: #10b981; font-weight: 600; font-size: 14px;">
+                        <span id="currentDeviceDisplay" style="color: white; font-weight: 600; font-size: 14px;">
                             加载中...
                         </span>
                     </div>
                 </div>
-                <button class="btn btn-secondary" onclick="showPathSettingsModal()" style="padding: 10px 20px;">
-                    ⚙️ 路径设置
-                </button>
             </div>
+            <button class="btn btn-secondary" onclick="showPathSettingsModal()" style="padding: 10px 20px; position: absolute; right: 30px; top: 50%; transform: translateY(-50%);">
+                ⚙️ 路径设置
+            </button>
         </div>
 
         <div class="content">
@@ -3072,6 +3106,10 @@ user3:pass3:proxy3.com:8080
                 return '<span class="status-indicator"><span class="status-dot offline"></span><span class="status-text offline">离线</span></span>';
             }
 
+            if (normalized === 'unauthorized') {
+                return '<span class="status-indicator"><span class="status-dot unauthorized"></span><span class="status-text unauthorized">未授权</span></span>';
+            }
+
             const safe = raw || '-';
             return `<span class="status-indicator"><span class="status-dot other"></span><span class="status-text other">${safe}</span></span>`;
         }
@@ -3178,11 +3216,8 @@ user3:pass3:proxy3.com:8080
                         <td><code>${device.device_id}</code></td>
                         <td>${formatDeviceStatus(device.status)}</td>
                         <td>
-                            <button class="btn-icon device-edit-remark" data-device-id="${device.device_id}" data-remark="${(device.remark || '').replace(/"/g, '&quot;')}" title="编辑备注">
-                                ✏️
-                            </button>
-                            <button class="btn-icon" onclick="saveDeviceConfig('${device.device_id}')" title="保存配置">
-                                💾
+                            <button class="btn-icon device-edit-remark" data-device-id="${device.device_id}" data-remark="${(device.remark || '').replace(/"/g, '&quot;')}" title="编辑设备">
+                                ✏️ 编辑
                             </button>
                         </td>
                     `;
