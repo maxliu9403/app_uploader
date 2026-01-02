@@ -108,6 +108,58 @@ paths:
         200:
           description: 删除成功
 
+  /api/proxies/backup-lines/get-available:
+    get:
+      tags: [代理管理]
+      summary: 获取可用备用线路
+      description: 随机返回指定设备+地区下的空闲备用线路（排除已被占用的线路）
+      parameters:
+        - name: device_id
+          in: query
+          type: string
+          required: true
+          description: 设备ID
+        - name: region
+          in: query
+          type: string
+          required: true
+          description: 地区代码
+      responses:
+        200:
+          description: 成功获取备用线路
+          
+  /api/proxies/backup-lines/occupancy:
+    post:
+      tags: [代理管理]
+      summary: 更新线路占用状态
+      description: 标记备用线路为占用或释放状态
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            required:
+              - device_id
+              - line_name
+              - status
+            properties:
+              device_id:
+                type: string
+                description: 设备ID
+              line_name:
+                type: string
+                description: 线路名称
+              status:
+                type: boolean
+                description: true=占用, false=释放
+              region:
+                type: string
+                description: 地区代码（必填，用于一致性校验）
+      responses:
+        200:
+          description: 状态更新成功
+
   # ========== 中转线路 ==========
   /api/transit-proxies:
     get:

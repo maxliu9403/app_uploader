@@ -768,3 +768,177 @@ class ProxyService:
         except Exception as e:
             logger.error(f"推送配置失败: {str(e)}", exc_info=True)
             return {'success': False, 'message': str(e), 'logs': [str(e)]}
+    # ==================== 备用线路管理 ====================
+    
+    def get_available_backup_line(self, device_id, region):
+        """
+        获取随机可用的备用线路
+        
+        Args:
+            device_id: 设备ID
+            region: 地区代码
+            
+        Returns:
+            tuple: (success, result/error_message)
+        """
+        try:
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            if not region:
+                return False, 'region 是必传参数'
+            
+            # 1. 加载设备配置，查找符合条件的备用线路
+            config = self.config_manager.load(device_id)
+            proxies = config.get('proxies') or []
+            
+            candidate_lines = []
+            for proxy in proxies:
+                proxy_fmt = format_proxy_for_display(proxy)
+                # 筛选条件：地区匹配 + IsBak=True
+                if (proxy_fmt.get('region') == region.upper() and 
+                    proxy_fmt.get('IsBak') is True):
+                    candidate_lines.append(proxy_fmt.get('name'))
+            
+            if not candidate_lines:
+                return False, f'在地区 {region} 未找到任何备用线路'
+            
+            # 2. 加载占用数据，排除已被占用的线路
+            occupancy_data = self._load_occupancy_data()
+            
+            # 修正：只检查当前设备的占用情况
+            # 因为不同设备可能有相同的线路名称（配置隔离），不应跨设备互斥
+            device_occupancy = occupancy_data.get(device_id, {})
+            occupied_lines = set(device_occupancy.get('occupied_lines', []))
+            
+            available_lines = [line for line in candidate_lines if line not in occupied_lines]
+            
+            if not available_lines:
+                return False, '所有备用线路均被占用'
+            
+            # 3. 随机选择一条
+            import random
+            selected_line = random.choice(available_lines)
+            
+            logger.info(f"✅ 获取备用线路成功 | 设备: {device_id}, 地区: {region}, 线路: {selected_line}")
+            return True, {'line_name': selected_line}
+            
+        except Exception as e:
+            logger.error(f"获取备用线路失败: {str(e)}", exc_info=True)
+            return False, str(e)
+
+    def update_line_occupancy(self, device_id, line_name, status, region=None):
+        """
+        更新线路占用状态
+        
+        Args:
+            device_id: 设备ID
+            line_name: 线路名称
+            status: bool, True=占用, False=释放
+            region: 地区代码 (必填，用于校验)
+            
+        Returns:
+            tuple: (success, message)
+        """
+        try:
+            if not device_id:
+                return False, 'device_id 是必传参数'
+            if not line_name:
+                return False, 'line_name 是必传参数'
+            if not region:
+                return False, 'region 是必传参数 (用于校验)'
+            
+            # 1. 校验: 检查线路是否存在、是否为备用、地区是否匹配
+            config = self.config_manager.load(device_id)
+            proxies = config.get('proxies') or []
+            
+            found_proxy = None
+            for proxy in proxies:
+                # 兼容不同格式，获取名称
+                p_name = proxy.get('name')
+                if p_name == line_name:
+                    found_proxy = proxy
+                    break
+            
+            if not found_proxy:
+                return False, f'在设备配置中未找到线路 "{line_name}"'
+            
+            # 检查是否为备用线路
+            if not found_proxy.get('IsBak'):
+                return False, f'线路 "{line_name}" 不是备用线路，无法通过此接口更新占用状态'
+            
+            # 检查地区是否匹配
+            proxy_region = found_proxy.get('region', '').strip().upper()
+            req_region = region.strip().upper()
+            if proxy_region != req_region:
+                return False, f'线路 "{line_name}" 属于地区 {proxy_region}，不属于请求的 {req_region}，数据不一致'
+
+            # 2. 更新占用数据
+            occupancy_data = self._load_occupancy_data()
+            
+            if device_id not in occupancy_data:
+                occupancy_data[device_id] = {
+                    'occupied_lines': [],
+                    'last_update': None
+                }
+            
+            device_data = occupancy_data[device_id]
+            current_lines = device_data.get('occupied_lines', [])
+            
+            # 确保是列表
+            if not isinstance(current_lines, list):
+                current_lines = []
+            
+            from datetime import datetime
+            
+            action = "未知"
+            if status:
+                # 占用
+                action = "占用"
+                if line_name not in current_lines:
+                    current_lines.append(line_name)
+            else:
+                # 释放
+                action = "释放"
+                if line_name in current_lines:
+                    current_lines.remove(line_name)
+            
+            device_data['occupied_lines'] = current_lines
+            device_data['last_update'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            
+            self._save_occupancy_data(occupancy_data)
+            
+            logger.info(f"✅ 更新线路占用状态 | 设备: {device_id}, 线路: {line_name}, 地区: {region}, 动作: {action}")
+            return True, {'message': f'线路 {line_name} {action}成功', 'occupied_lines': current_lines}
+            
+        except Exception as e:
+            logger.error(f"更新线路占用失败: {str(e)}", exc_info=True)
+            return False, str(e)
+
+    def _load_occupancy_data(self):
+        """加载线路占用数据"""
+        try:
+            import json
+            file_path = 'data/line_occupancy.json'
+            if not os.path.exists('data'):
+                os.makedirs('data')
+            if not os.path.exists(file_path):
+                return {}
+            
+            with open(file_path, 'r', encoding='utf-8') as f:
+                return json.load(f)
+        except Exception as e:
+            logger.error(f"加载线路占用数据失败: {str(e)}")
+            return {}
+
+    def _save_occupancy_data(self, data):
+        """保存线路占用数据"""
+        try:
+            import json
+            file_path = 'data/line_occupancy.json'
+            if not os.path.exists('data'):
+                os.makedirs('data')
+            
+            with open(file_path, 'w', encoding='utf-8') as f:
+                json.dump(data, f, ensure_ascii=False, indent=2)
+        except Exception as e:
+            logger.error(f"保存线路占用数据失败: {str(e)}")

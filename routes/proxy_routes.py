@@ -150,5 +150,51 @@ def create_blueprint(proxy_service):
                 return jsonify({'success': False, 'error': result}), 400
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)}), 500
-    
+
+    @bp.route('/backup-lines/get-available', methods=['GET'])
+    def get_available_backup_line():
+        """获取可用备用线路"""
+        try:
+            device_id = request.args.get('device_id')
+            region = request.args.get('region')
+            
+            if not device_id or not region:
+                return jsonify({'success': False, 'error': 'device_id 和 region 是必传参数'}), 400
+                
+            success, result = proxy_service.get_available_backup_line(device_id, region)
+            
+            if success:
+                return jsonify({'success': True, 'data': result})
+            else:
+                return jsonify({'success': False, 'error': result}), 400
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
+    @bp.route('/backup-lines/occupancy', methods=['POST'])
+    def update_line_occupancy():
+        """更新线路占用状态"""
+        try:
+            data = request.json
+            device_id = data.get('device_id')
+            line_name = data.get('line_name')
+            status = data.get('status')  # true=占用, false=释放
+            region = data.get('region')
+            
+            if not device_id or not line_name:
+                return jsonify({'success': False, 'error': 'device_id 和 line_name 是必传参数'}), 400
+                
+            if status is None:
+                return jsonify({'success': False, 'error': 'status 是必传参数'}), 400
+                
+            success, result = proxy_service.update_line_occupancy(
+                device_id, line_name, status, region
+            )
+            
+            if success:
+                return jsonify({'success': True, 'data': result})
+            else:
+                return jsonify({'success': False, 'error': result}), 400
+        except Exception as e:
+            return jsonify({'success': False, 'error': str(e)}), 500
+
     return bp

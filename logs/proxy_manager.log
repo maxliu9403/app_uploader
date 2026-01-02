@@ -2895,3 +2895,564 @@ Carousell_HK_...
 2026-01-02 21:36:36 [INFO] [vm_service.py:202] ✅ 成功获取账号列表: 共27个, 过滤后22个
 2026-01-02 21:36:36 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
 2026-01-02 21:36:36 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 21:36:36] "GET /api/vm/account-list?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:07:12 [INFO] [logger.py:77] ======================================================================
+2026-01-02 22:07:12 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 22:07:12 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 22:07:12 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 22:07:12 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 22:07:12 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 22:07:12 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 22:07:12 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 22:07:12 [INFO] [logger.py:85] ======================================================================
+2026-01-02 22:07:12 [INFO] [app.py:519] ======================================================================
+2026-01-02 22:07:12 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 22:07:12 [INFO] [app.py:521] ======================================================================
+2026-01-02 22:07:12 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 22:07:12 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 22:07:12 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 22:07:12 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 22:07:12 [INFO] [app.py:526] ======================================================================
+2026-01-02 22:07:13 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 22:07:13 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 22:07:32 [INFO] [app.py:117] 📥 GET / | {"method": "GET", "path": "/", "client": "127.0.0.1"}
+2026-01-02 22:07:32 [INFO] [app.py:167] 🏠 访问主页
+2026-01-02 22:07:32 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:07:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:32] "GET / HTTP/1.1" 200 -
+2026-01-02 22:07:32 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:07:32 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:07:32 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:07:32 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:32] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:07:32 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:07:32 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:32] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:07:32 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:07:32 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:07:32 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:07:32 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 22:07:32 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:32 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 22:07:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:32] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:07:32 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 22:07:32 [INFO] [transit_service.py:34]    配置文件中共有 53 个代理条目
+2026-01-02 22:07:32 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:32 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 52 个普通代理
+2026-01-02 22:07:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:32] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 22:07:32 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:07:32 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 22:07:32 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:07:32 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:32] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:07:32 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:32] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:07:33 [INFO] [app.py:117] 📥 GET /favicon.ico | {"method": "GET", "path": "/favicon.ico", "client": "127.0.0.1"}
+2026-01-02 22:07:33 [INFO] [app.py:136] 📤 404 | {"status": 404}
+2026-01-02 22:07:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:33] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-01-02 22:07:36 [INFO] [app.py:117] 📥 GET / | {"method": "GET", "path": "/", "client": "127.0.0.1"}
+2026-01-02 22:07:36 [INFO] [app.py:167] 🏠 访问主页
+2026-01-02 22:07:36 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:07:36 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:36] "GET / HTTP/1.1" 200 -
+2026-01-02 22:07:36 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:07:36 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:07:36 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:07:36 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:36 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:36] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:07:36 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:07:36 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:36 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:36] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:07:36 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:07:36 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:07:36 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:07:36 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 22:07:36 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 22:07:36 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:36 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:36] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:07:36 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 22:07:36 [INFO] [transit_service.py:34]    配置文件中共有 53 个代理条目
+2026-01-02 22:07:36 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:36 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 52 个普通代理
+2026-01-02 22:07:36 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:07:36 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:36] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 22:07:36 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 22:07:36 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:07:36 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:36 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:36] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:07:36 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:07:36 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:36] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:07:39 [INFO] [app.py:117] 📥 GET /api/docs | {"method": "GET", "path": "/api/docs", "client": "127.0.0.1"}
+2026-01-02 22:07:39 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:07:39 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:39] "GET /api/docs HTTP/1.1" 200 -
+2026-01-02 22:07:39 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui.css | {"method": "GET", "path": "/flasgger_static/swagger-ui.css", "client": "127.0.0.1"}
+2026-01-02 22:07:39 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-bundle.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-bundle.js", "client": "127.0.0.1"}
+2026-01-02 22:07:39 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-standalone-preset.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-standalone-preset.js", "client": "127.0.0.1"}
+2026-01-02 22:07:39 [INFO] [app.py:117] 📥 GET /flasgger_static/lib/jquery.min.js | {"method": "GET", "path": "/flasgger_static/lib/jquery.min.js", "client": "127.0.0.1"}
+2026-01-02 22:07:39 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:07:39 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:07:39 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:07:39 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:39] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2026-01-02 22:07:39 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:39] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2026-01-02 22:07:39 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:39] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2026-01-02 22:07:39 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:07:39 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:39] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2026-01-02 22:07:39 [INFO] [app.py:117] 📥 GET /apispec.json | {"method": "GET", "path": "/apispec.json", "client": "127.0.0.1"}
+2026-01-02 22:07:39 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": "N/A", "error": "Unknown"}
+2026-01-02 22:07:39 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:07:39] "GET /apispec.json HTTP/1.1" 200 -
+2026-01-02 22:09:30 [INFO] [logger.py:77] ======================================================================
+2026-01-02 22:09:30 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 22:09:30 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 22:09:30 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 22:09:30 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 22:09:30 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 22:09:30 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 22:09:30 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 22:09:30 [INFO] [logger.py:85] ======================================================================
+2026-01-02 22:09:30 [INFO] [app.py:519] ======================================================================
+2026-01-02 22:09:30 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 22:09:30 [INFO] [app.py:521] ======================================================================
+2026-01-02 22:09:30 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 22:09:30 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 22:09:30 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 22:09:30 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 22:09:30 [INFO] [app.py:526] ======================================================================
+2026-01-02 22:09:31 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 22:09:31 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 22:09:38 [INFO] [app.py:117] 📥 GET /api/docs | {"method": "GET", "path": "/api/docs", "client": "127.0.0.1"}
+2026-01-02 22:09:38 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:09:38 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:38] "GET /api/docs HTTP/1.1" 200 -
+2026-01-02 22:09:38 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui.css | {"method": "GET", "path": "/flasgger_static/swagger-ui.css", "client": "127.0.0.1"}
+2026-01-02 22:09:38 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-bundle.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-bundle.js", "client": "127.0.0.1"}
+2026-01-02 22:09:38 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-standalone-preset.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-standalone-preset.js", "client": "127.0.0.1"}
+2026-01-02 22:09:38 [INFO] [app.py:117] 📥 GET /flasgger_static/lib/jquery.min.js | {"method": "GET", "path": "/flasgger_static/lib/jquery.min.js", "client": "127.0.0.1"}
+2026-01-02 22:09:38 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:09:38 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:09:38 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:38] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2026-01-02 22:09:38 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:09:38 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:38] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2026-01-02 22:09:38 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:09:38 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:38] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2026-01-02 22:09:38 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:38] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2026-01-02 22:09:38 [INFO] [app.py:117] 📥 GET /apispec.json | {"method": "GET", "path": "/apispec.json", "client": "127.0.0.1"}
+2026-01-02 22:09:38 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": "N/A", "error": "Unknown"}
+2026-01-02 22:09:38 [INFO] [app.py:117] 📥 GET /flasgger_static/favicon-32x32.png | {"method": "GET", "path": "/flasgger_static/favicon-32x32.png", "client": "127.0.0.1"}
+2026-01-02 22:09:38 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:38] "GET /apispec.json HTTP/1.1" 200 -
+2026-01-02 22:09:38 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:09:38 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:38] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2026-01-02 22:09:50 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "111", "region": "1111"}}
+2026-01-02 22:09:50 [WARNING] [config.py:120] 📂 配置文件不存在: network_config\111\config.yaml
+2026-01-02 22:09:50 [INFO] [app.py:136] 📤 400 | {"status": 400, "success": false, "error": "在地区 1111 未找到任何备用线路"}
+2026-01-02 22:09:50 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:50] "[31m[1mGET /api/proxies/backup-lines/get-available?device_id=111&region=1111 HTTP/1.1[0m" 400 -
+2026-01-02 22:09:57 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:09:57 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:09:57 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:09:57 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:57] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:09:57 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:09:57 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:09:57 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:57] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:09:57 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:09:57 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:09:57 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:09:57 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:57] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:09:57 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:09:57 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:09:57 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:09:57 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:09:57 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:09:57] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:10:04 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:10:04 [INFO] [proxy_service.py:824] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz76555
+2026-01-02 22:10:04 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:10:04 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:10:04] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:10:16 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:10:16 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=52, transit=1
+2026-01-02 22:10:16 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:10:16 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:10:16] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:10:16 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:10:16 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 22:10:17 [INFO] [transit_service.py:34]    配置文件中共有 53 个代理条目
+2026-01-02 22:10:17 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 52 个普通代理
+2026-01-02 22:10:17 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 22:10:17 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:10:17 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:10:17] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:10:35 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "SG"}}
+2026-01-02 22:10:35 [INFO] [proxy_service.py:824] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: SG, 线路: HK-Res-032222
+2026-01-02 22:10:35 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:10:35 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:10:35] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=SG HTTP/1.1" 200 -
+2026-01-02 22:13:07 [INFO] [app.py:117] 📥 POST /api/proxies/backup-lines/occupancy | {"method": "POST", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1"}
+2026-01-02 22:13:07 [INFO] [app.py:136] 📤 500 | {"status": 500, "success": false, "error": "415 Unsupported Media Type: Did not attempt to load JSON data because the request Content-Type was not 'application/json'."}
+2026-01-02 22:13:07 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:13:07] "[35m[1mPOST /api/proxies/backup-lines/occupancy HTTP/1.1[0m" 500 -
+2026-01-02 22:15:48 [INFO] [logger.py:77] ======================================================================
+2026-01-02 22:15:48 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 22:15:48 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 22:15:48 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 22:15:48 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 22:15:48 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 22:15:48 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 22:15:48 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 22:15:48 [INFO] [logger.py:85] ======================================================================
+2026-01-02 22:15:48 [INFO] [app.py:519] ======================================================================
+2026-01-02 22:15:48 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 22:15:48 [INFO] [app.py:521] ======================================================================
+2026-01-02 22:15:48 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 22:15:48 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 22:15:48 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 22:15:48 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 22:15:48 [INFO] [app.py:526] ======================================================================
+2026-01-02 22:15:49 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 22:15:49 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 22:15:55 [INFO] [app.py:117] 📥 GET /api/docs | {"method": "GET", "path": "/api/docs", "client": "127.0.0.1"}
+2026-01-02 22:15:55 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:15:55 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:15:55] "GET /api/docs HTTP/1.1" 200 -
+2026-01-02 22:15:55 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui.css | {"method": "GET", "path": "/flasgger_static/swagger-ui.css", "client": "127.0.0.1"}
+2026-01-02 22:15:55 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-bundle.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-bundle.js", "client": "127.0.0.1"}
+2026-01-02 22:15:55 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-standalone-preset.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-standalone-preset.js", "client": "127.0.0.1"}
+2026-01-02 22:15:55 [INFO] [app.py:117] 📥 GET /flasgger_static/lib/jquery.min.js | {"method": "GET", "path": "/flasgger_static/lib/jquery.min.js", "client": "127.0.0.1"}
+2026-01-02 22:15:55 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:15:55 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:15:55] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2026-01-02 22:15:55 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:15:55 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:15:55] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2026-01-02 22:15:55 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:15:55 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:15:55 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:15:55] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2026-01-02 22:15:55 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:15:55] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2026-01-02 22:15:55 [INFO] [app.py:117] 📥 GET /apispec.json | {"method": "GET", "path": "/apispec.json", "client": "127.0.0.1"}
+2026-01-02 22:15:55 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": "N/A", "error": "Unknown"}
+2026-01-02 22:15:55 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:15:55] "GET /apispec.json HTTP/1.1" 200 -
+2026-01-02 22:15:55 [INFO] [app.py:117] 📥 GET /flasgger_static/favicon-32x32.png | {"method": "GET", "path": "/flasgger_static/favicon-32x32.png", "client": "127.0.0.1"}
+2026-01-02 22:15:55 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:15:55 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:15:55] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2026-01-02 22:16:48 [INFO] [logger.py:77] ======================================================================
+2026-01-02 22:16:48 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 22:16:48 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 22:16:48 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 22:16:48 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 22:16:48 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 22:16:48 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 22:16:48 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 22:16:48 [INFO] [logger.py:85] ======================================================================
+2026-01-02 22:16:48 [INFO] [app.py:519] ======================================================================
+2026-01-02 22:16:48 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 22:16:48 [INFO] [app.py:521] ======================================================================
+2026-01-02 22:16:48 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 22:16:48 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 22:16:48 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 22:16:48 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 22:16:48 [INFO] [app.py:526] ======================================================================
+2026-01-02 22:16:50 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 22:16:50 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 22:16:52 [INFO] [app.py:117] 📥 GET /api/docs | {"method": "GET", "path": "/api/docs", "client": "127.0.0.1"}
+2026-01-02 22:16:52 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:16:52 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:16:52] "GET /api/docs HTTP/1.1" 200 -
+2026-01-02 22:16:52 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui.css | {"method": "GET", "path": "/flasgger_static/swagger-ui.css", "client": "127.0.0.1"}
+2026-01-02 22:16:52 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-bundle.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-bundle.js", "client": "127.0.0.1"}
+2026-01-02 22:16:52 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-standalone-preset.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-standalone-preset.js", "client": "127.0.0.1"}
+2026-01-02 22:16:52 [INFO] [app.py:117] 📥 GET /flasgger_static/lib/jquery.min.js | {"method": "GET", "path": "/flasgger_static/lib/jquery.min.js", "client": "127.0.0.1"}
+2026-01-02 22:16:52 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:16:52 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:16:52] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2026-01-02 22:16:52 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:16:52 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:16:52 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:16:52] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2026-01-02 22:16:52 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:16:52] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2026-01-02 22:16:52 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:16:52 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:16:52] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2026-01-02 22:16:52 [INFO] [app.py:117] 📥 GET /apispec.json | {"method": "GET", "path": "/apispec.json", "client": "127.0.0.1"}
+2026-01-02 22:16:52 [INFO] [app.py:117] 📥 GET /flasgger_static/favicon-32x32.png | {"method": "GET", "path": "/flasgger_static/favicon-32x32.png", "client": "127.0.0.1"}
+2026-01-02 22:16:52 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": "N/A", "error": "Unknown"}
+2026-01-02 22:16:52 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:16:52] "GET /apispec.json HTTP/1.1" 200 -
+2026-01-02 22:16:52 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:16:52 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:16:52] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2026-01-02 22:17:33 [INFO] [app.py:117] 📥 GET /api/docs | {"method": "GET", "path": "/api/docs", "client": "127.0.0.1"}
+2026-01-02 22:17:33 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:17:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:17:33] "GET /api/docs HTTP/1.1" 200 -
+2026-01-02 22:17:33 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui.css | {"method": "GET", "path": "/flasgger_static/swagger-ui.css", "client": "127.0.0.1"}
+2026-01-02 22:17:33 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-bundle.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-bundle.js", "client": "127.0.0.1"}
+2026-01-02 22:17:33 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:17:33 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-standalone-preset.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-standalone-preset.js", "client": "127.0.0.1"}
+2026-01-02 22:17:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:17:33] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2026-01-02 22:17:33 [INFO] [app.py:117] 📥 GET /flasgger_static/lib/jquery.min.js | {"method": "GET", "path": "/flasgger_static/lib/jquery.min.js", "client": "127.0.0.1"}
+2026-01-02 22:17:33 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:17:33 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:17:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:17:33] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2026-01-02 22:17:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:17:33] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2026-01-02 22:17:33 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:17:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:17:33] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2026-01-02 22:17:33 [INFO] [app.py:117] 📥 GET /apispec.json | {"method": "GET", "path": "/apispec.json", "client": "127.0.0.1"}
+2026-01-02 22:17:33 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": "N/A", "error": "Unknown"}
+2026-01-02 22:17:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:17:33] "GET /apispec.json HTTP/1.1" 200 -
+2026-01-02 22:17:33 [INFO] [app.py:117] 📥 GET /flasgger_static/favicon-32x32.png | {"method": "GET", "path": "/flasgger_static/favicon-32x32.png", "client": "127.0.0.1"}
+2026-01-02 22:17:33 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:17:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:17:33] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2026-01-02 22:19:59 [INFO] [logger.py:77] ======================================================================
+2026-01-02 22:19:59 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 22:19:59 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 22:19:59 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 22:19:59 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 22:19:59 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 22:19:59 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 22:19:59 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 22:19:59 [INFO] [logger.py:85] ======================================================================
+2026-01-02 22:19:59 [INFO] [app.py:519] ======================================================================
+2026-01-02 22:19:59 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 22:19:59 [INFO] [app.py:521] ======================================================================
+2026-01-02 22:19:59 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 22:19:59 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 22:19:59 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 22:19:59 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 22:19:59 [INFO] [app.py:526] ======================================================================
+2026-01-02 22:20:00 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 22:20:00 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 22:20:02 [INFO] [app.py:117] 📥 GET /api/docs | {"method": "GET", "path": "/api/docs", "client": "127.0.0.1"}
+2026-01-02 22:20:02 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:20:02 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:02] "GET /api/docs HTTP/1.1" 200 -
+2026-01-02 22:20:02 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui.css | {"method": "GET", "path": "/flasgger_static/swagger-ui.css", "client": "127.0.0.1"}
+2026-01-02 22:20:02 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-bundle.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-bundle.js", "client": "127.0.0.1"}
+2026-01-02 22:20:02 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-standalone-preset.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-standalone-preset.js", "client": "127.0.0.1"}
+2026-01-02 22:20:02 [INFO] [app.py:117] 📥 GET /flasgger_static/lib/jquery.min.js | {"method": "GET", "path": "/flasgger_static/lib/jquery.min.js", "client": "127.0.0.1"}
+2026-01-02 22:20:02 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:20:02 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:02] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2026-01-02 22:20:02 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:20:02 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:02] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2026-01-02 22:20:02 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:20:02 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:20:02 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:02] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2026-01-02 22:20:02 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:02] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2026-01-02 22:20:02 [INFO] [app.py:117] 📥 GET /apispec.json | {"method": "GET", "path": "/apispec.json", "client": "127.0.0.1"}
+2026-01-02 22:20:02 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": "N/A", "error": "Unknown"}
+2026-01-02 22:20:02 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:02] "GET /apispec.json HTTP/1.1" 200 -
+2026-01-02 22:20:02 [INFO] [app.py:117] 📥 GET /flasgger_static/favicon-32x32.png | {"method": "GET", "path": "/flasgger_static/favicon-32x32.png", "client": "127.0.0.1"}
+2026-01-02 22:20:02 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:20:02 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:02] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2026-01-02 22:20:12 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:20:12 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:20:12 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:20:12 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:12] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:20:12 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:20:12 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:20:12 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:12] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:20:12 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:20:12 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:20:12 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:20:12 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:12] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:20:12 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:20:12 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:20:12 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:20:12 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:20:12 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:12] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:20:19 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:20:19 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=52, transit=1
+2026-01-02 22:20:19 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:20:19 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:19] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:20:19 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:20:19 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 22:20:19 [INFO] [transit_service.py:34]    配置文件中共有 53 个代理条目
+2026-01-02 22:20:19 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 52 个普通代理
+2026-01-02 22:20:19 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 22:20:19 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:20:19 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:19] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:20:56 [INFO] [app.py:117] 📥 OPTIONS /api/proxies/backup-lines/occupancy | {"method": "OPTIONS", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1"}
+2026-01-02 22:20:56 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:20:56 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:56] "OPTIONS /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:20:56 [INFO] [app.py:117] 📥 POST /api/proxies/backup-lines/occupancy | {"method": "POST", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "line_name": "alexkumaz76555", "region": "HK"}}
+2026-01-02 22:20:56 [INFO] [app.py:136] 📤 400 | {"status": 400, "success": false, "error": "status 是必传参数"}
+2026-01-02 22:20:56 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:20:56] "[31m[1mPOST /api/proxies/backup-lines/occupancy HTTP/1.1[0m" 400 -
+2026-01-02 22:21:32 [INFO] [app.py:117] 📥 OPTIONS /api/proxies/backup-lines/occupancy | {"method": "OPTIONS", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1"}
+2026-01-02 22:21:32 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:21:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:21:32] "OPTIONS /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:21:32 [INFO] [app.py:117] 📥 POST /api/proxies/backup-lines/occupancy | {"method": "POST", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "line_name": "alexkumaz76555", "region": "HK", "status": true}}
+2026-01-02 22:21:32 [INFO] [proxy_service.py:882] ✅ 更新线路占用状态 | 设备: 72e8932c, 线路: alexkumaz76555, 动作: 占用
+2026-01-02 22:21:32 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:21:32 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:21:32] "POST /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:21:46 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:21:46 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:21:46 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:21:46 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:21:46] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:21:46 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 22:21:46 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:21:46 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:21:46] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 22:21:46 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:21:46 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:21:46 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:21:46 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:21:46] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:21:46 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 22:21:46 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:21:46 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 22:21:46 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:21:46 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:21:46] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 22:21:53 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:21:53 [INFO] [app.py:136] 📤 400 | {"status": 400, "success": false, "error": "所有备用线路均被占用"}
+2026-01-02 22:21:53 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:21:53] "[31m[1mGET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1[0m" 400 -
+2026-01-02 22:22:29 [INFO] [app.py:117] 📥 OPTIONS /api/proxies/backup-lines/occupancy | {"method": "OPTIONS", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1"}
+2026-01-02 22:22:29 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:22:29 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:22:29] "OPTIONS /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:22:29 [INFO] [app.py:117] 📥 POST /api/proxies/backup-lines/occupancy | {"method": "POST", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "line_name": "alexkumaz76555", "region": "HK", "status": false}}
+2026-01-02 22:22:29 [INFO] [proxy_service.py:882] ✅ 更新线路占用状态 | 设备: 72e8932c, 线路: alexkumaz76555, 动作: 释放
+2026-01-02 22:22:29 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:22:29 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:22:29] "POST /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:22:46 [INFO] [app.py:117] 📥 OPTIONS /api/proxies/backup-lines/occupancy | {"method": "OPTIONS", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1"}
+2026-01-02 22:22:46 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:22:46 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:22:46] "OPTIONS /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:22:47 [INFO] [app.py:117] 📥 POST /api/proxies/backup-lines/occupancy | {"method": "POST", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "line_name": "alexkumaz76555", "region": "HK", "status": true}}
+2026-01-02 22:22:47 [INFO] [proxy_service.py:882] ✅ 更新线路占用状态 | 设备: 72e8932c, 线路: alexkumaz76555, 动作: 占用
+2026-01-02 22:22:47 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:22:47 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:22:47] "POST /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:22:56 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:22:56 [INFO] [app.py:136] 📤 400 | {"status": 400, "success": false, "error": "所有备用线路均被占用"}
+2026-01-02 22:22:56 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:22:56] "[31m[1mGET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1[0m" 400 -
+2026-01-02 22:23:04 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:23:04 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=52, transit=1
+2026-01-02 22:23:04 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:23:04 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:23:04] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:23:04 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:23:04 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 22:23:04 [INFO] [transit_service.py:34]    配置文件中共有 53 个代理条目
+2026-01-02 22:23:04 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 52 个普通代理
+2026-01-02 22:23:04 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 22:23:04 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:23:04 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:23:04] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:23:05 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:23:05 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 22:23:05 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 22:23:05 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 22:23:05 [INFO] [transit_service.py:34]    配置文件中共有 53 个代理条目
+2026-01-02 22:23:05 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:23:05 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 52 个普通代理
+2026-01-02 22:23:05 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:23:05] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 22:23:05 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 22:23:05 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:23:05 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:23:05] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:23:33 [INFO] [app.py:117] 📥 POST /api/proxies | {"method": "POST", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}, "body": {"name": "alexkumaz11w22222e2d", "type": "socks5", "server": "us.arxlabs.io", "port": "3010", "region": "HK", "skip-cert-verify": true, "username": "hmq88888-region-HK-sid-mzHjZvRv-t-120", "password": "******", "udp": true, "dialer-proxy": "香港中转测试12", "is_bak": true}}
+2026-01-02 22:23:33 [INFO] [proxy_service.py:82] ➕ 添加代理 | {"action": "add_proxy", "device": "72e8932c", "name": "alexkumaz11w22222e2d", "type": "socks5", "server": "us.arxlabs.io:3010", "region": "HK"}
+2026-01-02 22:23:33 [INFO] [proxy_service.py:712] 更新策略组 'Proxy-IP'
+2026-01-02 22:23:33 [INFO] [yaml_helper.py:139] ✅ 配置文件保存成功（只修改了 proxies 和 proxy-groups）: network_config\72e8932c\config.yaml
+2026-01-02 22:23:33 [INFO] [config.py:160] 💾 配置已保存 | file=network_config\72e8932c\config.yaml, proxies=53, transit=1
+2026-01-02 22:23:33 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 22:23:33 [INFO] [proxy_service.py:114] ✅ 代理添加成功 | {"success": true, "name": "alexkumaz11w22222e2d", "total": 54, "pushed": true}
+2026-01-02 22:23:33 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:23:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:23:33] "POST /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:23:33 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:23:33 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=53, transit=1
+2026-01-02 22:23:33 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:23:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:23:33] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:23:33 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 22:23:33 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 22:23:33 [INFO] [transit_service.py:34]    配置文件中共有 54 个代理条目
+2026-01-02 22:23:33 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 53 个普通代理
+2026-01-02 22:23:33 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 22:23:33 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:23:33 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:23:33] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 22:23:43 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:23:43 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz11w22222e2d
+2026-01-02 22:23:43 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:23:43 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:23:43] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:10 [INFO] [app.py:117] 📥 OPTIONS /api/proxies/backup-lines/occupancy | {"method": "OPTIONS", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1"}
+2026-01-02 22:24:10 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:24:10 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:10] "OPTIONS /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:24:10 [INFO] [app.py:117] 📥 POST /api/proxies/backup-lines/occupancy | {"method": "POST", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "line_name": "alexkumaz76555", "region": "HK", "status": false}}
+2026-01-02 22:24:10 [INFO] [proxy_service.py:882] ✅ 更新线路占用状态 | 设备: 72e8932c, 线路: alexkumaz76555, 动作: 释放
+2026-01-02 22:24:10 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:10 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:10] "POST /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:24:15 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:24:15 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz11w22222e2d
+2026-01-02 22:24:15 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:15 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:15] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:16 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:24:16 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz76555
+2026-01-02 22:24:16 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:16 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:16] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:17 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:24:17 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz76555
+2026-01-02 22:24:17 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:17 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:17] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:18 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:24:18 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz11w22222e2d
+2026-01-02 22:24:18 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:18 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:18] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:19 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:24:19 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz11w22222e2d
+2026-01-02 22:24:19 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:19 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:19] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:20 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:24:20 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz11w22222e2d
+2026-01-02 22:24:20 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:20 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:20] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:22 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:24:22 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz11w22222e2d
+2026-01-02 22:24:22 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:22 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:22] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:23 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "HK"}}
+2026-01-02 22:24:23 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: HK, 线路: alexkumaz76555
+2026-01-02 22:24:23 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:23 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:23] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1" 200 -
+2026-01-02 22:24:28 [INFO] [app.py:117] 📥 GET /api/proxies/backup-lines/get-available | {"method": "GET", "path": "/api/proxies/backup-lines/get-available", "client": "127.0.0.1", "query": {"device_id": "72e8932c", "region": "SG"}}
+2026-01-02 22:24:28 [INFO] [proxy_service.py:822] ✅ 获取备用线路成功 | 设备: 72e8932c, 地区: SG, 线路: HK-Res-032222
+2026-01-02 22:24:28 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:28 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:28] "GET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=SG HTTP/1.1" 200 -
+2026-01-02 22:24:44 [INFO] [app.py:117] 📥 OPTIONS /api/proxies/backup-lines/occupancy | {"method": "OPTIONS", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1"}
+2026-01-02 22:24:44 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:24:44 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:44] "OPTIONS /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:24:44 [INFO] [app.py:117] 📥 POST /api/proxies/backup-lines/occupancy | {"method": "POST", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "line_name": "alexkumaz76555", "region": "SG", "status": true}}
+2026-01-02 22:24:44 [INFO] [proxy_service.py:882] ✅ 更新线路占用状态 | 设备: 72e8932c, 线路: alexkumaz76555, 动作: 占用
+2026-01-02 22:24:44 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 22:24:44 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:24:44] "POST /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:28:04 [INFO] [logger.py:77] ======================================================================
+2026-01-02 22:28:04 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 22:28:04 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 22:28:04 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 22:28:04 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 22:28:04 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 22:28:04 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 22:28:04 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 22:28:04 [INFO] [logger.py:85] ======================================================================
+2026-01-02 22:28:04 [INFO] [app.py:519] ======================================================================
+2026-01-02 22:28:04 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 22:28:04 [INFO] [app.py:521] ======================================================================
+2026-01-02 22:28:04 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 22:28:04 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 22:28:04 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 22:28:04 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 22:28:04 [INFO] [app.py:526] ======================================================================
+2026-01-02 22:28:05 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 22:28:05 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 22:28:14 [INFO] [app.py:117] 📥 GET /api/docs | {"method": "GET", "path": "/api/docs", "client": "127.0.0.1"}
+2026-01-02 22:28:14 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:28:14 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:14] "GET /api/docs HTTP/1.1" 200 -
+2026-01-02 22:28:14 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui.css | {"method": "GET", "path": "/flasgger_static/swagger-ui.css", "client": "127.0.0.1"}
+2026-01-02 22:28:14 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-bundle.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-bundle.js", "client": "127.0.0.1"}
+2026-01-02 22:28:14 [INFO] [app.py:117] 📥 GET /flasgger_static/swagger-ui-standalone-preset.js | {"method": "GET", "path": "/flasgger_static/swagger-ui-standalone-preset.js", "client": "127.0.0.1"}
+2026-01-02 22:28:14 [INFO] [app.py:117] 📥 GET /flasgger_static/lib/jquery.min.js | {"method": "GET", "path": "/flasgger_static/lib/jquery.min.js", "client": "127.0.0.1"}
+2026-01-02 22:28:14 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:28:14 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:14] "[36mGET /flasgger_static/lib/jquery.min.js HTTP/1.1[0m" 304 -
+2026-01-02 22:28:14 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:28:14 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:14] "[36mGET /flasgger_static/swagger-ui-standalone-preset.js HTTP/1.1[0m" 304 -
+2026-01-02 22:28:14 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:28:14 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:28:14 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:14] "[36mGET /flasgger_static/swagger-ui-bundle.js HTTP/1.1[0m" 304 -
+2026-01-02 22:28:14 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:14] "[36mGET /flasgger_static/swagger-ui.css HTTP/1.1[0m" 304 -
+2026-01-02 22:28:14 [INFO] [app.py:117] 📥 GET /apispec.json | {"method": "GET", "path": "/apispec.json", "client": "127.0.0.1"}
+2026-01-02 22:28:14 [INFO] [app.py:117] 📥 GET /flasgger_static/favicon-32x32.png | {"method": "GET", "path": "/flasgger_static/favicon-32x32.png", "client": "127.0.0.1"}
+2026-01-02 22:28:14 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": "N/A", "error": "Unknown"}
+2026-01-02 22:28:14 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:14] "GET /apispec.json HTTP/1.1" 200 -
+2026-01-02 22:28:14 [INFO] [app.py:136] 📤 304 | {"status": 304}
+2026-01-02 22:28:14 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:14] "[36mGET /flasgger_static/favicon-32x32.png HTTP/1.1[0m" 304 -
+2026-01-02 22:28:18 [INFO] [app.py:117] 📥 OPTIONS /api/proxies/backup-lines/occupancy | {"method": "OPTIONS", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1"}
+2026-01-02 22:28:18 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 22:28:18 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:18] "OPTIONS /api/proxies/backup-lines/occupancy HTTP/1.1" 200 -
+2026-01-02 22:28:18 [INFO] [app.py:117] 📥 POST /api/proxies/backup-lines/occupancy | {"method": "POST", "path": "/api/proxies/backup-lines/occupancy", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "line_name": "alexkumaz76555", "region": "SG", "status": true}}
+2026-01-02 22:28:18 [INFO] [app.py:136] 📤 400 | {"status": 400, "success": false, "error": "线路 \"alexkumaz76555\" 属于地区 HK，不属于请求的 SG，数据不一致"}
+2026-01-02 22:28:18 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 22:28:18] "[31m[1mPOST /api/proxies/backup-lines/occupancy HTTP/1.1[0m" 400 -
