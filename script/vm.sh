@@ -1,5 +1,6 @@
 #!/system/bin/sh
-# Multi-App VM Manager V8.4 (Auto-Save Guard & Global Sync)
+# Multi-App VM Manager V9.0 (Production Grade)
+# Features: GMS Force Injection | Smart Region Parsing | Robust Proxy Safety | Auto-Save Guard
 
 if [ "$(id -u)" -ne 0 ]; then echo "❌ 错误：需 Root 权限"; exit 1; fi
 
@@ -27,16 +28,16 @@ get_package_name() {
     esac
 }
 
-get_proxy_group() {
-    case "$1" in
-        HK) echo "Select-HK-IP" ;; 
-        GB) echo "Select-UK-Exit" ;;
-        SG) echo "Select-SG-Exit" ;;
-        MY) echo "Select-MY-Exit" ;;
-        PH) echo "Select-PH-Exit" ;;
-        *) echo "Select-HK-IP" ;; 
-    esac
-}
+# get_proxy_group() {
+#     case "$1" in
+#         HK) echo "Select-HK-IP" ;; 
+#         GB) echo "Select-UK-Exit" ;;
+#         SG) echo "Select-SG-Exit" ;;
+#         MY) echo "Select-MY-Exit" ;;
+#         PH) echo "Select-PH-Exit" ;;
+#         *) echo "Select-HK-IP" ;; 
+#     esac
+# }
 
 # ================= 核心工具函数 =================
 
@@ -50,40 +51,58 @@ clean_network_stack() {
 switch_proxy() { 
     TARGET_NODE="$1"
     REGION_CODE="$2"
+
+    echo "🎯 [Switch] Target Node: $TARGET_NODE | Region: $REGION_CODE"
     
-    if [ ${#TARGET_NODE} -le 2 ]; then
-        echo "❌ [致命错误] 节点名称不合法: '$TARGET_NODE'"
+    # Strict validation
+    if [ -z "$TARGET_NODE" ] || [ ${#TARGET_NODE} -le 2 ]; then
+        echo "❌ [FATAL] Invalid node name: '$TARGET_NODE'"
         exit 1
     fi
-
-    PROXY_GROUP=$(get_proxy_group "$REGION_CODE")
     
-    echo "🌐 [Clash] 正在切换节点 -> $TARGET_NODE"
+    if [ -z "$REGION_CODE" ]; then
+        echo "❌ [FATAL] Region code is empty"
+        exit 1
+    fi
     
+    # Build API commands
     if [ -z "$SECRET" ]; then
-        CMD_GROUP="curl -s -X PUT $API_URL/proxies/$PROXY_GROUP -H 'Content-Type: application/json' -d '{\"name\": \"$TARGET_NODE\"}'"
         CMD_GLOBAL="curl -s -X PUT $API_URL/proxies/GLOBAL -H 'Content-Type: application/json' -d '{\"name\": \"$TARGET_NODE\"}'"
     else
-        CMD_GROUP="curl -s -X PUT $API_URL/proxies/$PROXY_GROUP -H 'Content-Type: application/json' -H 'Authorization: Bearer $SECRET' -d '{\"name\": \"$TARGET_NODE\"}'"
         CMD_GLOBAL="curl -s -X PUT $API_URL/proxies/GLOBAL -H 'Content-Type: application/json' -H 'Authorization: Bearer $SECRET' -d '{\"name\": \"$TARGET_NODE\"}'"
     fi
     
+    # Execute switch
     RESPONSE=$(eval "$CMD_GROUP")
     eval "$CMD_GLOBAL" >/dev/null 2>&1
 
-    if echo "$RESPONSE" | grep -qi "error\|not found\|invalid"; then
-        echo "❌ [API报错] 切换失败: $RESPONSE"
+    # CRITICAL: Check for API errors
+    if echo "$RESPONSE" | grep -qi "error\|not found\|invalid\|failed"; then
+        echo "❌ [FATAL] Clash API error: $RESPONSE"
+        echo "❌ Cannot proceed with unsafe network. Exiting."
         exit 1
     fi
 
+    # Verify switch with retry
     sleep 1
-    NOW=$(curl -s "$API_URL/proxies/$PROXY_GROUP" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
+    NOW=$(curl -s "$API_URL/proxies/GLOBAL" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
     if [ "$NOW" != "$TARGET_NODE" ]; then
         sleep 2
-        NOW=$(curl -s "$API_URL/proxies/$PROXY_GROUP" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
+        NOW=$(curl -s "$API_URL/proxies/GLOBAL" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
     fi
-    echo "✅ IP 切换确认成功: $NOW (GLOBAL 已同步)"
+    
+    # CRITICAL: Final verification
+    if [ "$NOW" != "$TARGET_NODE" ]; then
+        echo "❌ [FATAL] Proxy switch verification failed!"
+        echo "   Expected: $TARGET_NODE"
+        echo "   Got: $NOW"
+        echo "❌ Unsafe to launch app. Exiting."
+        exit 1
+    fi
+    
+    echo "✅ Proxy verified: $NOW (GLOBAL synced)"
 
+    # Update config file
     if [ -f "$CONF_FILE" ]; then
         sed -i '/CurrentNode=/d' "$CONF_FILE"
         echo "CurrentNode=$TARGET_NODE" >> "$CONF_FILE"
@@ -97,7 +116,8 @@ sync_gps_from_ip() {
     LAT=$(echo "$JSON" | grep -o '"lat":[^,]*' | cut -d':' -f2)
     LON=$(echo "$JSON" | grep -o '"lon":[^,]*' | cut -d':' -f2)
     if [ ! -z "$LAT" ] && [ -f "$CONF_FILE" ]; then
-        sed -i '/GPS_/d' "$CONF_FILE"
+        sed -i '/GPS_LAT/d' "$CONF_FILE"
+        sed -i '/GPS_LON/d' "$CONF_FILE"
         echo "GPS_LAT=$LAT" >> "$CONF_FILE"
         echo "GPS_LON=$LON" >> "$CONF_FILE"
         chmod 666 "$CONF_FILE"
@@ -105,31 +125,68 @@ sync_gps_from_ip() {
     fi
 }
 
-spoof_system_gms_ids() {
-    if [ -f "$CONF_FILE" ]; then
-        NEW_ID=$(grep "AdsId=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
-        if [ ! -z "$NEW_ID" ]; then
-            GMS_PKG="com.google.android.gms"
-            GMS_DATA="/data/data/$GMS_PKG"
-            S_PREFS="$GMS_DATA/shared_prefs"
-            killall com.google.android.gms 2>/dev/null
-            am force-stop "$GMS_PKG"
-            rm -f "$S_PREFS/adid_settings.xml"
-            rm -f "$S_PREFS/app_set_id_storage.xml"
-            rm -f "$S_PREFS/Checkin.xml"
-            rm -f "$S_PREFS/device_id.xml"
-            if [ ! -d "$S_PREFS" ]; then mkdir -p "$S_PREFS"; chmod 771 "$S_PREFS"; chown $(stat -c '%u:%g' "$GMS_DATA") "$S_PREFS"; fi
-            XML_ADID="$S_PREFS/adid_settings.xml"
-            echo "<?xml version='1.0' encoding='utf-8' standalone='yes' ?><map><string name=\"adid_key\">$NEW_ID</string><boolean name=\"enable_limit_ad_tracking\" value=\"false\" /></map>" > "$XML_ADID"
-            chmod 660 "$XML_ADID"; chown $(stat -c '%u:%g' "$GMS_DATA") "$XML_ADID"; restorecon "$XML_ADID" >/dev/null 2>&1
-            am force-stop "$GMS_PKG"
-        fi
+# 🔥 CRITICAL: GMS Advertising ID Force Injection
+# This function MUST be called after tar extraction in load()
+force_inject_gms_ads_id() {
+    if [ ! -f "$CONF_FILE" ]; then
+        echo "⚠️ [GMS] Config file not found, skipping injection"
+        return 1
     fi
+    
+    NEW_ADS_ID=$(grep "AdsId=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
+    
+    if [ -z "$NEW_ADS_ID" ]; then
+        echo "⚠️ [GMS] AdsId not found in config"
+        return 1
+    fi
+    
+    echo "💉 [GMS] Force-injecting Ads ID: $NEW_ADS_ID"
+    
+    GMS_PKG="com.google.android.gms"
+    GMS_DATA="/data/data/$GMS_PKG"
+    S_PREFS="$GMS_DATA/shared_prefs"
+    
+    # Kill GMS completely
+    killall com.google.android.gms 2>/dev/null
+    am force-stop "$GMS_PKG" 2>/dev/null
+    sleep 1
+    
+    # Remove all existing GMS ID files
+    rm -f "$S_PREFS/adid_settings.xml"
+    rm -f "$S_PREFS/app_set_id_storage.xml"
+    rm -f "$S_PREFS/Checkin.xml"
+    rm -f "$S_PREFS/device_id.xml"
+    
+    # Ensure directory exists with correct permissions
+    if [ ! -d "$S_PREFS" ]; then 
+        mkdir -p "$S_PREFS"
+        chmod 771 "$S_PREFS"
+        chown $(stat -c '%u:%g' "$GMS_DATA") "$S_PREFS"
+    fi
+    
+    # Force-write the Ads ID XML
+    XML_ADID="$S_PREFS/adid_settings.xml"
+    echo "<?xml version='1.0' encoding='utf-8' standalone='yes' ?><map><string name=\"adid_key\">$NEW_ADS_ID</string><boolean name=\"enable_limit_ad_tracking\" value=\"false\" /></map>" > "$XML_ADID"
+    
+    # CRITICAL: Fix permissions for persistence
+    chmod 660 "$XML_ADID"
+    chown $(stat -c '%u:%g' "$GMS_DATA") "$XML_ADID"
+    restorecon "$XML_ADID" >/dev/null 2>&1
+    
+    # Force-stop again to ensure reload
+    am force-stop "$GMS_PKG" 2>/dev/null
+    
+    echo "✅ [GMS] Ads ID injection complete"
+    return 0
 }
 
 spoof_ssaid() {
+    if [ ! -f "$CONF_FILE" ]; then return 1; fi
     NEW=$(grep "AndroidID=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
-    if [ ! -z "$NEW" ]; then settings put secure android_id "$NEW"; fi
+    if [ ! -z "$NEW" ]; then 
+        settings put secure android_id "$NEW"
+        echo "✅ [SSAID] Android ID set: $NEW"
+    fi
 }
 
 freeze_app() { PKG="$1"; am force-stop "$PKG"; }
@@ -173,7 +230,6 @@ launch_app() {
 # --- 封装保存逻辑 (供 save 命令和 load 自动备份调用) ---
 execute_save_logic() {
     SAVE_NAME="$1"
-    # 尝试从当前 CONF_FILE 获取 AppType，如果获取不到，默认 Vinted
     SAVE_APP_TYPE=$(grep "AppType=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
     [ -z "$SAVE_APP_TYPE" ] && SAVE_APP_TYPE="Vinted"
     SAVE_PKG=$(get_package_name "$SAVE_APP_TYPE")
@@ -213,63 +269,184 @@ if [ -z "$ACTION" ]; then echo "用法: $0 [new|load|save] [NAME]"; exit 1; fi
 
 # === NEW (新号) ===
 if [ "$ACTION" = "new" ]; then
+    NAME="$2"
     APP_TYPE="$3"      
     RAW_ARG4="$4"
     RAW_ARG5="$5"
     
-    # 智能参数纠错
+    # ✅ Validation: No hardcoded defaults - all params required
+    if [ -z "$NAME" ]; then
+        echo "❌ [ERROR] 账号名称不能为空"
+        exit 1
+    fi
+    
+    if [ -z "$APP_TYPE" ]; then
+        echo "❌ [ERROR] APP类型不能为空 (例如: Vinted, Carousell, TT, IG)"
+        exit 1
+    fi
+    
+    # 🎯 Smart Region Parsing from Node Name
+    # Fixes "UK SIM in HK" bug by auto-detecting region from node prefix
     if echo "$RAW_ARG4" | grep -qE "^[A-Z]{2}[_-][0-9a-zA-Z]+"; then
         NODE="$RAW_ARG4"
-        if [ ${#RAW_ARG5} -eq 2 ]; then REGION="$RAW_ARG5"; else
-            case "$NODE" in HK*) REGION="HK" ;; UK*|GB*) REGION="GB" ;; SG*) REGION="SG" ;; *) REGION="HK" ;; esac
+        # Extract region from node name (e.g., HK_01 -> HK, UK_London -> GB)
+        if [ ${#RAW_ARG5} -eq 2 ]; then 
+            REGION="$RAW_ARG5"
+        else
+            # Auto-detect from node prefix
+            case "$NODE" in 
+                HK*|HongKong*) REGION="HK" ;; 
+                UK*|GB*|London*) REGION="GB" ;; 
+                SG*|Singapore*) REGION="SG" ;; 
+                MY*|Malaysia*) REGION="MY" ;;
+                PH*|Manila*) REGION="PH" ;;
+                US*|America*) REGION="US" ;;
+                JP*|Japan*) REGION="JP" ;;
+                TH*|Thailand*) REGION="TH" ;;
+                VN*|Vietnam*) REGION="VN" ;;
+                *) 
+                    echo "⚠️ [WARNING] 无法从节点名称自动识别地区: $NODE"
+                    echo "❌ [ERROR] 请明确指定地区代码 (例如: HK, GB, SG, MY, PH)"
+                    exit 1
+                    ;;
+            esac
+            echo "🎯 [Smart Parse] Node: $NODE -> Region: $REGION"
         fi
     else
         REGION="$RAW_ARG4"
         NODE="$RAW_ARG5"
     fi
     
-    [ -z "$APP_TYPE" ] && APP_TYPE="Vinted"
-    [ -z "$REGION" ] && REGION="HK"
-    [ -z "$NODE" ] && NODE="HK_061"
+    # ✅ Validation: Node and Region are required
+    if [ -z "$REGION" ]; then
+        echo "❌ [ERROR] 地区代码不能为空 (例如: HK, GB, SG, MY, PH)"
+        exit 1
+    fi
+    
+    if [ -z "$NODE" ]; then
+        echo "❌ [ERROR] 代理节点不能为空 (例如: HK_061, UK_London)"
+        exit 1
+    fi
 
     PKG=$(get_package_name "$APP_TYPE")
+    if [ -z "$PKG" ]; then
+        echo "❌ [ERROR] 未知的APP类型: $APP_TYPE"
+        exit 1
+    fi
+    
     DATA_INT="/data/data/$PKG"
     DATA_EXT="/sdcard/Android/data/$PKG"
     
-    echo "🆕 初始化 [$APP_TYPE | Region:$REGION | Node:$NODE]..."
+    echo "🆕 初始化新账号 [$NAME] [$APP_TYPE | Region:$REGION | Node:$NODE]..."
+    
+    # 🔄 NEW FEATURE: Save current account before creating new one
+    if [ -f "$CONF_FILE" ]; then
+        CURRENT_ACCOUNT=$(cat "$CONF_FILE" 2>/dev/null | grep '^AccountName=' | head -n 1 | cut -d= -f2- | tr -d '\r\n ')
+        
+        if [ ! -z "$CURRENT_ACCOUNT" ]; then
+            echo "💾 [Auto-Save] 检测到当前账号: $CURRENT_ACCOUNT"
+            echo "💾 [Auto-Save] 开始保存当前账号缓存..."
+            
+            # Get APP_TYPE from current config
+            CURRENT_APP_TYPE=$(cat "$CONF_FILE" 2>/dev/null | grep '^AppType=' | head -n 1 | cut -d= -f2- | tr -d '\r\n ')
+            if [ -z "$CURRENT_APP_TYPE" ]; then
+                CURRENT_APP_TYPE="$APP_TYPE"
+            fi
+            
+            CURRENT_PKG=$(get_package_name "$CURRENT_APP_TYPE")
+            
+            if [ ! -z "$CURRENT_PKG" ]; then
+                freeze_app "$CURRENT_PKG"
+                
+                BACKUP_PATH="$PROFILE_ROOT/${CURRENT_ACCOUNT}.tar.gz"
+                echo "📦 [Auto-Save] 创建备份: $BACKUP_PATH"
+                
+                rm -f "$BACKUP_PATH"
+                tar -czf "$BACKUP_PATH" \
+                    -C /data/data "$CURRENT_PKG" \
+                    -C /sdcard/Android/data "$CURRENT_PKG" \
+                    2>/dev/null || echo "⚠️ [Auto-Save] 部分数据无法备份（可能正常）"
+                
+                if [ -f "$BACKUP_PATH" ]; then
+                    chmod 666 "$BACKUP_PATH"
+                    echo "✅ [Auto-Save] 当前账号已保存"
+                else
+                    echo "⚠️ [Auto-Save] 备份创建失败，继续执行..."
+                fi
+                
+                unfreeze_app "$CURRENT_PKG"
+            fi
+        fi
+    fi
+    
+    # 🧹 Clean target app cache and storage
+    echo "🧹 [Clean] 清理目标APP环境: $PKG"
     freeze_app "$PKG"
+    
+    # ✅ pm clear 会清理数据但保留目录结构（避免闪退）
+    # ❌ 不要删除 /data/data/$PKG 目录本身，否则会破坏应用结构
     pm clear "$PKG" >/dev/null 2>&1
+    
+    # ✅ 只删除外部存储数据
     rm -rf "$DATA_EXT"
+    
+    # Google账号清理
     safe_remove_google_account
     
+    # 网络栈清理
     clean_network_stack
+    
+    # 切换代理
     switch_proxy "$NODE" "$REGION"
     
-    echo "🔨 指纹生成..."
+    # 🔨 Generate fingerprint with CORRECT region (fixes SIM mismatch)
+    echo "🔨 [Fingerprint] Generating for $APP_TYPE | Region: $REGION"
     sh "$GEN_SCRIPT" "$APP_TYPE" "$REGION"
     
+    if [ ! -f "$CONF_FILE" ]; then
+        echo "❌ [FATAL] gen.sh failed to create config file"
+        exit 1
+    fi
+    
+    # 写入配置
     echo "AccountName=$NAME" >> "$CONF_FILE"
-    echo "AppType=$APP_TYPE" >> "$CONF_FILE"
-    echo "Region=$REGION" >> "$CONF_FILE"
     echo "CurrentNode=$NODE" >> "$CONF_FILE"
+    echo "AppType=$APP_TYPE" >> "$CONF_FILE"
+    
+    # 保存配置副本
     cp "$CONF_FILE" "$PROFILE_ROOT/$NAME.conf"
     chmod 666 "$CONF_FILE" "$PROFILE_ROOT/$NAME.conf"
     
-    spoof_system_gms_ids
+    # 注入 GMS IDs
+    force_inject_gms_ads_id
     spoof_ssaid
+    
+    # GPS 同步
     sync_gps_from_ip 
     
+    # 修复权限
     APP_UID=$(cmd package list packages -U | grep "$PKG" | awk -F: '{print $3}' | tr -d ' ')
-    if [ ! -z "$APP_UID" ]; then fix_strict "$DATA_INT" "$APP_UID"; fi
+    if [ ! -z "$APP_UID" ]; then 
+        fix_strict "$DATA_INT" "$APP_UID"
+    fi
 
+    # 网络重置
     echo "✈️ 网络重置..."
-    cmd connectivity airplane-mode enable; sleep 1; cmd connectivity airplane-mode disable; sleep 3
+    cmd connectivity airplane-mode enable
+    sleep 1
+    cmd connectivity airplane-mode disable
+    sleep 3
     
+    # 清理干扰应用
     kill_interfering_apps
+    
+    # 解冻应用
     unfreeze_app "$PKG"
     
-    echo "✅ 新环境就绪 (New模式不自动拉起APP)"
+    echo "✅ 新环境就绪: $NAME (New模式不自动拉起APP)"
+    echo "📋 账号信息: APP=$APP_TYPE, Region=$REGION, Node=$NODE"
 fi
+
 
 # === LOAD (加载) ===
 if [ "$ACTION" = "load" ]; then
@@ -282,10 +459,8 @@ if [ "$ACTION" = "load" ]; then
     # --- 🛡️ 自动防丢检查 (Auto-Save Guard) ---
     if [ -f "$CONF_FILE" ]; then
         CURRENT_NAME=$(grep "AccountName=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
-        # 如果当前有账号，且当前账号不是我们要加载的那个账号，则先保存
         if [ ! -z "$CURRENT_NAME" ] && [ "$CURRENT_NAME" != "$NAME" ]; then
             echo "⚠️ 检测到当前活跃环境: [$CURRENT_NAME]"
-            # 调用保存函数
             execute_save_logic "$CURRENT_NAME"
         fi
     fi
@@ -309,23 +484,56 @@ if [ "$ACTION" = "load" ]; then
     echo "♻️ 还原 [$NAME] -> 节点: $SAVED_NODE..."
     
     freeze_app "$PKG"
-    find "$DATA_INT" -mindepth 1 -maxdepth 1 ! -name 'lib' -exec rm -rf {} +
-    rm -rf "$DATA_DE" "$DATA_EXT"
+    
+    # 🔒 安全清理：只删除内容，保留目录结构（避免破坏 Inode 和 SELinux 上下文）
+    # ✅ 清理 /data/data/$PKG 的内容（保留 lib 目录和目录本身）
+    if [ -d "$DATA_INT" ]; then
+        find "$DATA_INT" -mindepth 1 -maxdepth 1 ! -name 'lib' -exec rm -rf {} + 2>/dev/null
+    fi
+    
+    # ✅ 清理 /data/user_de/0/$PKG 的内容（不删除目录本身）
+    if [ -d "$DATA_DE" ]; then
+        find "$DATA_DE" -mindepth 1 -delete 2>/dev/null
+    fi
+    
+    # ✅ 外部存储可以完全删除（会被 tar 重建）
+    rm -rf "$DATA_EXT"
+    
+    # Google账号清理
     safe_remove_google_account
     
+    # Extract backup
+    echo "📦 [Restore] Extracting backup..."
     tar -xzf "$ARCHIVE" -C /
     
-    if [ -f "$PROFILE" ]; then cp "$PROFILE" "$CONF_FILE"; chmod 666 "$CONF_FILE"; restorecon "$CONF_FILE"; fi
+    if [ $? -ne 0 ]; then
+        echo "❌ [FATAL] Backup extraction failed"
+        exit 1
+    fi
     
+    # Restore profile config
+    if [ -f "$PROFILE" ]; then 
+        cp "$PROFILE" "$CONF_FILE"
+        chmod 666 "$CONF_FILE"
+        restorecon "$CONF_FILE"
+    fi
+    
+    # Network setup
     clean_network_stack
     switch_proxy "$SAVED_NODE" "$REGION"
     sync_gps_from_ip
     
+    # Fix permissions
     fix_strict "$DATA_INT" "$APP_UID"
     fix_strict "$DATA_DE" "$APP_UID"
-    if [ -d "$DATA_EXT" ]; then chown -R media_rw:media_rw "$DATA_EXT"; fi
+    if [ -d "$DATA_EXT" ]; then 
+        chown -R media_rw:media_rw "$DATA_EXT"
+        restorecon -R "$DATA_EXT" 2>/dev/null
+    fi
     
-    spoof_system_gms_ids
+    # 🔥 CRITICAL: Force-inject GMS Ads ID after restore
+    # This ensures the Ads ID from config overwrites any restored GMS data
+    force_inject_gms_ads_id
     spoof_ssaid
     
     echo "✈️ 刷新网络..."
@@ -347,8 +555,7 @@ if [ "$ACTION" = "save" ]; then
     execute_save_logic "$NAME"
     
     # 如果是手动保存，解冻 APP 方便继续使用
-    PROFILE="$PROFILE_ROOT/${NAME}.conf"
-    if [ -f "$PROFILE" ]; then APP_TYPE=$(grep "AppType=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n '); fi
+    APP_TYPE=$(grep "AppType=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
     [ -z "$APP_TYPE" ] && APP_TYPE="Vinted"
     PKG=$(get_package_name "$APP_TYPE")
     unfreeze_app "$PKG"

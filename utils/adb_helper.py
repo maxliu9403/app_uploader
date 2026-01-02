@@ -199,6 +199,10 @@ class ADBHelper:
             else:
                 adb_cmd.extend(['shell', command])
             
+            # 🔥 记录完整的ADB命令到日志
+            cmd_str = ' '.join(adb_cmd)
+            logger.info(f"🔧 执行ADB命令: {cmd_str}")
+            
             result = subprocess.run(
                 adb_cmd,
                 stdout=subprocess.PIPE,
@@ -210,10 +214,21 @@ class ADBHelper:
                 creationflags=0x08000000 if os.name == 'nt' else 0
             )
             
+            # 记录命令结果
+            logger.info(f"   └─ 返回码: {result.returncode}")
+            if result.stdout and len(result.stdout.strip()) > 0:
+                stdout_preview = result.stdout[:200] if len(result.stdout) > 200 else result.stdout
+                logger.info(f"   └─ 输出: {stdout_preview}")
+            if result.stderr and len(result.stderr.strip()) > 0:
+                stderr_preview = result.stderr[:200] if len(result.stderr) > 200 else result.stderr
+                logger.warning(f"   └─ 错误: {stderr_preview}")
+            
             return result.returncode, result.stdout, result.stderr
             
         except subprocess.TimeoutExpired:
+            logger.error(f"⏱️ ADB命令执行超时 (>{timeout}s)")
             return -1, "", "命令执行超时"
         except Exception as e:
+            logger.error(f"❌ ADB命令执行异常: {str(e)}")
             return -1, "", str(e)
 

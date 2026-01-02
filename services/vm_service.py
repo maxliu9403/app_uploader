@@ -60,6 +60,19 @@ class VMService:
     def get_config_value(self, field_name, device_id=None):
         """从设备读取配置值"""
         try:
+            # 先检查设备连接状态
+            if device_id:
+                devices = self.adb_helper.get_devices()
+                if not any(d['id'] == device_id for d in devices):
+                    logger.error(f"设备 {device_id} 未连接")
+                    return False, f'设备 {device_id} 未连接'
+            else:
+                # 如果没有指定设备ID，检查是否有任何设备连接
+                devices = self.adb_helper.get_devices()
+                if not devices:
+                    logger.error("未找到任何ADB设备")
+                    return False, '未找到任何ADB设备'
+            
             config_file_path = self.path_manager.get_vm_accounts_file_path()
             command = f"cat {config_file_path} 2>/dev/null | grep '^{field_name}=' | head -n 1 | cut -d= -f2- | tr -d '\\r\\n '"
             
@@ -84,8 +97,23 @@ class VMService:
     def get_account_list(self, device_id=None):
         """获取 VM 账号列表"""
         try:
+            # 先检查设备连接状态
+            if device_id:
+                devices = self.adb_helper.get_devices()
+                if not any(d['id'] == device_id for d in devices):
+                    logger.error(f"设备 {device_id} 未连接")
+                    return False, f'设备 {device_id} 未连接'
+            else:
+                devices = self.adb_helper.get_devices()
+                if not devices:
+                    logger.error("未找到任何ADB设备")
+                    return False, '未找到任何ADB设备'
+            
             config_path = self.path_manager.get_vm_model_config_path().rstrip('/') + '/'
+            logger.info(f"🔍 查找VM账号配置路径: {config_path}")
+            
             command = f"ls -1 {config_path}*.conf 2>/dev/null | xargs -n1 basename 2>/dev/null | sed 's/\\.conf$//' || echo ''"
+            logger.info(f"🔍 执行命令: {command}")
             
             returncode, stdout, stderr = self.adb_helper.execute_shell_command(
                 command=command,
@@ -94,6 +122,11 @@ class VMService:
                 timeout=10
             )
             
+            logger.info(f"🔍 命令返回码: {returncode}")
+            logger.info(f"🔍 命令输出: {stdout[:200] if stdout else '(空)'}...")
+            if stderr:
+                logger.warning(f"⚠️ 命令错误输出: {stderr[:200]}...")
+            
             if returncode == 0:
                 accounts = []
                 for line in stdout.strip().split('\n'):
@@ -101,57 +134,21 @@ class VMService:
                     if account_name:
                         accounts.append(account_name)
                 
-                logger.info(f"成功获取账号列表: {len(accounts)} 个账号")
+                logger.info(f"✅ 成功获取账号列表: {len(accounts)} 个账号")
+                if accounts:
+                    logger.info(f"   账号列表: {', '.join(accounts[:5])}{'...' if len(accounts) > 5 else ''}")
                 return True, accounts
             else:
-                logger.warning("获取账号列表失败或目录为空")
+                logger.warning(f"⚠️ 获取账号列表失败，返回码: {returncode}")
                 return True, []
         except Exception as e:
-            logger.error(f"获取账号列表失败: {str(e)}", exc_info=True)
+            logger.error(f"❌ 获取账号列表失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def get_proxy_names_by_region(self, region=None):
-        """获取代理节点名称列表（根据地区过滤）"""
-        try:
-            if not self.config_manager:
-                logger.warning("ConfigManager 未初始化，无法获取代理列表")
-                return False, "ConfigManager 未初始化"
-            
-            # 加载配置
-            config = self.config_manager.load()
-            proxies = config.get('proxies', [])
-            
-            if not proxies:
-                logger.info("配置文件中没有代理")
-                return True, []
-            
-            # 过滤代理
-            from utils.yaml_helper import is_transit_proxy
-            
-            proxy_names = []
-            for proxy in proxies:
-                # 跳过中转线路
-                if is_transit_proxy(proxy):
-                    continue
-                
-                proxy_name = proxy.get('name')
-                if not proxy_name:
-                    continue
-                
-                # 如果指定了地区，进行过滤
-                if region:
-                    proxy_region = proxy.get('Region') or proxy.get('region') or ''
-                    if proxy_region.upper() != region.upper():
-                        continue
-                
-                proxy_names.append(proxy_name)
-            
-            logger.info(f"成功获取代理名称列表: {len(proxy_names)} 个代理（地区: {region or '全部'}）")
-            return True, proxy_names
-            
-        except Exception as e:
-            logger.error(f"获取代理名称列表失败: {str(e)}", exc_info=True)
-            return False, str(e)
+    
+    # 已废弃: get_proxy_names_by_region 方法
+    # 前端已改用 ProxyService.get_all_proxies() 通过 /api/proxies 接口
+    # 该方法不支持 device_id 参数，导致无法按设备过滤代理
     
     # 注意：create_account, load_account, save_account 等涉及 SSE 流式响应的方法
     # 建议保留原 proxy_manager.py 中的实现，在路由层直接调用

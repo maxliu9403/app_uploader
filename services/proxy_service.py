@@ -389,6 +389,7 @@ class ProxyService:
             region = data.get('region', '').strip().upper()
             name_prefix = data.get('name_prefix', '').strip()
             dialer_proxy = data.get('dialer_proxy', '').strip()
+            is_bak = data.get('is_bak', False)  # 是否为备用线路
             
             lines_count = len([l for l in proxy_lines.split('\n') if l.strip()])
             logger.info(f"   数据行数: {lines_count}")
@@ -396,6 +397,7 @@ class ProxyService:
             logger.info(f"   地区: {region}")
             logger.info(f"   名称前缀: {name_prefix}")
             logger.info(f"   中转线路: {dialer_proxy or '无'}")
+            logger.info(f"   是否备用线路: {'是' if is_bak else '否'}")
             
             # 验证参数
             logger.info("   🔍 验证批量导入参数...")
@@ -468,6 +470,7 @@ class ProxyService:
                     'password': proxy_data['password'],
                     'skip-cert-verify': True,
                     'udp': True,
+                    'IsBak': bool(is_bak),  # 设置是否为备用线路
                 }
                 
                 if dialer_proxy:
@@ -580,6 +583,14 @@ class ProxyService:
                 new_proxy['dialer-proxy'] = data['dialer-proxy']
         elif old_proxy and 'dialer-proxy' in old_proxy:
             new_proxy['dialer-proxy'] = old_proxy['dialer-proxy']
+        
+        # 处理 IsBak（是否为备用线路）
+        if 'is_bak' in data:
+            new_proxy['IsBak'] = bool(data['is_bak'])
+        elif old_proxy and 'IsBak' in old_proxy:
+            new_proxy['IsBak'] = old_proxy['IsBak']
+        else:
+            new_proxy['IsBak'] = False
         
         return new_proxy
     

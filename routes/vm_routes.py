@@ -75,49 +75,10 @@ def create_blueprint(vm_service):
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)}), 500
     
-    @bp.route('/proxy-names', methods=['GET'])
-    def get_proxy_names():
-        """
-        获取代理节点名称列表（根据地区过滤）
-        ---
-        tags:
-          - VM账号
-        parameters:
-          - name: region
-            in: query
-            type: string
-            required: false
-            description: 地区代码（可选，用于过滤）
-            example: "US"
-        responses:
-          200:
-            description: 成功返回代理节点名称列表
-            schema:
-              type: object
-              properties:
-                success:
-                  type: boolean
-                  example: true
-                data:
-                  type: array
-                  items:
-                    type: string
-                  description: 代理节点名称列表
-                  example: ["proxy_us_01", "proxy_us_02"]
-          500:
-            description: 服务器错误
-        """
-        try:
-            region = request.args.get('region', '').strip().upper()
-            
-            # 调用 vm_service 获取代理名称列表
-            success, result = vm_service.get_proxy_names_by_region(region)
-            if success:
-                return jsonify({'success': True, 'data': result})
-            else:
-                return jsonify({'success': False, 'error': result}), 500
-        except Exception as e:
-            return jsonify({'success': False, 'error': str(e)}), 500
+    
+    # 已废弃: /proxy-names 接口
+    # 前端已改用 /api/proxies 接口，该接口支持 device_id 参数
+    # 原接口不支持按设备过滤，导致数据错误
     
     @bp.route('/get-config-value', methods=['GET'])
     def get_config_value():

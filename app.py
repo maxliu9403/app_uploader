@@ -468,11 +468,12 @@ def vm_load_account():
     
     # ⚠️ 重要：在生成器外部获取请求数据
     data = request.json
-    
+
     def generate(data):
         try:
             name = data.get('name', '').strip()
             device_id = data.get('device_id', '').strip()
+            logger.info(f"🔍 VM Load - Name: {name}, Device ID: {device_id or 'NOT PROVIDED'}")
             
             if not name:
                 yield f"data: {to_json({'type': 'error', 'message': '账号名称不能为空'})}\n\n"
