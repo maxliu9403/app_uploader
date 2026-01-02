@@ -382,13 +382,9 @@ if [ "$ACTION" = "new" ]; then
     # 🧹 Clean target app cache and storage
     echo "🧹 [Clean] 清理目标APP环境: $PKG"
     freeze_app "$PKG"
-    
-    # ✅ pm clear 会清理数据但保留目录结构（避免闪退）
-    # ❌ 不要删除 /data/data/$PKG 目录本身，否则会破坏应用结构
     pm clear "$PKG" >/dev/null 2>&1
-    
-    # ✅ 只删除外部存储数据
     rm -rf "$DATA_EXT"
+    rm -rf "$DATA_INT"  # Also clean internal data
     
     # Google账号清理
     safe_remove_google_account
@@ -484,22 +480,8 @@ if [ "$ACTION" = "load" ]; then
     echo "♻️ 还原 [$NAME] -> 节点: $SAVED_NODE..."
     
     freeze_app "$PKG"
-    
-    # 🔒 安全清理：只删除内容，保留目录结构（避免破坏 Inode 和 SELinux 上下文）
-    # ✅ 清理 /data/data/$PKG 的内容（保留 lib 目录和目录本身）
-    if [ -d "$DATA_INT" ]; then
-        find "$DATA_INT" -mindepth 1 -maxdepth 1 ! -name 'lib' -exec rm -rf {} + 2>/dev/null
-    fi
-    
-    # ✅ 清理 /data/user_de/0/$PKG 的内容（不删除目录本身）
-    if [ -d "$DATA_DE" ]; then
-        find "$DATA_DE" -mindepth 1 -delete 2>/dev/null
-    fi
-    
-    # ✅ 外部存储可以完全删除（会被 tar 重建）
-    rm -rf "$DATA_EXT"
-    
-    # Google账号清理
+    find "$DATA_INT" -mindepth 1 -maxdepth 1 ! -name 'lib' -exec rm -rf {} +
+    rm -rf "$DATA_DE" "$DATA_EXT"
     safe_remove_google_account
     
     # Extract backup
