@@ -1,0 +1,75 @@
+# 地区管理 API 文档
+
+# GET /api/regions
+get_regions:
+  tags:
+    - 地区管理
+  summary: 获取所有地区
+  responses:
+    200:
+      description: 成功返回地区列表
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: array
+            items:
+              type: object
+              properties:
+                code:
+                  type: string
+                  example: "HK"
+                name:
+                  type: string
+                  example: "香港"
+    500:
+      description: 服务器错误
+
+# POST /api/regions
+add_region:
+  tags:
+    - 地区管理
+  summary: 添加新地区
+  parameters:
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+        required:
+          - code
+          - name
+        properties:
+          code:
+            type: string
+            example: "US"
+          name:
+            type: string
+            example: "美国"
+  responses:
+    200:
+      description: 地区添加成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# DELETE /api/regions/{code}
+delete_region:
+  tags:
+    - 地区管理
+  summary: 删除地区
+  parameters:
+    - name: code
+      in: path
+      type: string
+      required: true
+  responses:
+    200:
+      description: 删除成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误

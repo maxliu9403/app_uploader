@@ -56,33 +56,9 @@ swagger_config = {
     "specs_route": "/api/docs"
 }
 
-swagger_template = {
-    "swagger": "2.0",
-    "info": {
-        "title": "Proxy Manager API",
-        "description": "代理管理系统 API 文档 - 提供代理、中转线路、VM账号、设备和地区管理等功能",
-        "version": "1.0.0",
-        "contact": {
-            "name": "API Support"
-        }
-    },
-    "host": "localhost:5000",
-    "basePath": "/",
-    "schemes": [
-        "http",
-        "https"
-    ],
-    "tags": [
-        {"name": "代理管理", "description": "普通代理的增删改查操作"},
-        {"name": "中转线路", "description": "中转线路的管理操作"},
-        {"name": "VM账号", "description": "虚拟机账号的创建、加载、保存等操作"},
-        {"name": "设备管理", "description": "Android设备的管理和配置"},
-        {"name": "地区管理", "description": "地区代码和名称的管理"},
-        {"name": "配置管理", "description": "系统路径和配置的管理"}
-    ]
-}
+# 使用外部YAML文件作为API文档模板
+swagger = Swagger(app, config=swagger_config, template_file='docs/swagger/api_spec.yml')
 
-swagger = Swagger(app, config=swagger_config, template=swagger_template)
 
 # ==================== 初始化核心组件 ====================
 
@@ -274,10 +250,18 @@ def vm_create_account():
                 yield f"data: {to_json({'type': 'error', 'message': 'ADB 路径未配置'})}\n\n"
                 return
             
-            # 构建 ADB 命令
-            args = ['new', name, app_type, node, region]
-            escaped_args = ' '.join([shlex.quote(arg) for arg in args])
-            shell_cmd = f"su -c 'sh {vm_script_path} {escaped_args}'"
+            # 构建 ADB 命令 - 使用双引号包裹整个命令，内部参数用双引号转义
+            # 将特殊字符进行转义处理
+            def escape_for_shell(s):
+                # 在双引号内转义: $ ` \ " 以及其他特殊字符
+                return s.replace('\\', '\\\\').replace('"', '\\"').replace('$', '\\$').replace('`', '\\`')
+            
+            escaped_name = escape_for_shell(name)
+            escaped_app_type = escape_for_shell(app_type)
+            escaped_node = escape_for_shell(node)
+            escaped_region = escape_for_shell(region)
+            
+            shell_cmd = f'su -c "sh {vm_script_path} new \\"{escaped_name}\\" \\"{escaped_app_type}\\" \\"{escaped_node}\\" \\"{escaped_region}\\""'
             
             cmd = [adb_path, 'shell', shell_cmd]
             if device_id:
@@ -384,9 +368,12 @@ def vm_save_account():
             adb_path = path_manager.get_adb_path()
             vm_script_path = path_manager.get_vm_script_path()
             
-            args = ['save', account_name]
-            escaped_args = ' '.join([shlex.quote(arg) for arg in args])
-            shell_cmd = f"su -c 'sh {vm_script_path} {escaped_args}'"
+            # 转义特殊字符
+            def escape_for_shell(s):
+                return s.replace('\\', '\\\\').replace('"', '\\"').replace('$', '\\$').replace('`', '\\`')
+            
+            escaped_account_name = escape_for_shell(account_name)
+            shell_cmd = f'su -c "sh {vm_script_path} save \\"{escaped_account_name}\\""'
             
             cmd = [adb_path, 'shell', shell_cmd]
             if device_id:
@@ -483,9 +470,12 @@ def vm_load_account():
             adb_path = path_manager.get_adb_path()
             vm_script_path = path_manager.get_vm_script_path()
             
-            args = ['load', name]
-            escaped_args = ' '.join([shlex.quote(arg) for arg in args])
-            shell_cmd = f"su -c 'sh {vm_script_path} {escaped_args}'"
+            # 转义特殊字符
+            def escape_for_shell(s):
+                return s.replace('\\', '\\\\').replace('"', '\\"').replace('$', '\\$').replace('`', '\\`')
+            
+            escaped_name = escape_for_shell(name)
+            shell_cmd = f'su -c "sh {vm_script_path} load \\"{escaped_name}\\""'
             
             cmd = [adb_path, 'shell', shell_cmd]
             if device_id:

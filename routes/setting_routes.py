@@ -62,7 +62,7 @@ def create_blueprint(path_manager, setting_manager):
         """
         try:
             settings = {
-                'config_file_path': path_manager.get_config_file(),
+                'config_file_path': path_manager.get_config_file_path(),
                 'vm_script_path': path_manager.get_vm_script_path(),
                 'adb_path': path_manager.get_adb_path(),
                 'vm_accounts_file_path': path_manager.get_vm_accounts_file_path(),

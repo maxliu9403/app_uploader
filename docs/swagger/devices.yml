@@ -1,0 +1,93 @@
+# 设备管理 API 文档
+
+# GET /api/devices
+get_devices:
+  tags:
+    - 设备管理
+  summary: 获取已连接的设备列表
+  responses:
+    200:
+      description: 成功返回设备列表
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: array
+            items:
+              type: object
+              properties:
+                device_id:
+                  type: string
+                status:
+                  type: string
+    500:
+      description: 服务器错误
+
+# GET /api/device-configs
+get_device_configs:
+  tags:
+    - 设备管理
+  summary: 获取已保存的设备配置
+  responses:
+    200:
+      description: 成功返回设备配置列表
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: array
+            items:
+              type: object
+              properties:
+                device_id:
+                  type: string
+                remark:
+                  type: string
+    500:
+      description: 服务器错误
+
+# POST /api/device-configs
+add_device_config:
+  tags:
+    - 设备管理
+  summary: 添加或更新设备配置
+  parameters:
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+        properties:
+          device_id:
+            type: string
+          remark:
+            type: string
+  responses:
+    200:
+      description: 设备配置成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# DELETE /api/device-configs/{device_id}
+delete_device_config:
+  tags:
+    - 设备管理
+  summary: 删除设备配置
+  parameters:
+    - name: device_id
+      in: path
+      type: string
+      required: true
+  responses:
+    200:
+      description: 删除成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误

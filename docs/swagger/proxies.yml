@@ -1,0 +1,210 @@
+# 代理管理 API 文档
+
+# GET /api/proxies
+get_proxies:
+  tags:
+    - 代理管理
+  summary: 获取所有普通代理
+  parameters:
+    - name: device_id
+      in: query
+      type: string
+      required: false
+      description: 设备ID
+  responses:
+    200:
+      description: 成功返回代理列表
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                server:
+                  type: string
+                port:
+                  type: integer
+                region:
+                  type: string
+    500:
+      description: 服务器错误
+
+# POST /api/proxies
+add_proxy:
+  tags:
+    - 代理管理
+  summary: 添加新代理
+  parameters:
+    - name: device_id
+      in: query
+      type: string
+      required: true
+      description: 设备ID
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+        required:
+          - name
+          - server
+          - port
+        properties:
+          name:
+            type: string
+          type:
+            type: string
+            enum: [socks5, http, ss, vmess, trojan]
+          server:
+            type: string
+          port:
+            type: integer
+          username:
+            type: string
+          password:
+            type: string
+          region:
+            type: string
+          dialer-proxy:
+            type: string
+  responses:
+    200:
+      description: 代理添加成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# POST /api/proxies/batch
+batch_add_proxies:
+  tags:
+    - 代理管理
+  summary: 批量添加代理
+  parameters:
+    - name: device_id
+      in: query
+      type: string
+      required: true
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+        properties:
+          proxies:
+            type: array
+            items:
+              type: object
+  responses:
+    200:
+      description: 批量添加成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# PUT /api/proxies/{index}
+update_proxy:
+  tags:
+    - 代理管理
+  summary: 更新代理（通过索引）
+  parameters:
+    - name: index
+      in: path
+      type: integer
+      required: true
+    - name: device_id
+      in: query
+      type: string
+      required: true
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+  responses:
+    200:
+      description: 更新成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# PUT /api/proxies/name/{proxy_name}
+update_proxy_by_name:
+  tags:
+    - 代理管理
+  summary: 更新代理（通过名称）
+  parameters:
+    - name: proxy_name
+      in: path
+      type: string
+      required: true
+    - name: device_id
+      in: query
+      type: string
+      required: true
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+  responses:
+    200:
+      description: 更新成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# DELETE /api/proxies/{index}
+delete_proxy:
+  tags:
+    - 代理管理
+  summary: 删除代理（通过索引）
+  parameters:
+    - name: index
+      in: path
+      type: integer
+      required: true
+    - name: device_id
+      in: query
+      type: string
+      required: true
+  responses:
+    200:
+      description: 删除成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# DELETE /api/proxies/name/{proxy_name}
+delete_proxy_by_name:
+  tags:
+    - 代理管理
+  summary: 删除代理（通过名称）
+  parameters:
+    - name: proxy_name
+      in: path
+      type: string
+      required: true
+    - name: device_id
+      in: query
+      type: string
+      required: true
+  responses:
+    200:
+      description: 删除成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误

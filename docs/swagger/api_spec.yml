@@ -1,0 +1,378 @@
+swagger: "2.0"
+info:
+  title: Proxy Manager API
+  description: 代理管理系统 API 文档 - 提供代理、中转线路、VM账号、设备和地区管理等功能
+  version: "1.0.0"
+host: localhost:5000
+basePath: /
+schemes:
+  - http
+  - https
+
+tags:
+  - name: 代理管理
+    description: 普通代理的增删改查操作
+  - name: 中转线路
+    description: 中转线路的管理操作
+  - name: VM账号
+    description: 虚拟机账号的创建、加载、保存等操作
+  - name: 设备管理
+    description: Android设备的管理和配置
+  - name: 地区管理
+    description: 地区代码和名称的管理
+
+paths:
+  # ========== 代理管理 ==========
+  /api/proxies:
+    get:
+      tags: [代理管理]
+      summary: 获取所有普通代理
+      parameters:
+        - name: device_id
+          in: query
+          type: string
+          required: false
+      responses:
+        200:
+          description: 成功返回代理列表
+    post:
+      tags: [代理管理]
+      summary: 添加新代理
+      parameters:
+        - name: device_id
+          in: query
+          type: string
+          required: true
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+      responses:
+        200:
+          description: 添加成功
+          
+  /api/proxies/batch:
+    post:
+      tags: [代理管理]
+      summary: 批量添加代理
+      responses:
+        200:
+          description: 批量添加成功
+          
+  /api/proxies/{index}:
+    put:
+      tags: [代理管理]
+      summary: 更新代理（通过索引）
+      parameters:
+        - name: index
+          in: path
+          type: integer
+          required: true
+      responses:
+        200:
+          description: 更新成功
+    delete:
+      tags: [代理管理]
+      summary: 删除代理（通过索引）
+      parameters:
+        - name: index
+          in: path
+          type: integer
+          required: true
+      responses:
+        200:
+          description: 删除成功
+          
+  /api/proxies/by-name/{proxy_name}:
+    put:
+      tags: [代理管理]
+      summary: 更新代理（通过名称）
+      parameters:
+        - name: proxy_name
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: 更新成功
+    delete:
+      tags: [代理管理]
+      summary: 删除代理（通过名称）
+      parameters:
+        - name: proxy_name
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: 删除成功
+
+  # ========== 中转线路 ==========
+  /api/transit-proxies:
+    get:
+      tags: [中转线路]
+      summary: 获取所有中转线路
+      responses:
+        200:
+          description: 成功返回中转线路列表
+    post:
+      tags: [中转线路]
+      summary: 添加中转线路
+      responses:
+        200:
+          description: 添加成功
+          
+  /api/transit-proxies/names:
+    get:
+      tags: [中转线路]
+      summary: 获取中转线路名称列表
+      responses:
+        200:
+          description: 成功返回名称列表
+          
+  /api/transit-proxies/{index}:
+    put:
+      tags: [中转线路]
+      summary: 更新中转线路
+      parameters:
+        - name: index
+          in: path
+          type: integer
+          required: true
+      responses:
+        200:
+          description: 更新成功
+    delete:
+      tags: [中转线路]
+      summary: 删除中转线路
+      parameters:
+        - name: index
+          in: path
+          type: integer
+          required: true
+      responses:
+        200:
+          description: 删除成功
+
+  # ========== VM账号 ==========
+  /api/vm/generate-account-name:
+    get:
+      tags: [VM账号]
+      summary: 生成 VM 账号名称
+      parameters:
+        - name: app_type
+          in: query
+          type: string
+          required: true
+        - name: region
+          in: query
+          type: string
+          required: true
+        - name: device_id
+          in: query
+          type: string
+          required: false
+        - name: device_remark
+          in: query
+          type: string
+          required: false
+      responses:
+        200:
+          description: 成功生成账号名称
+          
+  /api/vm/get-config-value:
+    get:
+      tags: [VM账号]
+      summary: 获取设备配置值
+      parameters:
+        - name: field_name
+          in: query
+          type: string
+          required: true
+        - name: device_id
+          in: query
+          type: string
+          required: false
+      responses:
+        200:
+          description: 成功获取配置值
+          
+  /api/vm/account-list:
+    get:
+      tags: [VM账号]
+      summary: 获取 VM 账号列表（支持过滤）
+      description: 获取账号列表，支持按 app_type 和 region 过滤，返回分组数据和可用过滤选项
+      parameters:
+        - name: device_id
+          in: query
+          type: string
+          required: false
+          description: 设备ID
+        - name: app_type
+          in: query
+          type: string
+          required: false
+          description: 按App类型过滤（如 Carousell、Vinted）
+        - name: region
+          in: query
+          type: string
+          required: false
+          description: 按地区过滤（如 HK、GB）
+      responses:
+        200:
+          description: 成功返回账号列表
+          
+  /api/vm/new:
+    post:
+      tags: [VM账号]
+      summary: 创建新 VM 账号（SSE流式响应）
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              app_type:
+                type: string
+              node:
+                type: string
+              region:
+                type: string
+              device_id:
+                type: string
+      responses:
+        200:
+          description: SSE流式响应
+          
+  /api/vm/save:
+    post:
+      tags: [VM账号]
+      summary: 保存 VM 账号（SSE流式响应）
+      parameters:
+        - name: body
+          in: body
+          required: false
+          schema:
+            type: object
+            properties:
+              device_id:
+                type: string
+      responses:
+        200:
+          description: SSE流式响应
+          
+  /api/vm/load:
+    post:
+      tags: [VM账号]
+      summary: 加载 VM 账号（SSE流式响应）
+      parameters:
+        - name: body
+          in: body
+          required: true
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+              device_id:
+                type: string
+      responses:
+        200:
+          description: SSE流式响应
+
+  # ========== 设备管理 ==========
+  /api/devices:
+    get:
+      tags: [设备管理]
+      summary: 获取已连接的设备列表
+      responses:
+        200:
+          description: 成功返回设备列表
+          
+  /api/device-configs:
+    get:
+      tags: [设备管理]
+      summary: 获取已保存的设备配置
+      responses:
+        200:
+          description: 成功返回配置列表
+    post:
+      tags: [设备管理]
+      summary: 添加或更新设备配置
+      responses:
+        200:
+          description: 配置成功
+          
+  /api/device-configs/{device_id}:
+    delete:
+      tags: [设备管理]
+      summary: 删除设备配置
+      parameters:
+        - name: device_id
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: 删除成功
+
+  /api/current-device:
+    get:
+      tags: [设备管理]
+      summary: 获取当前选中的设备
+      responses:
+        200:
+          description: 成功返回当前设备
+    post:
+      tags: [设备管理]
+      summary: 设置当前选中的设备
+      responses:
+        200:
+          description: 设置成功
+
+  # ========== 地区管理 ==========
+  /api/regions:
+    get:
+      tags: [地区管理]
+      summary: 获取所有地区
+      responses:
+        200:
+          description: 成功返回地区列表
+    post:
+      tags: [地区管理]
+      summary: 添加新地区
+      responses:
+        200:
+          description: 添加成功
+          
+  /api/regions/{code}:
+    delete:
+      tags: [地区管理]
+      summary: 删除地区
+      parameters:
+        - name: code
+          in: path
+          type: string
+          required: true
+      responses:
+        200:
+          description: 删除成功
+
+  # ========== 配置管理 ==========
+  /api/path-settings:
+    get:
+      tags: [配置管理]
+      summary: 获取系统路径配置
+      responses:
+        200:
+          description: 成功返回配置
+    post:
+      tags: [配置管理]
+      summary: 更新系统路径配置
+      responses:
+        200:
+          description: 更新成功

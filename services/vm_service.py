@@ -117,8 +117,8 @@ class VMService:
             logger.error(f"获取配置值失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def get_account_list(self, device_id=None):
-        """获取 VM 账号列表"""
+    def get_account_list(self, device_id=None, app_type=None, region=None):
+        """获取 VM 账号列表（支持按 app_type 和 region 过滤）"""
         try:
             # 先检查设备连接状态
             if device_id:
@@ -151,19 +151,70 @@ class VMService:
                 logger.warning(f"⚠️ 命令错误输出: {stderr[:200]}...")
             
             if returncode == 0:
-                accounts = []
+                all_accounts = []
+                grouped = {}  # {app_type: {region: [accounts]}}
+                app_types_set = set()
+                regions_set = set()
+                
                 for line in stdout.strip().split('\n'):
                     account_name = line.strip()
                     if account_name:
-                        accounts.append(account_name)
+                        # 解析账号名称: AppType_Region_deviceId(remark)_number
+                        parts = account_name.split('_')
+                        if len(parts) >= 2:
+                            parsed_app_type = parts[0]
+                            parsed_region = parts[1]
+                        else:
+                            parsed_app_type = 'Unknown'
+                            parsed_region = 'Unknown'
+                        
+                        # 收集所有可用的过滤选项
+                        app_types_set.add(parsed_app_type)
+                        regions_set.add(parsed_region)
+                        
+                        # 按 app_type -> region 分组
+                        if parsed_app_type not in grouped:
+                            grouped[parsed_app_type] = {}
+                        if parsed_region not in grouped[parsed_app_type]:
+                            grouped[parsed_app_type][parsed_region] = []
+                        grouped[parsed_app_type][parsed_region].append(account_name)
+                        
+                        all_accounts.append(account_name)
                 
-                logger.info(f"✅ 成功获取账号列表: {len(accounts)} 个账号")
-                if accounts:
-                    logger.info(f"   账号列表: {', '.join(accounts[:5])}{'...' if len(accounts) > 5 else ''}")
-                return True, accounts
+                # 根据过滤条件筛选账号
+                filtered_accounts = []
+                for account_name in all_accounts:
+                    parts = account_name.split('_')
+                    if len(parts) >= 2:
+                        parsed_app_type = parts[0]
+                        parsed_region = parts[1]
+                    else:
+                        parsed_app_type = 'Unknown'
+                        parsed_region = 'Unknown'
+                    
+                    # 应用过滤条件
+                    if app_type and parsed_app_type != app_type:
+                        continue
+                    if region and parsed_region != region:
+                        continue
+                    filtered_accounts.append(account_name)
+                
+                logger.info(f"✅ 成功获取账号列表: 共{len(all_accounts)}个, 过滤后{len(filtered_accounts)}个")
+                
+                # 返回包含过滤选项和过滤后账号的结构
+                return True, {
+                    'accounts': filtered_accounts,
+                    'grouped': grouped,
+                    'total': len(all_accounts),
+                    'filtered_total': len(filtered_accounts),
+                    'filters': {
+                        'app_types': sorted(list(app_types_set)),
+                        'regions': sorted(list(regions_set))
+                    }
+                }
             else:
                 logger.warning(f"⚠️ 获取账号列表失败，返回码: {returncode}")
-                return True, []
+                return True, {'accounts': [], 'grouped': {}, 'total': 0, 'filtered_total': 0, 'filters': {'app_types': [], 'regions': []}}
         except Exception as e:
             logger.error(f"❌ 获取账号列表失败: {str(e)}", exc_info=True)
             return False, str(e)

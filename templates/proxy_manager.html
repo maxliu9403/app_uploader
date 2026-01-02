@@ -1515,26 +1515,52 @@ user3:pass3:proxy3.com:8080
     </div>
 
     <div id="vm-load-modal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" style="max-width: 600px;">
             <div class="modal-header">
                 <h2>♻️ 加载账号</h2>
                 <button class="close-btn" onclick="closeVMModal('load')">&times;</button>
             </div>
             <form onsubmit="executeVMLoad(event)">
-                <div class="form-group">
-                    <label>账号名称 *</label>
-                    <div style="display: flex; gap: 8px; align-items: center;">
-                        <select name="name" id="vm-load-account-select" required
-                            style="flex: 1; padding: 10px; border: 1px solid #e5e7eb; border-radius: 4px;">
-                            <option value="">正在加载账号列表...</option>
+                <!-- 过滤器区域 -->
+                <div style="display: flex; gap: 16px; margin-bottom: 16px;">
+                    <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                        <label style="font-size: 12px;">📱 App类型</label>
+                        <select id="vm-load-filter-app-type" onchange="filterVMAccountList()"
+                            style="padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px; width: 100%;">
+                            <option value="">全部</option>
                         </select>
+                    </div>
+                    <div class="form-group" style="flex: 1; margin-bottom: 0;">
+                        <label style="font-size: 12px;">🌍 地区</label>
+                        <select id="vm-load-filter-region" onchange="filterVMAccountList()"
+                            style="padding: 8px; border: 1px solid #e5e7eb; border-radius: 4px; width: 100%;">
+                            <option value="">全部</option>
+                        </select>
+                    </div>
+                    <div style="display: flex; align-items: flex-end;">
                         <button type="button" class="btn btn-sm btn-secondary" onclick="loadVMAccountList()"
-                            style="padding: 10px 16px; white-space: nowrap;">
-                            🔄 刷新
+                            style="padding: 8px 12px;">
+                            🔄
                         </button>
                     </div>
-                    <small style="color: #6b7280; font-size: 12px;">从设备配置文件目录自动获取账号列表</small>
                 </div>
+
+                <!-- 账号统计 -->
+                <div id="vm-load-account-stats"
+                    style="margin-bottom: 12px; padding: 8px 12px; background: #f3f4f6; border-radius: 6px; font-size: 13px; color: #6b7280;">
+                    加载中...
+                </div>
+
+                <!-- 账号列表区域 -->
+                <div class="form-group">
+                    <label>选择账号 *</label>
+                    <div id="vm-load-account-list"
+                        style="max-height: 300px; overflow-y: auto; border: 1px solid #e5e7eb; border-radius: 8px; background: #fafafa;">
+                        <div style="padding: 20px; text-align: center; color: #9ca3af;">正在加载...</div>
+                    </div>
+                    <input type="hidden" name="name" id="vm-load-selected-account" required>
+                </div>
+
                 <div class="form-actions">
                     <button type="button" class="btn btn-secondary" onclick="closeVMModal('load')">取消</button>
                     <button type="submit" class="btn btn-primary">加载</button>
@@ -1667,18 +1693,18 @@ user3:pass3:proxy3.com:8080
             <!-- 地区列表 -->
             <div>
                 <h3 style="font-size: 16px; margin-bottom: 15px; color: #374151;">地区列表</h3>
-                <div id="region-list-container" class="table-container">
-                    <table style="width: 100%;">
+                <div id="region-list-container">
+                    <table style="width: 100%; table-layout: fixed;">
                         <thead>
                             <tr>
-                                <th>地区代码</th>
-                                <th>地区名称</th>
-                                <th>操作</th>
+                                <th style="width: 33.33%;">代码</th>
+                                <th style="width: 33.33%;">名称</th>
+                                <th style="width: 33.33%;">操作</th>
                             </tr>
                         </thead>
                         <tbody id="region-list-tbody">
                             <tr>
-                                <td colspan="3" style="text-align: center; padding: 20px; color: #6b7280;">加载中...</td>
+                                <td colspan="3" style="text-align: center; padding: 10px; color: #6b7280;">加载中...</td>
                             </tr>
                         </tbody>
                     </table>
@@ -2879,7 +2905,7 @@ user3:pass3:proxy3.com:8080
             if (!tbody) return;
 
             if (regionsList.length === 0) {
-                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 20px; color: #6b7280;">暂无地区配置</td></tr>';
+                tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; padding: 10px; color: #6b7280;">暂无地区配置</td></tr>';
                 return;
             }
 
@@ -2887,10 +2913,10 @@ user3:pass3:proxy3.com:8080
             regionsList.forEach(region => {
                 const row = document.createElement('tr');
                 row.innerHTML = `
-                    <td><strong>${region.code}</strong></td>
-                    <td>${region.name}</td>
-                    <td>
-                        <button class="btn btn-sm btn-danger" onclick="deleteRegion('${region.code}')">删除</button>
+                    <td style="padding: 6px 8px;"><strong>${region.code}</strong></td>
+                    <td style="padding: 6px 8px;">${region.name}</td>
+                    <td style="padding: 6px 8px;">
+                        <button class="btn btn-sm btn-danger" style="padding: 2px 8px; font-size: 12px;" onclick="deleteRegion('${region.code}')">删除</button>
                     </td>
                 `;
                 tbody.appendChild(row);
@@ -3043,11 +3069,17 @@ user3:pass3:proxy3.com:8080
             await loadVMAccountList();
         }
 
-        // 加载VM账号列表
+        // 加载VM账号列表（带过滤器支持）
+        let vmAccountFilters = { app_types: [], regions: [] };
+
         async function loadVMAccountList() {
-            const select = document.getElementById('vm-load-account-select');
-            select.innerHTML = '<option value="">正在加载账号列表...</option>';
-            select.disabled = true;
+            const listContainer = document.getElementById('vm-load-account-list');
+            const statsDiv = document.getElementById('vm-load-account-stats');
+            const appTypeSelect = document.getElementById('vm-load-filter-app-type');
+            const regionSelect = document.getElementById('vm-load-filter-region');
+
+            listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #9ca3af;">正在加载...</div>';
+            statsDiv.textContent = '加载中...';
 
             try {
                 const deviceId = getCurrentDeviceId();
@@ -3055,27 +3087,120 @@ user3:pass3:proxy3.com:8080
                 const response = await fetch(url);
                 const result = await response.json();
 
-                select.innerHTML = '';
-                select.disabled = false;
+                if (result.success && result.data) {
+                    const { filters, total } = result.data;
+                    vmAccountFilters = filters || { app_types: [], regions: [] };
 
-                if (result.success && result.data && result.data.length > 0) {
-                    const accounts = result.data;
-                    select.innerHTML = '<option value="">请选择账号</option>';
-                    accounts.forEach(account => {
+                    // 填充过滤器下拉框
+                    appTypeSelect.innerHTML = '<option value="">全部 App</option>';
+                    vmAccountFilters.app_types.forEach(type => {
                         const option = document.createElement('option');
-                        option.value = account;
-                        option.textContent = account;
-                        select.appendChild(option);
+                        option.value = type;
+                        option.textContent = type;
+                        appTypeSelect.appendChild(option);
                     });
+
+                    regionSelect.innerHTML = '<option value="">全部地区</option>';
+                    vmAccountFilters.regions.forEach(region => {
+                        const option = document.createElement('option');
+                        option.value = region;
+                        option.textContent = region;
+                        regionSelect.appendChild(option);
+                    });
+
+                    // 渲染账号列表
+                    renderVMAccountList(result.data);
                 } else {
-                    select.innerHTML = '<option value="">暂无账号，请先创建账号</option>';
-                    showVMAlert('warning', '未找到账号列表，请确保设备已连接且已创建账号');
+                    listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">加载失败</div>';
+                    statsDiv.textContent = '加载失败';
                 }
             } catch (error) {
-                select.innerHTML = '<option value="">加载失败</option>';
-                select.disabled = false;
-                showVMAlert('error', '加载账号列表失败: ' + error.message);
+                listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">加载失败: ' + error.message + '</div>';
+                statsDiv.textContent = '加载失败';
             }
+        }
+
+        // 过滤账号列表
+        async function filterVMAccountList() {
+            const appType = document.getElementById('vm-load-filter-app-type').value;
+            const region = document.getElementById('vm-load-filter-region').value;
+            const listContainer = document.getElementById('vm-load-account-list');
+            const statsDiv = document.getElementById('vm-load-account-stats');
+
+            listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #9ca3af;">正在过滤...</div>';
+
+            try {
+                const deviceId = getCurrentDeviceId();
+                let url = deviceId ? `/api/vm/account-list?device_id=${deviceId}` : '/api/vm/account-list';
+                if (appType) url += `&app_type=${encodeURIComponent(appType)}`;
+                if (region) url += `&region=${encodeURIComponent(region)}`;
+
+                const response = await fetch(url);
+                const result = await response.json();
+
+                if (result.success && result.data) {
+                    renderVMAccountList(result.data);
+                }
+            } catch (error) {
+                listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #ef4444;">过滤失败</div>';
+            }
+        }
+
+        // 渲染账号列表
+        function renderVMAccountList(data) {
+            const listContainer = document.getElementById('vm-load-account-list');
+            const statsDiv = document.getElementById('vm-load-account-stats');
+            const { accounts, total, filtered_total } = data;
+
+            statsDiv.textContent = `共 ${total} 个账号，当前显示 ${filtered_total || accounts.length} 个`;
+
+            if (!accounts || accounts.length === 0) {
+                listContainer.innerHTML = '<div style="padding: 20px; text-align: center; color: #9ca3af;">暂无匹配的账号</div>';
+                return;
+            }
+
+            listContainer.innerHTML = '';
+            accounts.forEach(account => {
+                const parts = account.split('_');
+                const appType = parts[0] || '';
+                const region = parts[1] || '';
+
+                const item = document.createElement('div');
+                item.className = 'vm-account-item';
+                item.onclick = () => selectVMAccount(account, item);
+                item.style.cssText = 'padding: 12px 16px; border-bottom: 1px solid #e5e7eb; cursor: pointer; transition: all 0.15s; display: flex; justify-content: space-between; align-items: center;';
+                item.onmouseover = () => { if (!item.classList.contains('selected')) item.style.background = '#f3f4f6'; };
+                item.onmouseout = () => { if (!item.classList.contains('selected')) item.style.background = ''; };
+
+                item.innerHTML = `
+                    <div>
+                        <span style="font-weight: 500;">${account}</span>
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <span style="padding: 2px 8px; background: #dbeafe; color: #1d4ed8; border-radius: 12px; font-size: 11px;">${appType}</span>
+                        <span style="padding: 2px 8px; background: #dcfce7; color: #166534; border-radius: 12px; font-size: 11px;">${region}</span>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        // 选择账号
+        function selectVMAccount(accountName, element) {
+            // 移除其他选中状态
+            document.querySelectorAll('.vm-account-item.selected').forEach(el => {
+                el.classList.remove('selected');
+                el.style.background = '';
+                el.style.borderLeft = '';
+            });
+
+            // 设置选中状态
+            element.classList.add('selected');
+            element.style.background = '#eff6ff';
+            element.style.borderLeft = '3px solid #3b82f6';
+
+            // 更新隐藏字段
+            document.getElementById('vm-load-selected-account').value = accountName;
         }
 
         // 显示保存账号模态框

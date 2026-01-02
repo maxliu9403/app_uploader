@@ -1,0 +1,187 @@
+# VM账号 API 文档
+
+# GET /api/vm/generate-account-name
+generate_account_name:
+  tags:
+    - VM账号
+  summary: 生成 VM 账号名称
+  parameters:
+    - name: app_type
+      in: query
+      type: string
+      required: true
+      description: 应用类型（如Vinted、Carousell等）
+      example: "Carousell"
+    - name: region
+      in: query
+      type: string
+      required: true
+      description: 地区代码
+      example: "HK"
+    - name: device_id
+      in: query
+      type: string
+      required: false
+      description: 设备ID
+    - name: device_remark
+      in: query
+      type: string
+      required: false
+      description: 设备备注
+  responses:
+    200:
+      description: 成功生成账号名称
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: string
+            description: 生成的账号名称
+            example: "Carousell_HK_72e8932c(手机1)_001"
+    400:
+      description: 缺少必需参数
+    500:
+      description: 服务器错误
+
+# GET /api/vm/get-config-value
+get_config_value:
+  tags:
+    - VM账号
+  summary: 获取设备配置值
+  parameters:
+    - name: field_name
+      in: query
+      type: string
+      required: true
+      description: 配置字段名称
+      example: "AccountName"
+    - name: device_id
+      in: query
+      type: string
+      required: false
+      description: 设备ID
+  responses:
+    200:
+      description: 成功获取配置值
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: object
+            properties:
+              value:
+                type: string
+    400:
+      description: 缺少必需参数
+    500:
+      description: 服务器错误
+
+# GET /api/vm/account-list
+account_list:
+  tags:
+    - VM账号
+  summary: 获取 VM 账号列表
+  parameters:
+    - name: device_id
+      in: query
+      type: string
+      required: false
+      description: 设备ID
+  responses:
+    200:
+      description: 成功返回VM账号列表
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: array
+            items:
+              type: string
+            example: ["Carousell_HK_001", "Vinted_GB_002"]
+    500:
+      description: 服务器错误
+
+# POST /api/vm/new
+new:
+  tags:
+    - VM账号
+  summary: 创建新的 VM 账号（SSE 流式响应）
+  parameters:
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+        required:
+          - name
+          - app_type
+          - node
+          - region
+        properties:
+          name:
+            type: string
+            description: VM账号名称
+          app_type:
+            type: string
+            description: 应用类型
+          node:
+            type: string
+            description: 代理节点名称
+          region:
+            type: string
+            description: 地区代码
+          device_id:
+            type: string
+            description: 设备ID（可选）
+  responses:
+    200:
+      description: SSE流式响应，实时返回创建进度
+
+# POST /api/vm/save
+save:
+  tags:
+    - VM账号
+  summary: 保存 VM 账号（SSE 流式响应）
+  parameters:
+    - name: body
+      in: body
+      required: false
+      schema:
+        type: object
+        properties:
+          device_id:
+            type: string
+            description: 设备ID（可选）
+  responses:
+    200:
+      description: SSE流式响应，实时返回保存进度
+
+# POST /api/vm/load
+load:
+  tags:
+    - VM账号
+  summary: 加载 VM 账号（SSE 流式响应）
+  parameters:
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+        required:
+          - name
+        properties:
+          name:
+            type: string
+            description: 要加载的账号名称
+          device_id:
+            type: string
+            description: 设备ID（可选）
+  responses:
+    200:
+      description: SSE流式响应，实时返回加载进度

@@ -230,8 +230,15 @@ launch_app() {
 # --- 封装保存逻辑 (供 save 命令和 load 自动备份调用) ---
 execute_save_logic() {
     SAVE_NAME="$1"
-    SAVE_APP_TYPE=$(grep "AppType=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
-    [ -z "$SAVE_APP_TYPE" ] && SAVE_APP_TYPE="Vinted"
+    # 从NAME解析APP_TYPE作为后备: AppType_Region_deviceId(remark)_number
+    SAVE_NAME_PARSED_APP_TYPE=$(echo "$SAVE_NAME" | cut -d'_' -f1)
+    SAVE_APP_TYPE=$(grep "AppType=" "$CONF_FILE" | head -1 | cut -d= -f2 | tr -d '\r\n ')
+    [ -z "$SAVE_APP_TYPE" ] && SAVE_APP_TYPE="$SAVE_NAME_PARSED_APP_TYPE"
+    
+    if [ -z "$SAVE_APP_TYPE" ]; then
+        echo "❌ 无法确定 APP_TYPE（Conf文件缺失且无法从名称解析）"
+        return 1
+    fi
     SAVE_PKG=$(get_package_name "$SAVE_APP_TYPE")
     
     echo "💾 正在备份账号: [$SAVE_NAME] (App: $SAVE_APP_TYPE)..."
@@ -241,7 +248,7 @@ execute_save_logic() {
     
     # 确保当前节点信息被写入 Profile
     if [ -f "$CONF_FILE" ]; then
-         CUR_NODE=$(grep "CurrentNode=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
+         CUR_NODE=$(grep "CurrentNode=" "$CONF_FILE" | head -1 | cut -d= -f2 | tr -d '\r\n ')
          SAVE_PROFILE="$PROFILE_ROOT/${SAVE_NAME}.conf"
          if [ ! -z "$CUR_NODE" ] && [ -f "$SAVE_PROFILE" ]; then
             sed -i '/CurrentNode=/d' "$SAVE_PROFILE"
@@ -475,17 +482,34 @@ if [ "$ACTION" = "load" ]; then
     fi
     # ----------------------------------------
     
-    if [ -f "$PROFILE" ]; then
-        APP_TYPE=$(grep "AppType=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n ')
-        REGION=$(grep "Region=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n ')
-        SAVED_NODE=$(grep "CurrentNode=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n ')
-        BACKUP_VERSION=$(grep "AppVersion=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n ')
-    fi
-    [ -z "$APP_TYPE" ] && APP_TYPE="Vinted"
-    [ -z "$REGION" ] && REGION="HK"
-    [ -z "$SAVED_NODE" ] && SAVED_NODE="HK_061"
+    # 从NAME解析APP_TYPE和REGION作为后备方案
+    # Name格式: AppType_Region_deviceId(remark)_number, 例如: Vinted_GB_72e8932c(HK2)_001
+    NAME_PARSED_APP_TYPE=$(echo "$NAME" | cut -d'_' -f1)
+    NAME_PARSED_REGION=$(echo "$NAME" | cut -d'_' -f2)
     
+    if [ -f "$PROFILE" ]; then
+        APP_TYPE=$(grep "AppType=" "$PROFILE" | head -1 | cut -d= -f2 | tr -d '\r\n ')
+        REGION=$(grep "Region=" "$PROFILE" | head -1 | cut -d= -f2 | tr -d '\r\n ')
+        SAVED_NODE=$(grep "CurrentNode=" "$PROFILE" | head -1 | cut -d= -f2 | tr -d '\r\n ')
+        BACKUP_VERSION=$(grep "AppVersion=" "$PROFILE" | head -1 | cut -d= -f2 | tr -d '\r\n ')
+    fi
+    
+    # 如果profile中没有APP_TYPE，则从NAME解析
+    [ -z "$APP_TYPE" ] && APP_TYPE="$NAME_PARSED_APP_TYPE"
+    [ -z "$REGION" ] && REGION="$NAME_PARSED_REGION"
+    
+    # 验证必要参数
+    if [ -z "$APP_TYPE" ]; then
+        echo "❌ 无法确定 APP_TYPE（profile缺失且无法从账号名称解析）"
+        exit 1
+    fi
+    if [ -z "$SAVED_NODE" ]; then
+        echo "⚠️ 未找到保存的代理节点，将使用默认代理"
+    fi
+    
+    echo "📍 [DEBUG] APP_TYPE='$APP_TYPE' REGION='$REGION'"
     PKG=$(get_package_name "$APP_TYPE")
+    echo "📍 [DEBUG] PKG='$PKG'"
     DATA_INT="/data/data/$PKG"
     DATA_DE="/data/user_de/0/$PKG"
     DATA_EXT="/sdcard/Android/data/$PKG"

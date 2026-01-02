@@ -1,0 +1,150 @@
+# 中转线路 API 文档
+
+# GET /api/transit-proxies
+get_transits:
+  tags:
+    - 中转线路
+  summary: 获取所有中转线路
+  parameters:
+    - name: device_id
+      in: query
+      type: string
+      required: false
+      description: 设备ID
+  responses:
+    200:
+      description: 成功返回中转线路列表
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: array
+            items:
+              type: object
+              properties:
+                name:
+                  type: string
+                type:
+                  type: string
+                server:
+                  type: string
+                port:
+                  type: integer
+    500:
+      description: 服务器错误
+
+# GET /api/transit-proxies/names
+get_transit_names:
+  tags:
+    - 中转线路
+  summary: 获取中转线路名称列表
+  parameters:
+    - name: device_id
+      in: query
+      type: string
+      required: false
+  responses:
+    200:
+      description: 成功返回名称列表
+      schema:
+        type: object
+        properties:
+          success:
+            type: boolean
+          data:
+            type: array
+            items:
+              type: string
+    500:
+      description: 服务器错误
+
+# POST /api/transit-proxies
+add_transit:
+  tags:
+    - 中转线路
+  summary: 添加中转线路
+  parameters:
+    - name: device_id
+      in: query
+      type: string
+      required: true
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+        required:
+          - name
+          - server
+          - port
+        properties:
+          name:
+            type: string
+          type:
+            type: string
+          server:
+            type: string
+          port:
+            type: integer
+          username:
+            type: string
+          password:
+            type: string
+  responses:
+    200:
+      description: 添加成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# PUT /api/transit-proxies/{index}
+update_transit:
+  tags:
+    - 中转线路
+  summary: 更新中转线路
+  parameters:
+    - name: index
+      in: path
+      type: integer
+      required: true
+    - name: device_id
+      in: query
+      type: string
+      required: true
+    - name: body
+      in: body
+      required: true
+      schema:
+        type: object
+  responses:
+    200:
+      description: 更新成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
+
+# DELETE /api/transit-proxies/{index}
+delete_transit:
+  tags:
+    - 中转线路
+  summary: 删除中转线路
+  parameters:
+    - name: index
+      in: path
+      type: integer
+      required: true
+    - name: device_id
+      in: query
+      type: string
+      required: true
+  responses:
+    200:
+      description: 删除成功
+    400:
+      description: 请求参数错误
+    500:
+      description: 服务器错误
