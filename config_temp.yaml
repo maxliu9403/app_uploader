@@ -60,11 +60,6 @@ proxy-groups:
     type: select
     proxies:
        
-  - name: "PROXY"
-    type: select
-    proxies:
-      - "Proxy-IP"
-       
 # ==================== 规则 ====================
 rules:
   # 1. 安全阻断

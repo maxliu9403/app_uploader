@@ -48,9 +48,71 @@ clean_network_stack() {
     cmd connectivity flush-dns >/dev/null 2>&1
 }
 
+verify_network_environment() {
+    EXPECTED_REGION="$1"
+    # Ensure expected region is uppercase
+    EXPECTED_REGION=$(echo "$EXPECTED_REGION" | tr '[:lower:]' '[:upper:]')
+    
+    echo "🔍 [Network] Verifying connectivity and region match... (Expect: $EXPECTED_REGION)"
+    
+    FOUND_REGION=""
+    
+    # 1. ipapi.co (HTTPS)
+    echo "   👉 Check 1: ipapi.co"
+    RESP=$(curl -s --connect-timeout 8 -m 12 "https://ipapi.co/json/")
+    if [ ! -z "$RESP" ]; then
+        CODE=$(echo "$RESP" | grep -o '"country_code"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
+        # Fallback regex if spacing varies
+        if [ -z "$CODE" ]; then CODE=$(echo "$RESP" | grep -o '"country_code":"[^"]*"' | cut -d'"' -f4); fi
+        
+        if [ "$CODE" = "$EXPECTED_REGION" ]; then
+            echo "   ✅ Verified (ipapi.co): $CODE"
+            return 0
+        elif [ ! -z "$CODE" ]; then
+            echo "   ⚠️ Region Mismatch (ipapi.co): Got $CODE, Want $EXPECTED_REGION"
+        fi
+    fi
+
+    # 2. ip-api.com (HTTP)
+    echo "   👉 Check 2: ip-api.com"
+    RESP=$(curl -s --connect-timeout 8 -m 12 "http://ip-api.com/json/")
+    if [ ! -z "$RESP" ]; then
+        CODE=$(echo "$RESP" | grep -o '"countryCode"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
+        if [ -z "$CODE" ]; then CODE=$(echo "$RESP" | grep -o '"countryCode":"[^"]*"' | cut -d'"' -f4); fi
+        
+        if [ "$CODE" = "$EXPECTED_REGION" ]; then
+            echo "   ✅ Verified (ip-api.com): $CODE"
+            return 0
+        elif [ ! -z "$CODE" ]; then
+             echo "   ⚠️ Region Mismatch (ip-api.com): Got $CODE, Want $EXPECTED_REGION"
+        fi
+    fi
+
+    # 3. ipinfo.io (HTTPS)
+    echo "   👉 Check 3: ipinfo.io"
+    RESP=$(curl -s --connect-timeout 8 -m 12 "https://ipinfo.io/json")
+    if [ ! -z "$RESP" ]; then
+        CODE=$(echo "$RESP" | grep -o '"country"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
+        if [ -z "$CODE" ]; then CODE=$(echo "$RESP" | grep -o '"country":"[^"]*"' | cut -d'"' -f4); fi
+        
+        if [ "$CODE" = "$EXPECTED_REGION" ]; then
+            echo "   ✅ Verified (ipinfo.io): $CODE"
+            return 0
+        elif [ ! -z "$CODE" ]; then
+             echo "   ⚠️ Region Mismatch (ipinfo.io): Got $CODE, Want $EXPECTED_REGION"
+        fi
+    fi
+    
+    echo "❌ [FATAL] Network verification failed!"
+    echo "   Possible causes: Proxy down, Region mismatch, or API blocking."
+    echo "❌ Unsafe environment. Exiting."
+    exit 1
+}
+
 switch_proxy() { 
     TARGET_NODE="$1"
     REGION_CODE="$2"
+    PROXY_GROUP="Proxy-IP"  # Explicitly target the 'PROXY' group found in config
 
     echo "🎯 [Switch] Target Node: $TARGET_NODE | Region: $REGION_CODE"
     
@@ -66,41 +128,51 @@ switch_proxy() {
     fi
     
     # Build API commands
+    # Use proper escaping for curl payload
     if [ -z "$SECRET" ]; then
+        CMD_GROUP="curl -s -X PUT $API_URL/proxies/$PROXY_GROUP -H 'Content-Type: application/json' -d '{\"name\": \"$TARGET_NODE\"}'"
         CMD_GLOBAL="curl -s -X PUT $API_URL/proxies/GLOBAL -H 'Content-Type: application/json' -d '{\"name\": \"$TARGET_NODE\"}'"
     else
+        CMD_GROUP="curl -s -X PUT $API_URL/proxies/$PROXY_GROUP -H 'Content-Type: application/json' -H 'Authorization: Bearer $SECRET' -d '{\"name\": \"$TARGET_NODE\"}'"
         CMD_GLOBAL="curl -s -X PUT $API_URL/proxies/GLOBAL -H 'Content-Type: application/json' -H 'Authorization: Bearer $SECRET' -d '{\"name\": \"$TARGET_NODE\"}'"
     fi
     
-    # Execute switch
+    # Execute switch (Switch PROXY group first)
     RESPONSE=$(eval "$CMD_GROUP")
+    # Also try switching GLOBAL as fallback/sync
     eval "$CMD_GLOBAL" >/dev/null 2>&1
 
     # CRITICAL: Check for API errors
     if echo "$RESPONSE" | grep -qi "error\|not found\|invalid\|failed"; then
         echo "❌ [FATAL] Clash API error: $RESPONSE"
+        echo "   (Make sure the selector '$PROXY_GROUP' exists in your config)"
         echo "❌ Cannot proceed with unsafe network. Exiting."
         exit 1
     fi
 
     # Verify switch with retry
     sleep 1
-    NOW=$(curl -s "$API_URL/proxies/GLOBAL" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
+    # Check the PROXY group status, not GLOBAL
+    NOW=$(curl -s "$API_URL/proxies/$PROXY_GROUP" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
     if [ "$NOW" != "$TARGET_NODE" ]; then
         sleep 2
-        NOW=$(curl -s "$API_URL/proxies/GLOBAL" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
+        NOW=$(curl -s "$API_URL/proxies/$PROXY_GROUP" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
     fi
     
     # CRITICAL: Final verification
     if [ "$NOW" != "$TARGET_NODE" ]; then
         echo "❌ [FATAL] Proxy switch verification failed!"
+        echo "   Target Group: $PROXY_GROUP"
         echo "   Expected: $TARGET_NODE"
         echo "   Got: $NOW"
         echo "❌ Unsafe to launch app. Exiting."
         exit 1
     fi
     
-    echo "✅ Proxy verified: $NOW (GLOBAL synced)"
+    echo "✅ Proxy verified: $NOW ($PROXY_GROUP synced)"
+    
+    # New: Verify Network Environment
+    verify_network_environment "$REGION_CODE"
 
     # Update config file
     if [ -f "$CONF_FILE" ]; then
