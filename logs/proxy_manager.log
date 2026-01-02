@@ -4041,3 +4041,237 @@ Carousell_HK_...
 2026-01-02 23:19:57 [INFO] [config.py:45] 项目配置文件保存成功
 2026-01-02 23:19:57 [INFO] [vm_service.py:77] 更新 VM 账号计数器: Carousell_HK_72e8932c = 10
 2026-01-02 23:19:57 [INFO] [app.py:296] ✅ VM 账号 'Carousell_HK_72e8932c(HK2)_010' 创建成功
+2026-01-02 23:21:33 [INFO] [logger.py:77] ======================================================================
+2026-01-02 23:21:33 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 23:21:33 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 23:21:33 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 23:21:33 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 23:21:33 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 23:21:33 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 23:21:33 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 23:21:33 [INFO] [logger.py:85] ======================================================================
+2026-01-02 23:21:33 [INFO] [app.py:519] ======================================================================
+2026-01-02 23:21:33 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 23:21:33 [INFO] [app.py:521] ======================================================================
+2026-01-02 23:21:33 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 23:21:33 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 23:21:33 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 23:21:33 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 23:21:33 [INFO] [app.py:526] ======================================================================
+2026-01-02 23:21:35 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 23:21:35 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 23:22:24 [INFO] [logger.py:77] ======================================================================
+2026-01-02 23:22:24 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 23:22:24 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 23:22:24 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 23:22:24 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 23:22:24 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 23:22:24 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 23:22:24 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 23:22:24 [INFO] [logger.py:85] ======================================================================
+2026-01-02 23:22:24 [INFO] [app.py:519] ======================================================================
+2026-01-02 23:22:24 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 23:22:24 [INFO] [app.py:521] ======================================================================
+2026-01-02 23:22:24 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 23:22:24 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 23:22:24 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 23:22:24 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 23:22:24 [INFO] [app.py:526] ======================================================================
+2026-01-02 23:22:25 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 23:22:25 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 23:22:57 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:22:57 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=53, transit=1
+2026-01-02 23:22:57 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:22:57 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:22:57] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:22:57 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:22:57 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 23:22:57 [INFO] [transit_service.py:34]    配置文件中共有 54 个代理条目
+2026-01-02 23:22:57 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 53 个普通代理
+2026-01-02 23:22:57 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 23:22:57 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:22:57 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:22:57] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:22:58 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:22:58 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 23:22:58 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 23:22:58 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 23:22:58 [INFO] [transit_service.py:34]    配置文件中共有 54 个代理条目
+2026-01-02 23:22:58 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:22:58 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 53 个普通代理
+2026-01-02 23:22:58 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:22:58] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 23:22:58 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 23:22:58 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:22:58 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:22:58] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:23:11 [INFO] [app.py:117] 📥 POST /api/proxies/batch | {"method": "POST", "path": "/api/proxies/batch", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}, "body": {"proxy_lines": "sg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-YijX9wdJ-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-d9vzHi49-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-wVdxrTz2-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-zz18mwWA-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-bkcXsJ51-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-gReDm3Xy-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-Qmjsst9K-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-pMKn3b1Y-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-VxTQKrwx-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-qGHZJ5jH-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-YiwRjcyC-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-FQvJE6vn-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-5gQHtbgh-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-ZyL7MAax-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-SY5xnJqR-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-Mr6Qwaix-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-T38NTt3M-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-62qyVcWE-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-i37cmu28-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-NzPd12fJ-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-AiQdppqQ-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-kCZvYDDV-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-QXi25Q1v-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-W1wNJMH7-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-KCRCdKk4-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-YGn6sPLA-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-nyqVMHJn-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-KuWrJYWH-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-zwU6zLmJ-t-99:qaz123wsx\nsg.arxlabs.io:443:hmq88888-region-HK-asn-AS4760-sid-HzqT9zFs-t-99:qaz123wsx\n", "format_type": "format2", "region": "HK", "name_prefix": "HK", "dialer_proxy": "香港中转测试12", "is_bak": false}}
+2026-01-02 23:23:11 [INFO] [proxy_service.py:374] 📦 开始批量添加代理... (设备: 72e8932c)
+2026-01-02 23:23:11 [INFO] [proxy_service.py:385]    数据行数: 30
+2026-01-02 23:23:11 [INFO] [proxy_service.py:386]    数据格式: format2
+2026-01-02 23:23:11 [INFO] [proxy_service.py:387]    地区: HK
+2026-01-02 23:23:11 [INFO] [proxy_service.py:388]    名称前缀: HK
+2026-01-02 23:23:11 [INFO] [proxy_service.py:389]    中转线路: 香港中转测试12
+2026-01-02 23:23:11 [INFO] [proxy_service.py:390]    是否备用线路: 否
+2026-01-02 23:23:11 [INFO] [proxy_service.py:393]    🔍 验证批量导入参数...
+2026-01-02 23:23:11 [INFO] [proxy_service.py:412]    ✅ 参数验证通过
+2026-01-02 23:23:11 [INFO] [proxy_service.py:415]    📝 开始解析代理数据...
+2026-01-02 23:23:11 [INFO] [proxy_service.py:417]    解析结果: 成功 30 个, 失败 0 个
+2026-01-02 23:23:11 [INFO] [proxy_service.py:424]    📂 加载配置文件...
+2026-01-02 23:23:11 [INFO] [proxy_service.py:428]    当前配置中有 54 个代理
+2026-01-02 23:23:11 [INFO] [proxy_service.py:431]    ➕ 开始批量添加代理...
+2026-01-02 23:23:11 [INFO] [proxy_service.py:441]    名称计数器起始值: HK_142
+2026-01-02 23:23:11 [INFO] [proxy_service.py:476]    成功生成 30 个代理配置
+2026-01-02 23:23:11 [INFO] [proxy_service.py:479]    💾 更新名称计数器: HK -> 171
+2026-01-02 23:23:11 [INFO] [config.py:45] 项目配置文件保存成功
+2026-01-02 23:23:11 [INFO] [proxy_service.py:484]    🔄 更新策略组...
+2026-01-02 23:23:11 [INFO] [proxy_service.py:712] 更新策略组 'Proxy-IP'
+2026-01-02 23:23:11 [INFO] [proxy_service.py:488]    💾 保存配置文件...
+2026-01-02 23:23:11 [INFO] [yaml_helper.py:139] ✅ 配置文件保存成功（只修改了 proxies 和 proxy-groups）: network_config\72e8932c\config.yaml
+2026-01-02 23:23:11 [INFO] [config.py:160] 💾 配置已保存 | file=network_config\72e8932c\config.yaml, proxies=83, transit=1
+2026-01-02 23:23:11 [INFO] [proxy_service.py:490]    配置文件中现有 84 个代理
+2026-01-02 23:23:11 [INFO] [proxy_service.py:493]    📱 推送配置到设备...
+2026-01-02 23:23:11 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 23:23:11 [INFO] [proxy_service.py:500] ✅ 批量添加完成！成功添加 30 个代理
+2026-01-02 23:23:11 [INFO] [proxy_service.py:501]    成功的代理名称: HK_142, HK_143, HK_144, HK_145, HK_146 ...
+2026-01-02 23:23:11 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:23:11 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:11] "POST /api/proxies/batch?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:23:11 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:23:11 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=83, transit=1
+2026-01-02 23:23:11 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:23:11 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:11] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:23:11 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:23:11 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 23:23:11 [INFO] [transit_service.py:34]    配置文件中共有 84 个代理条目
+2026-01-02 23:23:11 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 83 个普通代理
+2026-01-02 23:23:11 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 23:23:11 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:23:11 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:11] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:23:44 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:23:44 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 23:23:44 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 23:23:44 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:23:44 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=83, transit=1
+2026-01-02 23:23:44 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:44] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 23:23:44 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:23:44 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:44] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:23:45 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 23:23:45 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 23:23:45 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:23:45 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:45] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 23:23:49 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:23:49 [INFO] [app.py:117] 📥 GET /api/vm/generate-account-name | {"method": "GET", "path": "/api/vm/generate-account-name", "client": "127.0.0.1", "query": {"app_type": "Carousell", "region": "HK", "device_id": "72e8932c", "device_remark": "HK2"}}
+2026-01-02 23:23:49 [INFO] [vm_service.py:52] 生成账号名称: Carousell_HK_72e8932c(HK2)_011
+2026-01-02 23:23:49 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=83, transit=1
+2026-01-02 23:23:49 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:23:49 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:23:49 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:49] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK&device_id=72e8932c&device_remark=HK2 HTTP/1.1" 200 -
+2026-01-02 23:23:49 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:49] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:23:53 [INFO] [app.py:117] 📥 POST /api/vm/new | {"method": "POST", "path": "/api/vm/new", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "name": "Carousell_HK_72e8932c(HK2)_011", "app_type": "Carousell", "region": "HK", "node": "HK_163"}}
+2026-01-02 23:23:53 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 23:23:53 [INFO] [app.py:270] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe -s 72e8932c shell su -c "sh /data/local/tmp/vm.sh new \"Carousell_HK_72e8932c(HK2)_011\" \"Carousell\" \"HK_163\" \"HK\""
+2026-01-02 23:23:53 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:23:53] "POST /api/vm/new HTTP/1.1" 200 -
+2026-01-02 23:24:22 [INFO] [config.py:45] 项目配置文件保存成功
+2026-01-02 23:24:22 [INFO] [vm_service.py:77] 更新 VM 账号计数器: Carousell_HK_72e8932c = 11
+2026-01-02 23:24:22 [INFO] [app.py:296] ✅ VM 账号 'Carousell_HK_72e8932c(HK2)_011' 创建成功
+2026-01-02 23:25:07 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 23:25:07 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 23:25:07 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:25:07 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:25:07] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 23:25:09 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:25:09 [INFO] [app.py:117] 📥 GET /api/vm/generate-account-name | {"method": "GET", "path": "/api/vm/generate-account-name", "client": "127.0.0.1", "query": {"app_type": "Carousell", "region": "HK", "device_id": "72e8932c", "device_remark": "HK2"}}
+2026-01-02 23:25:09 [INFO] [vm_service.py:52] 生成账号名称: Carousell_HK_72e8932c(HK2)_012
+2026-01-02 23:25:09 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:25:09 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:25:09] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK&device_id=72e8932c&device_remark=HK2 HTTP/1.1" 200 -
+2026-01-02 23:25:09 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=83, transit=1
+2026-01-02 23:25:09 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:25:09 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:25:09] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:25:15 [INFO] [app.py:117] 📥 POST /api/vm/new | {"method": "POST", "path": "/api/vm/new", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "name": "Carousell_HK_72e8932c(HK2)_012", "app_type": "Carousell", "region": "HK", "node": "HK_163"}}
+2026-01-02 23:25:15 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 23:25:15 [INFO] [app.py:270] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe -s 72e8932c shell su -c "sh /data/local/tmp/vm.sh new \"Carousell_HK_72e8932c(HK2)_012\" \"Carousell\" \"HK_163\" \"HK\""
+2026-01-02 23:25:15 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:25:15] "POST /api/vm/new HTTP/1.1" 200 -
+2026-01-02 23:25:57 [INFO] [logger.py:77] ======================================================================
+2026-01-02 23:25:57 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-02 23:25:57 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-02 23:25:57 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-02 23:25:57 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-02 23:25:57 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-02 23:25:57 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-02 23:25:57 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-02 23:25:57 [INFO] [logger.py:85] ======================================================================
+2026-01-02 23:25:57 [INFO] [app.py:519] ======================================================================
+2026-01-02 23:25:57 [INFO] [app.py:520] 🚀 Proxy Manager 应用启动
+2026-01-02 23:25:57 [INFO] [app.py:521] ======================================================================
+2026-01-02 23:25:57 [INFO] [app.py:522] 📂 工作目录: D:\app_uploader
+2026-01-02 23:25:57 [INFO] [app.py:523] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-02 23:25:57 [INFO] [app.py:524] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-02 23:25:57 [INFO] [app.py:525] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-02 23:25:57 [INFO] [app.py:526] ======================================================================
+2026-01-02 23:25:59 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-02 23:25:59 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-02 23:26:09 [INFO] [app.py:117] 📥 GET / | {"method": "GET", "path": "/", "client": "127.0.0.1"}
+2026-01-02 23:26:09 [INFO] [app.py:167] 🏠 访问主页
+2026-01-02 23:26:09 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 23:26:09 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:09] "GET / HTTP/1.1" 200 -
+2026-01-02 23:26:09 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 23:26:09 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 23:26:09 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 23:26:09 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:09 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:09] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 23:26:09 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 23:26:10 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:10 [INFO] [app.py:117] 📥 GET /favicon.ico | {"method": "GET", "path": "/favicon.ico", "client": "127.0.0.1"}
+2026-01-02 23:26:10 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:10] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 23:26:10 [INFO] [app.py:136] 📤 404 | {"status": 404}
+2026-01-02 23:26:10 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:10] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2026-01-02 23:26:10 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-02 23:26:10 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-02 23:26:10 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:26:10 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-02 23:26:10 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:10 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 23:26:10 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:10] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-02 23:26:10 [INFO] [transit_service.py:34]    配置文件中共有 84 个代理条目
+2026-01-02 23:26:10 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 23:26:10 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 83 个普通代理
+2026-01-02 23:26:10 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:10 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-02 23:26:10 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:10] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 23:26:10 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-02 23:26:10 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:10 [INFO] [device_service.py:26] 找到 2 个设备
+2026-01-02 23:26:10 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:10] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:26:10 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:10 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:10] "GET /api/devices HTTP/1.1" 200 -
+2026-01-02 23:26:13 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:26:13 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 23:26:13 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=83, transit=1
+2026-01-02 23:26:13 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 23:26:13 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:13 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:13 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:13] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:26:13 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:13] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 23:26:14 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-02 23:26:14 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-02 23:26:14 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:14 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:14] "GET /api/regions HTTP/1.1" 200 -
+2026-01-02 23:26:19 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-02 23:26:19 [INFO] [app.py:117] 📥 GET /api/vm/generate-account-name | {"method": "GET", "path": "/api/vm/generate-account-name", "client": "127.0.0.1", "query": {"app_type": "Carousell", "region": "HK", "device_id": "72e8932c", "device_remark": "HK2"}}
+2026-01-02 23:26:19 [INFO] [vm_service.py:52] 生成账号名称: Carousell_HK_72e8932c(HK2)_012
+2026-01-02 23:26:19 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=83, transit=1
+2026-01-02 23:26:19 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:19 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-02 23:26:19 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:19] "GET /api/vm/generate-account-name?app_type=Carousell&region=HK&device_id=72e8932c&device_remark=HK2 HTTP/1.1" 200 -
+2026-01-02 23:26:19 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:19] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-02 23:26:24 [INFO] [app.py:117] 📥 POST /api/vm/new | {"method": "POST", "path": "/api/vm/new", "client": "127.0.0.1", "body": {"device_id": "72e8932c", "name": "Carousell_HK_72e8932c(HK2)_012", "app_type": "Carousell", "region": "HK", "node": "HK_163"}}
+2026-01-02 23:26:24 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-02 23:26:24 [INFO] [app.py:270] 执行 VM 创建命令: D:\桌面\platform-tools\adb.exe -s 72e8932c shell su -c "sh /data/local/tmp/vm.sh new \"Carousell_HK_72e8932c(HK2)_012\" \"Carousell\" \"HK_163\" \"HK\""
+2026-01-02 23:26:24 [INFO] [_internal.py:97] 127.0.0.1 - - [02/Jan/2026 23:26:24] "POST /api/vm/new HTTP/1.1" 200 -
+2026-01-02 23:26:45 [INFO] [config.py:45] 项目配置文件保存成功
+2026-01-02 23:26:45 [INFO] [vm_service.py:77] 更新 VM 账号计数器: Carousell_HK_72e8932c = 12
+2026-01-02 23:26:45 [INFO] [app.py:296] ✅ VM 账号 'Carousell_HK_72e8932c(HK2)_012' 创建成功

@@ -56,9 +56,24 @@ verify_network_environment() {
     echo "🔍 [Network] Verifying connectivity and region match... (Expect: $EXPECTED_REGION)"
     
     FOUND_REGION=""
+
+    # 1. ipinfo.io (HTTPS)
+    echo "   👉 Check 1: ipinfo.io"
+    RESP=$(curl -s --connect-timeout 8 -m 12 "https://ipinfo.io/json")
+    if [ ! -z "$RESP" ]; then
+        CODE=$(echo "$RESP" | grep -o '"country"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
+        if [ -z "$CODE" ]; then CODE=$(echo "$RESP" | grep -o '"country":"[^"]*"' | cut -d'"' -f4); fi
+        
+        if [ "$CODE" = "$EXPECTED_REGION" ]; then
+            echo "   ✅ Verified (ipinfo.io): $CODE"
+            return 0
+        elif [ ! -z "$CODE" ]; then
+             echo "   ⚠️ Region Mismatch (ipinfo.io): Got $CODE, Want $EXPECTED_REGION"
+        fi
+    fi
     
-    # 1. ipapi.co (HTTPS)
-    echo "   👉 Check 1: ipapi.co"
+    # 2. ipapi.co (HTTPS)
+    echo "   👉 Check 2: ipapi.co"
     RESP=$(curl -s --connect-timeout 8 -m 12 "https://ipapi.co/json/")
     if [ ! -z "$RESP" ]; then
         CODE=$(echo "$RESP" | grep -o '"country_code"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
@@ -73,8 +88,8 @@ verify_network_environment() {
         fi
     fi
 
-    # 2. ip-api.com (HTTP)
-    echo "   👉 Check 2: ip-api.com"
+    # 3. ip-api.com (HTTP)
+    echo "   👉 Check 3: ip-api.com"
     RESP=$(curl -s --connect-timeout 8 -m 12 "http://ip-api.com/json/")
     if [ ! -z "$RESP" ]; then
         CODE=$(echo "$RESP" | grep -o '"countryCode"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
@@ -88,20 +103,7 @@ verify_network_environment() {
         fi
     fi
 
-    # 3. ipinfo.io (HTTPS)
-    echo "   👉 Check 3: ipinfo.io"
-    RESP=$(curl -s --connect-timeout 8 -m 12 "https://ipinfo.io/json")
-    if [ ! -z "$RESP" ]; then
-        CODE=$(echo "$RESP" | grep -o '"country"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
-        if [ -z "$CODE" ]; then CODE=$(echo "$RESP" | grep -o '"country":"[^"]*"' | cut -d'"' -f4); fi
-        
-        if [ "$CODE" = "$EXPECTED_REGION" ]; then
-            echo "   ✅ Verified (ipinfo.io): $CODE"
-            return 0
-        elif [ ! -z "$CODE" ]; then
-             echo "   ⚠️ Region Mismatch (ipinfo.io): Got $CODE, Want $EXPECTED_REGION"
-        fi
-    fi
+ 
     
     echo "❌ [FATAL] Network verification failed!"
     echo "   Possible causes: Proxy down, Region mismatch, or API blocking."

@@ -23,11 +23,11 @@ vm_account_counters:
   Vinted_GB: 3
   Vinted_HK: 3
   Carousell_HK: 14
-  Carousell_HK_72e8932c: 10
+  Carousell_HK_72e8932c: 12
   Vinted_HK_72e8932c: 1
   Vinted_GB_72e8932c: 1
 proxy_name_counters:
-  HK: 141
+  HK: 171
   UK: 33
 config_file_path: D:\app_uploader\config.yaml
 vm_script_path: /data/local/tmp/vm.sh
