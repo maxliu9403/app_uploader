@@ -111,50 +111,32 @@ class ConfigManager:
         return self.path_manager.get_config_file_path()
     
     def load(self, device_id=None):
-        """加载网络配置文件
-        
-        Args:
-            device_id: 设备ID，如果提供则加载设备特定配置
-        
-        Returns:
-            dict: 配置内容
-        """
+        """加载网络配置文件"""
         from utils.yaml_helper import YAMLHelper
         
         config_file = self.get_config_file(device_id)
-        logger.info(f"开始加载配置文件: {config_file}")
         
         if not os.path.exists(config_file):
-            logger.warning(f"配置文件不存在: {config_file}，将创建空配置")
+            logger.warning(f"📂 配置文件不存在: {config_file}")
             return {}
         
         # 使用 YAMLHelper 加载配置
         yaml_helper = YAMLHelper()
         config = yaml_helper.load_yaml_file(config_file)
         
-        # 确保 proxies 是列表，处理 None 的情况
+        # 确保 proxies 是列表
         if config.get('proxies') is None:
             config['proxies'] = []
-            logger.warning("配置文件中 proxies 为空，已初始化为空列表")
         
         # 迁移 proxies_dialer 到 proxies
         if 'proxies_dialer' in config and config.get('proxies_dialer'):
             config = self._migrate_proxies_dialer(config)
             self.save(config)
         
-        logger.info(f"配置文件加载成功，包含 {len(config.get('proxies', []))} 个代理")
         return config
     
     def save(self, config, device_id=None):
-        """保存网络配置文件
-        
-        Args:
-            config: 配置内容
-            device_id: 设备ID，如果提供则保存到设备特定路径
-        
-        Returns:
-            bool: 是否保存成功
-        """
+        """保存网络配置文件"""
         from utils.yaml_helper import YAMLHelper
         
         config_file = self.get_config_file(device_id)
@@ -162,22 +144,20 @@ class ConfigManager:
         # 确保目录存在
         os.makedirs(os.path.dirname(config_file), exist_ok=True)
         
-        logger.info(f"开始保存配置文件: {config_file}")
-        
-        # 确保 proxies 是列表，处理 None 的情况
+        # 确保 proxies 是列表
         if config.get('proxies') is None:
             config['proxies'] = []
-            logger.warning("保存时发现 proxies 为空，已初始化为空列表")
         
         yaml_helper = YAMLHelper()
         yaml_helper.save_yaml_file(config_file, config)
         
-        # 统计中转线路和普通代理数量
+        # 统计
         from utils.yaml_helper import is_transit_proxy, format_proxy_for_display
         all_proxies = config.get('proxies', [])
         transit_count = sum(1 for p in all_proxies if is_transit_proxy(format_proxy_for_display(p)))
         proxy_count = len(all_proxies) - transit_count
-        logger.info(f"配置文件保存成功，包含 {transit_count} 个中转线路，{proxy_count} 个普通代理")
+        
+        logger.info(f"💾 配置已保存 | file={config_file}, proxies={proxy_count}, transit={transit_count}")
         return True
     
     def _migrate_proxies_dialer(self, config):

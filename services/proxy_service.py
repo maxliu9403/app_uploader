@@ -37,12 +37,10 @@ class ProxyService:
             tuple: (success, data/error_message)
         """
         try:
-            logger.info(f"🔍 开始获取所有普通代理... (设备: {device_id or '默认'})")
             config = self.config_manager.load(device_id)
             all_proxies = config.get('proxies') or []
             if all_proxies is None:
                 all_proxies = []
-            logger.info(f"   配置文件中共有 {len(all_proxies)} 个代理条目")
             
             # 过滤出普通代理
             formatted_proxies = []
@@ -55,11 +53,10 @@ class ProxyService:
                 else:
                     transit_count += 1
             
-            logger.info(f"   过滤后: {len(formatted_proxies)} 个普通代理, {transit_count} 个中转线路")
-            logger.info(f"✅ 成功返回 {len(formatted_proxies)} 个普通代理")
+            logger.info(f"📋 获取代理 | device={device_id}, proxies={len(formatted_proxies)}, transit={transit_count}")
             return True, formatted_proxies
         except Exception as e:
-            logger.error(f"❌ 获取代理列表失败: {str(e)}", exc_info=True)
+            logger.error(f"❌ 获取代理失败 | {str(e)}")
             return False, str(e)
     
     def add_proxy(self, data, device_id=None):
@@ -74,14 +71,15 @@ class ProxyService:
             tuple: (success, data/error_message)
         """
         try:
+            import json
             if not device_id:
                 return False, 'device_id 是必传参数'
-            logger.info(f"➕ 开始添加新代理... (设备: {device_id or '默认'})")
-            logger.info(f"   代理名称: {data.get('name', 'N/A')}")
-            logger.info(f"   代理类型: {data.get('type', 'socks5')}")
-            logger.info(f"   服务器: {data.get('server', 'N/A')}:{data.get('port', 'N/A')}")
-            logger.info(f"   地区: {data.get('region', 'N/A')}")
-            logger.info(f"   中转线路: {data.get('dialer-proxy', '无')}")
+            
+            # 简洁日志：入参
+            log_in = {'action': 'add_proxy', 'device': device_id, 'name': data.get('name'), 
+                      'type': data.get('type'), 'server': f"{data.get('server')}:{data.get('port')}", 
+                      'region': data.get('region')}
+            logger.info(f"➕ 添加代理 | {json.dumps(log_in, ensure_ascii=False)}")
             
             config = self.config_manager.load(device_id)
             
@@ -90,42 +88,34 @@ class ProxyService:
                 config['proxies'] = []
             
             # 验证数据
-            logger.info("   🔍 验证代理数据...")
             error_msg = self._validate_proxy_data(data, config)
             if error_msg:
-                logger.warning(f"   ❌ 数据验证失败: {error_msg}")
+                logger.warning(f"❌ 验证失败 | {error_msg}")
                 return False, error_msg
-            logger.info("   ✅ 数据验证通过")
             
             # 构建代理配置
             new_proxy = self._build_proxy_config(data)
-            logger.info(f"   📝 构建代理配置完成")
             
             # 添加到配置
             config['proxies'].append(new_proxy)
-            logger.info(f"   配置列表中现有 {len(config['proxies'])} 个代理")
             
             # 更新策略组
-            logger.info("   🔄 更新策略组...")
             self._update_proxy_groups(config)
             
             # 保存配置
-            logger.info("   💾 保存配置文件...")
             self.config_manager.save(config, device_id)
-            logger.info("   ✅ 配置文件保存成功")
             
             # 推送到设备
-            logger.info("   📱 推送配置到设备...")
             push_result = self._push_config_to_devices(device_id)
-            if push_result.get('success'):
-                logger.info(f"   ✅ {push_result.get('message')}")
-            else:
-                logger.warning(f"   ⚠️  推送失败: {push_result.get('message')}")
             
-            logger.info(f"✅ 代理 '{new_proxy['name']}' 添加成功！")
+            # 简洁日志：出参
+            log_out = {'success': True, 'name': new_proxy['name'], 'total': len(config['proxies']), 
+                       'pushed': push_result.get('success', False)}
+            logger.info(f"✅ 代理添加成功 | {json.dumps(log_out, ensure_ascii=False)}")
+            
             return True, {'proxy': new_proxy, 'push_result': push_result}
         except Exception as e:
-            logger.error(f"❌ 添加代理失败: {str(e)}", exc_info=True)
+            logger.error(f"❌ 添加代理失败 | {str(e)}")
             return False, str(e)
     
     def update_proxy(self, index, data, device_id=None):

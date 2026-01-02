@@ -2976,6 +2976,7 @@ user3:pass3:proxy3.com:8080
         }
 
         // 生成VM账号名称
+        // 格式: appType_region_deviceId(备注)_自增ID
         async function generateVMAccountName() {
             const appType = document.getElementById('vm-app-type-select')?.value || 'Vinted';
             const region = document.getElementById('vm-new-region-select')?.value || '';
@@ -2990,7 +2991,20 @@ user3:pass3:proxy3.com:8080
             }
 
             try {
-                const response = await fetch(`/api/vm/generate-account-name?app_type=${encodeURIComponent(appType)}&region=${encodeURIComponent(region)}`);
+                // 获取当前设备ID和备注
+                const deviceId = getCurrentDeviceId() || '';
+                const deviceRemark = deviceId ? (deviceRemarkMap.get(deviceId) || '') : '';
+
+                // 构建API URL
+                let url = `/api/vm/generate-account-name?app_type=${encodeURIComponent(appType)}&region=${encodeURIComponent(region)}`;
+                if (deviceId) {
+                    url += `&device_id=${encodeURIComponent(deviceId)}`;
+                }
+                if (deviceRemark) {
+                    url += `&device_remark=${encodeURIComponent(deviceRemark)}`;
+                }
+
+                const response = await fetch(url);
                 const result = await response.json();
 
                 if (result.success) {

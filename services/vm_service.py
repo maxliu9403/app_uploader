@@ -17,18 +17,37 @@ class VMService:
         self.setting_manager = setting_manager
         self.config_manager = config_manager
     
-    def generate_account_name(self, app_type, region):
-        """生成 VM 账号名称"""
+    def generate_account_name(self, app_type, region, device_id=None, device_remark=None):
+        """
+        生成 VM 账号名称
+        格式: appType_region_deviceId(remark)_自增ID
+        示例: Carousell_HK_72e8932c(我的手机)_001
+        """
         try:
             setting = self.setting_manager.load()
             counters = setting.get('vm_account_counters') or {}
             if counters is None:
                 counters = {}
             
+            # 计数器key: appType_region_deviceId
             counter_key = f"{app_type}_{region}"
+            if device_id:
+                counter_key = f"{app_type}_{region}_{device_id}"
+            
             current_count = counters.get(counter_key, 0)
             next_num = current_count + 1
-            account_name = f"{app_type}_{region}_{next_num:03d}"
+            
+            # 构建账号名称
+            if device_id:
+                if device_remark:
+                    # 格式: appType_region_deviceId(remark)_001
+                    account_name = f"{app_type}_{region}_{device_id}({device_remark})_{next_num:03d}"
+                else:
+                    # 格式: appType_region_deviceId_001
+                    account_name = f"{app_type}_{region}_{device_id}_{next_num:03d}"
+            else:
+                # 兼容旧格式: appType_region_001
+                account_name = f"{app_type}_{region}_{next_num:03d}"
             
             logger.info(f"生成账号名称: {account_name}")
             return True, account_name
@@ -36,7 +55,7 @@ class VMService:
             logger.error(f"生成账号名称失败: {str(e)}", exc_info=True)
             return False, str(e)
     
-    def increment_account_counter(self, app_type, region):
+    def increment_account_counter(self, app_type, region, device_id=None):
         """增加账号计数器"""
         try:
             setting = self.setting_manager.load()
@@ -44,7 +63,11 @@ class VMService:
             if counters is None:
                 counters = {}
             
+            # 计数器key需要与generate_account_name一致
             counter_key = f"{app_type}_{region}"
+            if device_id:
+                counter_key = f"{app_type}_{region}_{device_id}"
+            
             current_count = counters.get(counter_key, 0)
             counters[counter_key] = current_count + 1
             

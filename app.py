@@ -4,6 +4,7 @@ Proxy Manager - 重构后的主应用入口
 """
 
 import os
+import json
 from flask import Flask, render_template, request, Response, jsonify
 from flask_cors import CORS
 from flasgger import Swagger
@@ -118,45 +119,45 @@ app.register_blueprint(setting_routes.create_blueprint(path_manager, setting_man
 
 @app.before_request
 def log_request():
-    """记录所有请求信息"""
-    logger.info("=" * 80)
-    logger.info(f"📥 收到请求: {request.method} {request.path}")
-    logger.info(f"   客户端: {request.remote_addr}")
-    logger.info(f"   User-Agent: {request.headers.get('User-Agent', 'Unknown')}")
+    """记录所有请求信息（简洁版）"""
+    log_data = {
+        'method': request.method,
+        'path': request.path,
+        'client': request.remote_addr
+    }
     
+    # 添加查询参数
+    if request.args:
+        log_data['query'] = dict(request.args)
+    
+    # 添加请求体
     if request.method in ['POST', 'PUT', 'PATCH']:
         if request.is_json:
-            # 记录请求体（敏感数据脱敏）
             data = request.get_json(silent=True) or {}
-            sanitized_data = _sanitize_log_data(data.copy())
-            logger.info(f"   请求数据: {sanitized_data}")
+            log_data['body'] = _sanitize_log_data(data.copy())
         elif request.form:
-            logger.info(f"   表单数据: {dict(request.form)}")
+            log_data['form'] = dict(request.form)
     
-    if request.args:
-        logger.info(f"   查询参数: {dict(request.args)}")
+    logger.info(f"📥 {request.method} {request.path} | {json.dumps(log_data, ensure_ascii=False, default=str)}")
 
 
 @app.after_request
 def log_response(response):
-    """记录所有响应信息"""
-    logger.info(f"📤 响应状态: {response.status_code} {response.status}")
-    logger.info(f"   内容类型: {response.content_type}")
+    """记录所有响应信息（简洁版）"""
+    log_data = {'status': response.status_code}
     
     # 记录响应体（仅 JSON，且限制长度）
     if response.content_type and 'application/json' in response.content_type:
         try:
             data = response.get_json()
             if data:
-                success = data.get('success', 'N/A')
-                logger.info(f"   响应结果: success={success}")
+                log_data['success'] = data.get('success', 'N/A')
                 if not data.get('success'):
-                    error = data.get('error', 'Unknown')
-                    logger.warning(f"   ❌ 错误信息: {error}")
+                    log_data['error'] = data.get('error', 'Unknown')
         except:
             pass
     
-    logger.info("=" * 80)
+    logger.info(f"📤 {response.status_code} | {json.dumps(log_data, ensure_ascii=False, default=str)}")
     return response
 
 
@@ -306,7 +307,7 @@ def vm_create_account():
             # 检查返回码
             if process.returncode == 0:
                 # 只有创建成功才更新计数器
-                vm_service.increment_account_counter(app_type, region)
+                vm_service.increment_account_counter(app_type, region, device_id or None)
                 yield f"data: {to_json({'type': 'success', 'message': f'VM 账号 {name} 创建成功'})}\n\n"
                 logger.info(f"✅ VM 账号 '{name}' 创建成功")
             else:

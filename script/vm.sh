@@ -249,6 +249,14 @@ execute_save_logic() {
          fi
          # 如果 Profile 不存在，从 Conf 复制
          if [ ! -f "$SAVE_PROFILE" ]; then cp "$CONF_FILE" "$SAVE_PROFILE"; fi
+         
+         # 📌 记录APP版本（用于Load时兼容性检测）
+         APP_VERSION=$(dumpsys package $SAVE_PKG 2>/dev/null | grep "versionName=" | head -1 | sed 's/.*versionName=//' | tr -d ' ')
+         if [ ! -z "$APP_VERSION" ]; then
+             sed -i '/AppVersion=/d' "$SAVE_PROFILE"
+             echo "AppVersion=$APP_VERSION" >> "$SAVE_PROFILE"
+             echo "📌 [Save] APP版本: $APP_VERSION"
+         fi
     fi
     
     cd /
@@ -259,6 +267,7 @@ execute_save_logic() {
     
     echo "✅ 备份完成: $SAVE_NAME"
 }
+
 
 # ================= 主逻辑 =================
 
@@ -382,9 +391,13 @@ if [ "$ACTION" = "new" ]; then
     # 🧹 Clean target app cache and storage
     echo "🧹 [Clean] 清理目标APP环境: $PKG"
     freeze_app "$PKG"
+    
+    # ✅ pm clear 是安卓官方API，会清空数据但保留目录结构和SELinux上下文
+    # ❌ 不要使用 rm -rf "$DATA_INT"，会破坏Inode和SELinux绑定导致闪退
     pm clear "$PKG" >/dev/null 2>&1
+    
+    # ✅ 外部存储可以删除
     rm -rf "$DATA_EXT"
-    rm -rf "$DATA_INT"  # Also clean internal data
     
     # Google账号清理
     safe_remove_google_account
@@ -466,6 +479,7 @@ if [ "$ACTION" = "load" ]; then
         APP_TYPE=$(grep "AppType=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n ')
         REGION=$(grep "Region=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n ')
         SAVED_NODE=$(grep "CurrentNode=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n ')
+        BACKUP_VERSION=$(grep "AppVersion=" "$PROFILE" | cut -d= -f2 | tr -d '\r\n ')
     fi
     [ -z "$APP_TYPE" ] && APP_TYPE="Vinted"
     [ -z "$REGION" ] && REGION="HK"
@@ -477,11 +491,36 @@ if [ "$ACTION" = "load" ]; then
     DATA_EXT="/sdcard/Android/data/$PKG"
     APP_UID=$(cmd package list packages -U | grep "$PKG" | awk -F: '{print $3}' | tr -d ' ')
     
+    # 📌 版本兼容性检测
+    CURRENT_VERSION=$(dumpsys package $PKG 2>/dev/null | grep "versionName=" | head -1 | sed 's/.*versionName=//' | tr -d ' ')
+    if [ ! -z "$BACKUP_VERSION" ] && [ ! -z "$CURRENT_VERSION" ]; then
+        if [ "$BACKUP_VERSION" != "$CURRENT_VERSION" ]; then
+            echo "⚠️ [VERSION] 检测到APP版本变化！"
+            echo "   备份版本: $BACKUP_VERSION"
+            echo "   当前版本: $CURRENT_VERSION"
+            echo "   ⚠️ 可能存在数据兼容性问题，继续执行..."
+        else
+            echo "✅ [VERSION] 版本一致: $CURRENT_VERSION"
+        fi
+    fi
+    
     echo "♻️ 还原 [$NAME] -> 节点: $SAVED_NODE..."
     
     freeze_app "$PKG"
-    find "$DATA_INT" -mindepth 1 -maxdepth 1 ! -name 'lib' -exec rm -rf {} +
-    rm -rf "$DATA_DE" "$DATA_EXT"
+    
+    # 🔒 安全清理（修正版方案A）
+    # ✅ 保留 lib 目录（因为备份中排除了lib，删除会导致闪退）
+    # ✅ 清空其他所有数据（避免账号污染）
+    if [ -d "$DATA_INT" ]; then
+        find "$DATA_INT" -mindepth 1 -maxdepth 1 ! -name 'lib' -exec rm -rf {} + 2>/dev/null
+    fi
+    
+    # ✅ 完全删除 DATA_DE（tar会重建，restorecon会修复SELinux）
+    rm -rf "$DATA_DE"
+    
+    # ✅ 完全删除外部存储
+    rm -rf "$DATA_EXT"
+    
     safe_remove_google_account
     
     # Extract backup
@@ -492,6 +531,11 @@ if [ "$ACTION" = "load" ]; then
         echo "❌ [FATAL] Backup extraction failed"
         exit 1
     fi
+    
+    # 🔒 关键：修复所有权限和SELinux上下文
+    echo "🔧 [Restore] 修复权限和SELinux上下文..."
+    fix_strict "$DATA_INT" "$APP_UID"
+    fix_strict "$DATA_DE" "$APP_UID"
     
     # Restore profile config
     if [ -f "$PROFILE" ]; then 

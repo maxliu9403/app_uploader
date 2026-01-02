@@ -201,7 +201,6 @@ class ADBHelper:
             
             # 🔥 记录完整的ADB命令到日志
             cmd_str = ' '.join(adb_cmd)
-            logger.info(f"🔧 执行ADB命令: {cmd_str}")
             
             result = subprocess.run(
                 adb_cmd,
@@ -214,21 +213,28 @@ class ADBHelper:
                 creationflags=0x08000000 if os.name == 'nt' else 0
             )
             
-            # 记录命令结果
-            logger.info(f"   └─ 返回码: {result.returncode}")
+            # 简洁的JSON格式日志
+            log_data = {
+                'cmd': cmd_str,
+                'rc': result.returncode,
+            }
             if result.stdout and len(result.stdout.strip()) > 0:
-                stdout_preview = result.stdout[:200] if len(result.stdout) > 200 else result.stdout
-                logger.info(f"   └─ 输出: {stdout_preview}")
+                log_data['out'] = result.stdout[:100].strip().replace('\n', ' ')
             if result.stderr and len(result.stderr.strip()) > 0:
-                stderr_preview = result.stderr[:200] if len(result.stderr) > 200 else result.stderr
-                logger.warning(f"   └─ 错误: {stderr_preview}")
+                log_data['err'] = result.stderr[:100].strip().replace('\n', ' ')
+            
+            import json
+            if result.returncode == 0:
+                logger.info(f"🔧 ADB | {json.dumps(log_data, ensure_ascii=False)}")
+            else:
+                logger.warning(f"🔧 ADB | {json.dumps(log_data, ensure_ascii=False)}")
             
             return result.returncode, result.stdout, result.stderr
             
         except subprocess.TimeoutExpired:
-            logger.error(f"⏱️ ADB命令执行超时 (>{timeout}s)")
+            logger.error(f"⏱️ ADB超时 | cmd={cmd_str}")
             return -1, "", "命令执行超时"
         except Exception as e:
-            logger.error(f"❌ ADB命令执行异常: {str(e)}")
+            logger.error(f"❌ ADB异常 | {str(e)}")
             return -1, "", str(e)
 

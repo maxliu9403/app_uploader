@@ -63,11 +63,15 @@ def create_blueprint(vm_service):
         try:
             app_type = request.args.get('app_type', '').strip()
             region = request.args.get('region', '').strip().upper()
+            device_id = request.args.get('device_id', '').strip()
+            device_remark = request.args.get('device_remark', '').strip()
             
             if not app_type or not region:
                 return jsonify({'success': False, 'error': '缺少必需参数'}), 400
             
-            success, result = vm_service.generate_account_name(app_type, region)
+            success, result = vm_service.generate_account_name(
+                app_type, region, device_id or None, device_remark or None
+            )
             if success:
                 return jsonify({'success': True, 'data': result})
             else:
