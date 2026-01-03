@@ -217,6 +217,35 @@ clean_network_stack() {
     cmd connectivity flush-dns >/dev/null 2>&1
 }
 
+deep_clean_system_traces() {
+    log_step "执行深度环境清洗 (Deep Clean)"
+    
+    # 1. 缩略图阻断 (删除并占位)
+    rm -rf /sdcard/DCIM/.thumbnails
+    rm -rf /sdcard/Pictures/.thumbnails
+    touch /sdcard/DCIM/.thumbnails
+    touch /sdcard/Pictures/.thumbnails
+    chmod 000 /sdcard/DCIM/.thumbnails
+    chmod 000 /sdcard/Pictures/.thumbnails
+    
+    # 2. WebView & Cache 清洗
+    PKGS=$(pm list packages -3 | cut -d: -f2)
+    for P in $PKGS; do
+        if [ -d "/data/data/$P/app_webview" ]; then rm -rf "/data/data/$P/app_webview"; fi
+        if [ -d "/data/data/$P/cache" ]; then rm -rf "/data/data/$P/cache"; fi
+        if [ -d "/data/data/$P/code_cache" ]; then rm -rf "/data/data/$P/code_cache"; fi
+    done
+    
+    # 3. 剪贴板重置
+    service call clipboard 2 s16 "" >/dev/null 2>&1
+    
+    # 4. 相册清空 & 媒体库刷新
+    rm -f /sdcard/DCIM/Camera/*
+    am broadcast -a android.intent.action.MEDIA_SCANNER_SCAN_FILE -d "file:///sdcard/DCIM/Camera" >/dev/null 2>&1
+    
+    echo "✅ [Deep Clean] 环境痕迹已清除"
+}
+
 verify_network_environment() {
     EXPECTED_REGION="$1"
     # Ensure expected region is uppercase
@@ -360,6 +389,7 @@ switch_proxy() {
             sed -i '/CurrentNode=/d' "$CONF_FILE"
             echo "CurrentNode=$TARGET_NODE" >> "$CONF_FILE"
             chmod 666 "$CONF_FILE"
+            chcon u:object_r:app_data_file:s0 "$CONF_FILE"
         fi
         return 0
     fi
@@ -409,6 +439,7 @@ switch_proxy() {
                 sed -i '/CurrentNode=/d' "$CONF_FILE"
                 echo "CurrentNode=$backup_node" >> "$CONF_FILE"
                 chmod 666 "$CONF_FILE"
+                chcon u:object_r:app_data_file:s0 "$CONF_FILE"
             fi
             
             echo "✅ [Fallback] 已成功切换到备用线路: $backup_node"
@@ -441,6 +472,7 @@ sync_gps_from_ip() {
         echo "GPS_LAT=$LAT" >> "$CONF_FILE"
         echo "GPS_LON=$LON" >> "$CONF_FILE"
         chmod 666 "$CONF_FILE"
+        chcon u:object_r:app_data_file:s0 "$CONF_FILE"
         echo "✅ GPS 已更新: $LAT, $LON"
     fi
 }
@@ -731,6 +763,7 @@ if [ "$ACTION" = "new" ]; then
     
     # 网络栈清理
     clean_network_stack
+    deep_clean_system_traces
     
     # 切换代理
     log_step "切换网络代理: $NODE (地区: $REGION)"
@@ -758,6 +791,7 @@ if [ "$ACTION" = "new" ]; then
     log_step "保存配置副本到 Profile 目录"
     cp "$CONF_FILE" "$PROFILE_ROOT/$NAME.conf"
     chmod 666 "$CONF_FILE" "$PROFILE_ROOT/$NAME.conf"
+    chcon u:object_r:app_data_file:s0 "$CONF_FILE"
     
     # 注入 GMS IDs
     log_step "注入 GMS Ads ID 和 SSAID"
@@ -785,6 +819,26 @@ if [ "$ACTION" = "new" ]; then
     # 清理干扰应用
     log_step "清理干扰应用进程"
     kill_interfering_apps
+    
+    # 🌍 设置系统时区和语言 (Regional Consistency)
+    if [ -f "$CONF_FILE" ]; then
+        TZ=$(grep "Timezone=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
+        LOC=$(grep "Locale=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
+        
+        if [ ! -z "$TZ" ]; then 
+            setprop persist.sys.timezone "$TZ"
+            log_step "设置时区: $TZ"
+        fi
+        
+        if [ ! -z "$LOC" ]; then
+            setprop persist.sys.locale "$LOC"
+            setprop persist.sys.language "en"
+            # Extract country from locale (e.g., en_GB -> GB)
+            CTY=$(echo "$LOC" | cut -d_ -f2)
+            setprop persist.sys.country "$CTY"
+            log_step "设置语言区域: $LOC (Country: $CTY)"
+        fi
+    fi
     
     # 解冻应用
     log_step "解冻目标应用: $PKG"
@@ -936,12 +990,13 @@ if [ "$ACTION" = "load" ]; then
     if [ -f "$PROFILE" ]; then 
         cp "$PROFILE" "$CONF_FILE"
         chmod 666 "$CONF_FILE"
-        restorecon "$CONF_FILE"
+        chcon u:object_r:app_data_file:s0 "$CONF_FILE"
     fi
     
     # Network setup
     log_step "清理网络状态"
     clean_network_stack
+    deep_clean_system_traces
     log_step "切换代理节点: $SAVED_NODE (地区: $REGION)"
     switch_proxy "$SAVED_NODE" "$REGION"
     
@@ -978,6 +1033,26 @@ if [ "$ACTION" = "load" ]; then
     
     log_step "清理干扰应用进程"
     kill_interfering_apps
+    
+    # 🌍 设置系统时区和语言 (Regional Consistency)
+    if [ -f "$CONF_FILE" ]; then
+        TZ=$(grep "Timezone=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
+        LOC=$(grep "Locale=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
+        
+        if [ ! -z "$TZ" ]; then 
+            setprop persist.sys.timezone "$TZ"
+            log_step "设置时区: $TZ"
+        fi
+        
+        if [ ! -z "$LOC" ]; then
+            setprop persist.sys.locale "$LOC"
+            setprop persist.sys.language "en"
+            # Extract country from locale (e.g., en_GB -> GB)
+            CTY=$(echo "$LOC" | cut -d_ -f2)
+            setprop persist.sys.country "$CTY"
+            log_step "设置语言区域: $LOC (Country: $CTY)"
+        fi
+    fi
     
     log_step "解冻应用: $PKG"
     unfreeze_app "$PKG"

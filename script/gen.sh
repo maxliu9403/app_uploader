@@ -24,6 +24,8 @@ ANDROID_ID=$(gen_hex 16)
 ADS_ID=$(gen_uuid)
 IMEI="86516605$(gen_num 7)"
 SERIAL=$(gen_hex 8 | tr 'a-f' 'A-F')
+# 🐛 关键修复: GSF ID 必须是16位纯数字 (十进制格式)，不是十六进制！
+# Device ID 软件期望格式如: "4570628172512369"
 GSF_ID=$(gen_num 16)
 MIUI_ID=$(gen_num 13)
 OAID=$(gen_uuid)
@@ -34,6 +36,12 @@ BT_MAC="18:F0:E4:$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F'):$(g
 IP="10.$(( $(date +%s) % 255 )).$(( $(date +%s) % 255 )).$(( $(date +%s) % 250 + 2 ))"
 GPS_ALT=$(awk -v min=5 -v max=100 'BEGIN{srand(); print min+rand()*(max-min)}')
 
+
+# --- [Time Simulation] ---
+NOW_TS=$(date +%s)
+# 30-120 days ago (Loyal user simulation)
+DAYS=$(( $(gen_num 2) % 90 + 30 ))
+INSTALL_TS=$(( NOW_TS - DAYS * 86400 ))
 
 # --- 区域配置 (MCC/MNC/Phone/Operator) ---
 case "$REGION" in
@@ -46,6 +54,7 @@ case "$REGION" in
         SSID="Vodafone-WiFi-$(gen_num 3)"
         BSSID="50:C7:BF:$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F')"
         GPS_LAT="51.5072"; GPS_LON="-0.1276"  # London
+        TIMEZONE="Europe/London"; LOCALE="en_GB"; ISO_CODE="gb"
         ;;
     HK)
         MCC="454"; MNC="00"  # CSL
@@ -56,6 +65,7 @@ case "$REGION" in
         SSID="CSL-WiFi-$(gen_num 3)"
         BSSID="00:1E:58:$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F')"
         GPS_LAT="22.3193"; GPS_LON="114.1694"  # Hong Kong
+        TIMEZONE="Asia/Hong_Kong"; LOCALE="en_HK"; ISO_CODE="hk"
         ;;
 
     SG)
@@ -67,6 +77,7 @@ case "$REGION" in
         SSID="SingTel-WiFi-$(gen_num 3)"
         BSSID="54:A0:50:$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F')"
         GPS_LAT="1.3521"; GPS_LON="103.8198"  # Singapore
+        TIMEZONE="Asia/Singapore"; LOCALE="en_SG"; ISO_CODE="sg"
         ;;
     MY)
         MCC="502"; MNC="12"  # Maxis
@@ -77,6 +88,7 @@ case "$REGION" in
         SSID="Maxis-WiFi-$(gen_num 3)"
         BSSID="00:1F:3F:$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F')"
         GPS_LAT="3.1390"; GPS_LON="101.6869"  # Kuala Lumpur
+        TIMEZONE="Asia/Kuala_Lumpur"; LOCALE="en_MY"; ISO_CODE="my"
         ;;
     PH)
         MCC="515"; MNC="02"  # Globe
@@ -87,6 +99,7 @@ case "$REGION" in
         SSID="Globe-WiFi-$(gen_num 3)"
         BSSID="78:44:76:$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F')"
         GPS_LAT="14.5995"; GPS_LON="120.9842"  # Manila
+        TIMEZONE="Asia/Manila"; LOCALE="en_PH"; ISO_CODE="ph"
         ;;
     *)
         # Default to GB
@@ -98,6 +111,7 @@ case "$REGION" in
         SSID="Vodafone-WiFi-$(gen_num 3)"
         BSSID="50:C7:BF:$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F'):$(gen_hex 2 | tr 'a-f' 'A-F')"
         GPS_LAT="51.5072"; GPS_LON="-0.1276"
+        TIMEZONE="Europe/London"; LOCALE="en_GB"; ISO_CODE="gb"
         ;;
 esac
 
@@ -197,8 +211,13 @@ SELinuxStatus=Enforcing
 GPS_LAT=$GPS_LAT
 GPS_LON=$GPS_LON
 GPS_ALT=$GPS_ALT
+FirstInstallTime=$INSTALL_TS
+GPS_ALT=$GPS_ALT
 AppType=$APP_TYPE
 Region=$REGION
+Timezone=$TIMEZONE
+Locale=$LOCALE
+ISO_CODE=$ISO_CODE
 EOF
 
 chmod 666 "$CONF_FILE"
