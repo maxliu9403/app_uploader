@@ -458,7 +458,8 @@ switch_proxy() {
     echo "   地区: $REGION_CODE"
     echo "   可能原因: 所有代理均下线或被封锁"
     echo "❌ Unsafe environment. Exiting."
-    exit 1
+    output_result "error" "$EXIT_NETWORK_FAIL" "所有代理线路验证失败 (主线路: $1, 地区: $REGION_CODE)"
+    exit $EXIT_NETWORK_FAIL
 }
 
 sync_gps_from_ip() {
