@@ -123,7 +123,7 @@ class ProxyService:
         更新代理
         
         Args:
-            index: 代理索引
+            index: 代理索引（过滤列表中的索引）
             data: 更新的数据
             device_id: 设备ID，如果提供则更新该设备的代理
             
@@ -133,9 +133,25 @@ class ProxyService:
         try:
             if not device_id:
                 return False, 'device_id 是必传参数'
-            logger.info(f"✏️  开始更新代理 (索引: {index}, 设备: {device_id or '默认'})...")
+            logger.info(f"✏️  开始更新代理 (过滤索引: {index}, 设备: {device_id or '默认'})...")
             logger.info(f"   新名称: {data.get('name', 'N/A')}")
             logger.info(f"   新服务器: {data.get('server', 'N/A')}:{data.get('port', 'N/A')}")
+            
+            # 先获取过滤后的代理列表，获取原始索引映射
+            success, filtered_proxies = self.get_all_proxies(device_id)
+            if not success:
+                return False, filtered_proxies
+            
+            if index < 0 or index >= len(filtered_proxies):
+                logger.warning(f"   ❌ 索引超出范围: {index} (过滤后总数: {len(filtered_proxies)})")
+                return False, '索引超出范围'
+            
+            # 获取原始配置索引
+            original_index = filtered_proxies[index].get('_index')
+            if original_index is None:
+                return False, '索引映射失败'
+            
+            logger.info(f"   📍 索引映射: 过滤索引 {index} -> 原始索引 {original_index}")
             
             config = self.config_manager.load(device_id)
             
@@ -144,27 +160,27 @@ class ProxyService:
                 proxies = []
                 config['proxies'] = []
             
-            if index < 0 or index >= len(proxies):
-                logger.warning(f"   ❌ 索引超出范围: {index} (总数: {len(proxies)})")
-                return False, '索引超出范围'
+            if original_index < 0 or original_index >= len(proxies):
+                logger.warning(f"   ❌ 原始索引超出范围: {original_index} (总数: {len(proxies)})")
+                return False, '原始索引超出范围'
             
-            old_proxy = config['proxies'][index]
+            old_proxy = config['proxies'][original_index]
             old_name = format_proxy_for_display(old_proxy).get('name', 'Unknown')
             logger.info(f"   原代理名称: {old_name}")
             
-            # 验证数据
+            # 验证数据（使用原始索引排除自身）
             logger.info("   🔍 验证更新数据...")
-            error_msg = self._validate_proxy_data(data, config, exclude_index=index)
+            error_msg = self._validate_proxy_data(data, config, exclude_index=original_index)
             if error_msg:
                 logger.warning(f"   ❌ 数据验证失败: {error_msg}")
                 return False, error_msg
             logger.info("   ✅ 数据验证通过")
             
             # 构建更新的配置
-            updated_proxy = self._build_proxy_config(data, config['proxies'][index])
+            updated_proxy = self._build_proxy_config(data, config['proxies'][original_index])
             
             # 更新配置
-            config['proxies'][index] = updated_proxy
+            config['proxies'][original_index] = updated_proxy
             
             # 更新策略组
             logger.info("   🔄 更新策略组...")
@@ -178,7 +194,7 @@ class ProxyService:
             logger.info("   📱 推送配置到设备...")
             push_result = self._push_config_to_devices(device_id)
             
-            logger.info(f"✅ 代理 '{updated_proxy['name']}' (索引 {index}) 更新成功！")
+            logger.info(f"✅ 代理 '{updated_proxy['name']}' (原始索引 {original_index}) 更新成功！")
             return True, {'proxy': updated_proxy, 'push_result': push_result}
         except Exception as e:
             logger.error(f"❌ 更新代理失败: {str(e)}", exc_info=True)
@@ -834,7 +850,7 @@ class ProxyService:
             device_id: 设备ID
             line_name: 线路名称
             status: bool, True=占用, False=释放
-            region: 地区代码 (必填，用于校验)
+            region: 地区代码 (占用时必填用于校验，释放时可选)
             
         Returns:
             tuple: (success, message)
@@ -844,8 +860,36 @@ class ProxyService:
                 return False, 'device_id 是必传参数'
             if not line_name:
                 return False, 'line_name 是必传参数'
+            
+            from datetime import datetime
+            
+            # ========== 释放逻辑：无需校验，直接从 JSON 中移除 ==========
+            if not status:
+                occupancy_data = self._load_occupancy_data()
+                
+                if device_id in occupancy_data:
+                    device_data = occupancy_data[device_id]
+                    current_lines = device_data.get('occupied_lines', [])
+                    
+                    if isinstance(current_lines, list) and line_name in current_lines:
+                        current_lines.remove(line_name)
+                        device_data['occupied_lines'] = current_lines
+                        device_data['last_update'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+                        self._save_occupancy_data(occupancy_data)
+                        logger.info(f"✅ 释放线路 | 设备: {device_id}, 线路: {line_name}")
+                        return True, {'message': f'线路 {line_name} 释放成功', 'occupied_lines': current_lines}
+                    else:
+                        # 线路不在占用列表中，也视为成功（幂等操作）
+                        logger.info(f"ℹ️ 线路 {line_name} 未被占用，无需释放")
+                        return True, {'message': f'线路 {line_name} 未被占用', 'occupied_lines': current_lines if isinstance(current_lines, list) else []}
+                else:
+                    # 设备没有占用记录，也视为成功
+                    logger.info(f"ℹ️ 设备 {device_id} 无占用记录")
+                    return True, {'message': f'线路 {line_name} 释放成功（设备无占用记录）', 'occupied_lines': []}
+            
+            # ========== 占用逻辑：需要校验 ==========
             if not region:
-                return False, 'region 是必传参数 (用于校验)'
+                return False, 'region 是必传参数 (占用操作需要校验)'
             
             # 1. 校验: 检查线路是否存在、是否为备用、地区是否匹配
             config = self.config_manager.load(device_id)
@@ -853,7 +897,6 @@ class ProxyService:
             
             found_proxy = None
             for proxy in proxies:
-                # 兼容不同格式，获取名称
                 p_name = proxy.get('name')
                 if p_name == line_name:
                     found_proxy = proxy
@@ -884,31 +927,19 @@ class ProxyService:
             device_data = occupancy_data[device_id]
             current_lines = device_data.get('occupied_lines', [])
             
-            # 确保是列表
             if not isinstance(current_lines, list):
                 current_lines = []
             
-            from datetime import datetime
-            
-            action = "未知"
-            if status:
-                # 占用
-                action = "占用"
-                if line_name not in current_lines:
-                    current_lines.append(line_name)
-            else:
-                # 释放
-                action = "释放"
-                if line_name in current_lines:
-                    current_lines.remove(line_name)
+            if line_name not in current_lines:
+                current_lines.append(line_name)
             
             device_data['occupied_lines'] = current_lines
             device_data['last_update'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
             
             self._save_occupancy_data(occupancy_data)
             
-            logger.info(f"✅ 更新线路占用状态 | 设备: {device_id}, 线路: {line_name}, 地区: {region}, 动作: {action}")
-            return True, {'message': f'线路 {line_name} {action}成功', 'occupied_lines': current_lines}
+            logger.info(f"✅ 占用线路 | 设备: {device_id}, 线路: {line_name}, 地区: {region}")
+            return True, {'message': f'线路 {line_name} 占用成功', 'occupied_lines': current_lines}
             
         except Exception as e:
             logger.error(f"更新线路占用失败: {str(e)}", exc_info=True)

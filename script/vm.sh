@@ -304,6 +304,10 @@ switch_proxy() {
     # ========== 备用线路重试逻辑 ==========
     echo "⚠️ [Fallback] 主线路验证失败，尝试获取备用线路..."
     
+    # 🔓 释放失败的主线路（让其他设备可以使用）
+    echo "🔓 [Release] 释放失败的主线路: $TARGET_NODE"
+    update_line_occupancy "$TARGET_NODE" "false" "$REGION_CODE"
+    
     local max_retries=3
     local retry_count=0
     local used_backup_line=""
@@ -349,6 +353,7 @@ switch_proxy() {
             return 0
         else
             echo "❌ [重试 $retry_count] 备用线路验证失败: $backup_node"
+            # 备用线路本就没有被占用，不需要释放
         fi
     done
     

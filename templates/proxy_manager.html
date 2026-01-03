@@ -1875,6 +1875,8 @@ user3:pass3:proxy3.com:8080
             const region = proxy.region || '-';
             const isBak = proxy.IsBak || false;
             const bakBadge = isBak ? '<span class="badge" style="background:#f59e0b; color:white;">备用</span>' : '<span class="badge" style="background:#10b981; color:white;">主线</span>';
+            // 使用代理名称而不是索引，避免过滤后索引不匹配的问题
+            const escapedName = proxy.name.replace(/'/g, "\\'").replace(/"/g, '&quot;');
 
             row.innerHTML = `
                 <td style="text-align: center;">
@@ -1894,8 +1896,8 @@ user3:pass3:proxy3.com:8080
                 <td>${bakBadge}</td>
                 <td>
                     <div class="action-buttons">
-                        <button class="btn btn-sm btn-success" onclick="editProxy(${index})">编辑</button>
-                        <button class="btn btn-sm btn-danger" onclick="deleteProxy(${index})">删除</button>
+                        <button class="btn btn-sm btn-success" onclick="editProxyByName('${escapedName}')">编辑</button>
+                        <button class="btn btn-sm btn-danger" onclick="deleteProxyByName('${escapedName}')">删除</button>
                     </div>
                 </td>
             `;
@@ -2179,17 +2181,22 @@ user3:pass3:proxy3.com:8080
             }
         }
 
-        // 编辑代理
-        async function editProxy(index) {
+        // 编辑代理（通过名称）
+        async function editProxyByName(proxyName) {
             try {
                 const response = await fetch(buildUrlWithDeviceId('/api/proxies'));
                 const result = await response.json();
 
-                if (result.success && result.data[index]) {
-                    const proxy = result.data[index];
+                if (result.success) {
+                    // 通过名称查找代理
+                    const proxy = result.data.find(p => p.name === proxyName);
+                    if (!proxy) {
+                        showAlert('error', '未找到代理: ' + proxyName);
+                        return;
+                    }
                     // 保存代理的原始名称（用于识别要更新的代理）
                     currentEditProxyName = proxy.name;
-                    currentEditIndex = index; // 保留以兼容旧代码
+                    currentEditIndex = proxy._index; // 保留以兼容旧代码
 
                     // 加载中转线路名称列表和地区列表
                     await Promise.all([loadTransitProxyNames(), loadRegions()]);
@@ -2225,6 +2232,22 @@ user3:pass3:proxy3.com:8080
                     document.querySelector('textarea[name="extra-params"]').value = Object.keys(extra).length > 0 ? JSON.stringify(extra, null, 2) : '';
 
                     document.getElementById('proxy-modal').classList.add('active');
+                } else {
+                    showAlert('error', '加载代理列表失败: ' + result.error);
+                }
+            } catch (error) {
+                showAlert('error', '加载代理信息失败: ' + error.message);
+            }
+        }
+
+        // 兼容旧的 editProxy 函数（通过索引，已弃用）
+        async function editProxy(index) {
+            console.warn('editProxy by index is deprecated, use editProxyByName instead');
+            try {
+                const response = await fetch(buildUrlWithDeviceId('/api/proxies'));
+                const result = await response.json();
+                if (result.success && result.data[index]) {
+                    editProxyByName(result.data[index].name);
                 }
             } catch (error) {
                 showAlert('error', '加载代理信息失败: ' + error.message);
@@ -2314,30 +2337,19 @@ user3:pass3:proxy3.com:8080
             }
         }
 
-        // 删除代理
-        async function deleteProxy(index) {
+        // 删除代理（通过名称）
+        async function deleteProxyByName(proxyName) {
             const deviceId = getCurrentDeviceId();
             if (!deviceId) {
                 showAlert('error', '请先选择设备');
                 return;
             }
-            if (!confirm(`高危操作：确定删除该设备的网络配置中的代理线路吗？\n\n目标设备：${formatDeviceLabel(deviceId)}`)) {
+            if (!confirm(`高危操作：确定删除代理 "${proxyName}" 吗？\n\n目标设备：${formatDeviceLabel(deviceId)}`)) {
                 return;
             }
 
             try {
-                // 先获取代理列表，找到对应的代理名称
-                const listResponse = await fetch(buildUrlWithDeviceId('/api/proxies'));
-                const listResult = await listResponse.json();
-
-                if (!listResult.success || !listResult.data[index]) {
-                    showAlert('error', '未找到要删除的代理');
-                    return;
-                }
-
-                const proxyName = listResult.data[index].name;
-
-                // 使用代理名称删除
+                // 直接使用代理名称删除
                 const url = buildUrlWithDeviceId(`/api/proxies/by-name/${encodeURIComponent(proxyName)}`);
                 const response = await fetch(url, {
                     method: 'DELETE'
@@ -2350,6 +2362,20 @@ user3:pass3:proxy3.com:8080
                     await loadProxies();
                 } else {
                     showAlert('error', '删除失败: ' + result.error);
+                }
+            } catch (error) {
+                showAlert('error', '删除失败: ' + error.message);
+            }
+        }
+
+        // 兼容旧的 deleteProxy 函数（通过索引，已弃用）
+        async function deleteProxy(index) {
+            console.warn('deleteProxy by index is deprecated, use deleteProxyByName instead');
+            try {
+                const listResponse = await fetch(buildUrlWithDeviceId('/api/proxies'));
+                const listResult = await listResponse.json();
+                if (listResult.success && listResult.data[index]) {
+                    deleteProxyByName(listResult.data[index].name);
                 }
             } catch (error) {
                 showAlert('error', '删除失败: ' + error.message);
