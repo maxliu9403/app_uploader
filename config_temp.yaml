@@ -2,21 +2,25 @@
 socks-port: 7891
 mixed-port: 7890
 tproxy-port: 9898
+redir-port: 9797
 allow-lan: true
 mode: rule
-log-level: info
+# 生产环境建议 warning，减少 IO
+log-level: warning
 ipv6: false
 external-controller: 0.0.0.0:9090
 secret: ''
 external-ui: ./dashboard
 
-# ==================== 性能优化 ====================
+# ==================== 性能与指纹 ====================
 tcp-concurrent: true
-# 针对安卓 App，模拟原生指纹最稳
+# 模拟 Android 网络指纹
 global-client-fingerprint: android
 keep-alive-interval: 30
+# 强制让 UDP 流量排队，防止 QUIC 抢占带宽导致丢包
+unified-delay: true
 
-# ==================== DNS 设置 (防污染) ====================
+# ==================== DNS 设置 (关键修正) ====================
 dns:
   enable: true
   listen: 0.0.0.0:1053
@@ -24,31 +28,50 @@ dns:
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   
-  # 代理域名直连解析
+  # 引导 DNS: 国内 IP 用于快速解析节点域名 (Trojan Server)
+  default-nameserver: 
+    - 223.5.5.5
+    - 119.29.29.29
+  
+  # 业务 DNS: 解决 Chrome 访问失败的核心
+  # ❌ 错误做法: 使用 https://dns.google (DoH)。在国内握手极易超时 -> ERR_NAME_NOT_RESOLVED
+  # ✅ 正确做法: 使用普通的 UDP 8.8.8.8。请求会封装在代理隧道里，防污染且速度极快。
+  nameserver: 
+    - 8.8.8.8
+    - 1.1.1.1
+    
+  fallback: 
+    - 8.8.8.8
+    - 1.1.1.1
+  
+  fallback-filter: 
+    geoip: true
+    ipcidr: [240.0.0.0/4]
+  
   fake-ip-filter: 
     - '+.arxlabs.io'
     - 'connect.rom.miui.com'
+    - 'time.android.com'
+    - 'time.google.com'
 
-  default-nameserver: [223.5.5.5, 119.29.29.29]
-  nameserver: 
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  fallback: 
-    - https://dns.google/dns-query
-    - https://1.1.1.1/dns-query
-  
-  fallback-filter: { geoip: true, ipcidr: [240.0.0.0/4] }
-
-# ==================== Tun/TProxy 配合设置 ====================
+# ==================== Tun 模式 (核心) ====================
 tun:
-  enable: false
+  # 🔥 必须开启: 否则流量没有任何接管，Chrome 自然无法上网
+  enable: true
   stack: gvisor
   auto-route: true
   auto-detect-interface: true
   dns-hijack: [any:53]
-  mtu: 1280
-  # 强制指定 IP 防止 172.19 泄露
+  mtu: 1400 # 手机网络最佳兼容值
+  
+  # 🔥 严格路由：防止流量绕过代理
+  strict-route: true
+  
+  # 🔥 IP 伪装：使用 198.18 网段，彻底避开 docker/172.x.x.x 特征
   inet4-address: [198.18.0.1/30]
+  
+  # 彻底禁用 IPv6 接口，防止 leak
+  inet6-address: []
 
 # ==================== 节点列表 ====================
 proxies:
@@ -59,31 +82,56 @@ proxy-groups:
   - name: "Proxy-IP"
     type: select
     proxies:
+    
        
 # ==================== 规则 ====================
 rules:
-  # 1. 安全阻断
+  # ========== 1. 核心防护 (优先级最高) ==========
+  # WebRTC STUN/TURN 全端口阻断 (防止泄露内网 IP)
+  - DST-PORT,3478-3497,REJECT
+  # IPv6 全阻断 (防止 IPv6 泄露真实 IP)
   - IP-CIDR6,::/0,REJECT,no-resolve
-  - DST-PORT,3478,REJECT
-  - DST-PORT,3479,REJECT
-  # 强制 UDP 443 (QUIC) 阻断，让 Chrome 走 TCP
-  - AND,((DST-PORT,443),(NETWORK,UDP)),REJECT
-  
-  # 2. Carousell 业务分流
+  # QUIC/UDP 443 阻断 (强制 Chrome/App 走 TCP)
+  - AND,((NETWORK,UDP),(DST-PORT,443)),REJECT
+
+  # ========== 2. 时间同步 (防时区泄露) ==========
+  # 强制 NTP 走代理，或者直接 REJECT 让系统使用被劫持的时间
+  - DST-PORT,123,Proxy-IP
+  - DOMAIN-SUFFIX,ntp.org,Proxy-IP
+  - DOMAIN-SUFFIX,time.google.com,Proxy-IP
+  - DOMAIN-SUFFIX,time.android.com,Proxy-IP
+
+  # ========== 3. IP 检测网站 (确保看到的是代理 IP) ==========
+  - DOMAIN-SUFFIX,ipinfo.io,Proxy-IP
+  - DOMAIN-SUFFIX,ip-api.com,Proxy-IP
+  - DOMAIN-SUFFIX,whoer.net,Proxy-IP
+  - DOMAIN-SUFFIX,browserleaks.com,Proxy-IP
+  - DOMAIN-SUFFIX,api.ip.sb,Proxy-IP
+
+  # ========== 4. 业务应用 ==========
+  # Carousell
   - DOMAIN-KEYWORD,carousell,Proxy-IP
   - DOMAIN-SUFFIX,carousell.com,Proxy-IP
   - DOMAIN-SUFFIX,carousell.com.hk,Proxy-IP
   - DOMAIN-SUFFIX,media.carousell.com,Proxy-IP
   
-  # 3. Google/Android 服务 (确保不走国内)
+  # Vinted
+  - DOMAIN-KEYWORD,vinted,Proxy-IP
+  - DOMAIN-SUFFIX,vinted.com,Proxy-IP
+  - DOMAIN-SUFFIX,vinted.co.uk,Proxy-IP
+  - DOMAIN-SUFFIX,vinted.fr,Proxy-IP
+
+  # ========== 5. Google / Android 基础服务 ==========
+  # 这些必须走代理，否则 GMS 无法连接
   - DOMAIN-SUFFIX,googleapis.com,Proxy-IP
   - DOMAIN-SUFFIX,gstatic.com,Proxy-IP
   - DOMAIN-SUFFIX,google.com,Proxy-IP
+  - DOMAIN-SUFFIX,ggpht.com,Proxy-IP
+  - DOMAIN-SUFFIX,googleusercontent.com,Proxy-IP
   
-  # 4. 国内直连
+  # ========== 6. 国内直连 (最小化) ==========
   - GEOIP,CN,DIRECT
   - GEOSITE,CN,DIRECT
   
-  # 5. 兜底
+  # ========== 7. 兜底 ==========
   - MATCH,Proxy-IP
-redir-port: 9797

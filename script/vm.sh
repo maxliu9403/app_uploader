@@ -18,6 +18,112 @@ SECRET=""
 mkdir -p "$BACKUP_ROOT"
 mkdir -p "$PROFILE_ROOT"
 
+# 后端 API 地址 (通过 ADB Reverse 端口转发)
+BACKEND_API_URL="http://127.0.0.1:5000"
+
+# 设备ID (用于后端API调用，需要与电脑端配置一致)
+# 可通过 getprop ro.serialno 获取，或手动指定
+DEVICE_ID=""
+if [ -z "$DEVICE_ID" ]; then
+    DEVICE_ID=$(getprop ro.serialno 2>/dev/null | tr -d '\r\n ')
+fi
+
+# ================= 备用线路 API 函数 =================
+
+# 从服务端获取可用的备用线路
+# 参数: $1 = REGION (地区代码)
+# 返回: 成功时设置 BACKUP_LINE_NAME 变量，失败返回 1
+get_backup_line() {
+    local region="$1"
+    
+    if [ -z "$DEVICE_ID" ] || [ -z "$region" ]; then
+        echo "❌ [Backup Line] 参数缺失: device_id=$DEVICE_ID, region=$region"
+        return 1
+    fi
+    
+    echo "🔄 [Backup Line] 正在获取备用线路... (设备: $DEVICE_ID, 地区: $region)"
+    
+    # 调用后端API获取可用备用线路
+    local response
+    response=$(curl -s --connect-timeout 10 -m 15 \
+        "${BACKEND_API_URL}/api/proxies/backup-lines/get-available?device_id=${DEVICE_ID}&region=${region}")
+    
+    if [ -z "$response" ]; then
+        echo "❌ [Backup Line] API 请求失败或超时"
+        return 1
+    fi
+    
+    # 解析响应
+    local success
+    success=$(echo "$response" | grep -o '"success"[[:space:]]*:[[:space:]]*true' | head -1)
+    
+    if [ -z "$success" ]; then
+        local error
+        error=$(echo "$response" | grep -o '"error"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
+        echo "❌ [Backup Line] 获取失败: ${error:-未知错误}"
+        return 1
+    fi
+    
+    # 提取线路名称
+    BACKUP_LINE_NAME=$(echo "$response" | grep -o '"line_name"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
+    
+    if [ -z "$BACKUP_LINE_NAME" ]; then
+        echo "❌ [Backup Line] 无法解析线路名称"
+        return 1
+    fi
+    
+    echo "✅ [Backup Line] 获取成功: $BACKUP_LINE_NAME"
+    return 0
+}
+
+# 更新线路占用状态
+# 参数: $1 = LINE_NAME (线路名称)
+#       $2 = STATUS (true=占用, false=释放)
+#       $3 = REGION (地区代码)
+# 返回: 成功返回 0，失败返回 1
+update_line_occupancy() {
+    local line_name="$1"
+    local status="$2"
+    local region="$3"
+    
+    if [ -z "$DEVICE_ID" ] || [ -z "$line_name" ] || [ -z "$status" ] || [ -z "$region" ]; then
+        echo "❌ [Occupancy] 参数缺失"
+        return 1
+    fi
+    
+    local action="占用"
+    [ "$status" = "false" ] && action="释放"
+    
+    echo "🔄 [Occupancy] 更新线路状态: $line_name -> $action"
+    
+    # 调用后端API更新占用状态
+    local response
+    response=$(curl -s --connect-timeout 10 -m 15 \
+        -X POST \
+        -H "Content-Type: application/json" \
+        -d "{\"device_id\":\"${DEVICE_ID}\",\"line_name\":\"${line_name}\",\"status\":${status},\"region\":\"${region}\"}" \
+        "${BACKEND_API_URL}/api/proxies/backup-lines/occupancy")
+    
+    if [ -z "$response" ]; then
+        echo "❌ [Occupancy] API 请求失败或超时"
+        return 1
+    fi
+    
+    # 解析响应
+    local success
+    success=$(echo "$response" | grep -o '"success"[[:space:]]*:[[:space:]]*true' | head -1)
+    
+    if [ -z "$success" ]; then
+        local error
+        error=$(echo "$response" | grep -o '"error"[[:space:]]*:[[:space:]]*"[^"]*"' | cut -d'"' -f4)
+        echo "❌ [Occupancy] 更新失败: ${error:-未知错误}"
+        return 1
+    fi
+    
+    echo "✅ [Occupancy] 线路 $line_name ${action}成功"
+    return 0
+}
+
 # ================= 映射函数 =================
 
 get_package_name() {
@@ -105,17 +211,59 @@ verify_network_environment() {
 
  
     
-    echo "❌ [FATAL] Network verification failed!"
-    echo "   Possible causes: Proxy down, Region mismatch, or API blocking."
-    echo "❌ Unsafe environment. Exiting."
-    exit 1
+    echo "❌ [Network] 网络验证失败!"
+    echo "   可能原因: 代理下线, 地区不匹配, 或 API 被屏蔽。"
+    return 1
+}
+
+# 内部函数：执行实际的代理切换（不含网络验证）
+_do_switch_proxy() {
+    local target_node="$1"
+    local proxy_group="Proxy-IP"
+    
+    # Build API commands
+    local cmd_group cmd_global
+    if [ -z "$SECRET" ]; then
+        cmd_group="curl -s -X PUT $API_URL/proxies/$proxy_group -H 'Content-Type: application/json' -d '{\"name\": \"$target_node\"}'"
+        cmd_global="curl -s -X PUT $API_URL/proxies/GLOBAL -H 'Content-Type: application/json' -d '{\"name\": \"$target_node\"}'"
+    else
+        cmd_group="curl -s -X PUT $API_URL/proxies/$proxy_group -H 'Content-Type: application/json' -H 'Authorization: Bearer $SECRET' -d '{\"name\": \"$target_node\"}'"
+        cmd_global="curl -s -X PUT $API_URL/proxies/GLOBAL -H 'Content-Type: application/json' -H 'Authorization: Bearer $SECRET' -d '{\"name\": \"$target_node\"}'"
+    fi
+    
+    # Execute switch
+    local response
+    response=$(eval "$cmd_group")
+    eval "$cmd_global" >/dev/null 2>&1
+    
+    # Check for API errors
+    if echo "$response" | grep -qi "error\|not found\|invalid\|failed"; then
+        echo "❌ [Clash API] 切换失败: $response"
+        return 1
+    fi
+    
+    # Verify switch
+    sleep 1
+    local now
+    now=$(curl -s "$API_URL/proxies/$proxy_group" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
+    if [ "$now" != "$target_node" ]; then
+        sleep 2
+        now=$(curl -s "$API_URL/proxies/$proxy_group" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
+    fi
+    
+    if [ "$now" != "$target_node" ]; then
+        echo "❌ [Clash] 代理切换验证失败! 期望: $target_node, 实际: $now"
+        return 1
+    fi
+    
+    echo "✅ [Clash] 代理已切换: $now"
+    return 0
 }
 
 switch_proxy() { 
     TARGET_NODE="$1"
     REGION_CODE="$2"
-    PROXY_GROUP="Proxy-IP"  # Explicitly target the 'PROXY' group found in config
-
+    
     echo "🎯 [Switch] Target Node: $TARGET_NODE | Region: $REGION_CODE"
     
     # Strict validation
@@ -129,59 +277,89 @@ switch_proxy() {
         exit 1
     fi
     
-    # Build API commands
-    # Use proper escaping for curl payload
-    if [ -z "$SECRET" ]; then
-        CMD_GROUP="curl -s -X PUT $API_URL/proxies/$PROXY_GROUP -H 'Content-Type: application/json' -d '{\"name\": \"$TARGET_NODE\"}'"
-        CMD_GLOBAL="curl -s -X PUT $API_URL/proxies/GLOBAL -H 'Content-Type: application/json' -d '{\"name\": \"$TARGET_NODE\"}'"
-    else
-        CMD_GROUP="curl -s -X PUT $API_URL/proxies/$PROXY_GROUP -H 'Content-Type: application/json' -H 'Authorization: Bearer $SECRET' -d '{\"name\": \"$TARGET_NODE\"}'"
-        CMD_GLOBAL="curl -s -X PUT $API_URL/proxies/GLOBAL -H 'Content-Type: application/json' -H 'Authorization: Bearer $SECRET' -d '{\"name\": \"$TARGET_NODE\"}'"
-    fi
+    # 第一次尝试：使用原始节点
+    echo "📡 [第1次尝试] 使用主线路: $TARGET_NODE"
     
-    # Execute switch (Switch PROXY group first)
-    RESPONSE=$(eval "$CMD_GROUP")
-    # Also try switching GLOBAL as fallback/sync
-    eval "$CMD_GLOBAL" >/dev/null 2>&1
-
-    # CRITICAL: Check for API errors
-    if echo "$RESPONSE" | grep -qi "error\|not found\|invalid\|failed"; then
-        echo "❌ [FATAL] Clash API error: $RESPONSE"
-        echo "   (Make sure the selector '$PROXY_GROUP' exists in your config)"
-        echo "❌ Cannot proceed with unsafe network. Exiting."
-        exit 1
-    fi
-
-    # Verify switch with retry
-    sleep 1
-    # Check the PROXY group status, not GLOBAL
-    NOW=$(curl -s "$API_URL/proxies/$PROXY_GROUP" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
-    if [ "$NOW" != "$TARGET_NODE" ]; then
-        sleep 2
-        NOW=$(curl -s "$API_URL/proxies/$PROXY_GROUP" | grep -o '"now":"[^"]*"' | cut -d'"' -f4)
-    fi
-    
-    # CRITICAL: Final verification
-    if [ "$NOW" != "$TARGET_NODE" ]; then
-        echo "❌ [FATAL] Proxy switch verification failed!"
-        echo "   Target Group: $PROXY_GROUP"
-        echo "   Expected: $TARGET_NODE"
-        echo "   Got: $NOW"
-        echo "❌ Unsafe to launch app. Exiting."
+    if ! _do_switch_proxy "$TARGET_NODE"; then
+        echo "❌ [FATAL] Clash 代理切换失败，无法继续"
         exit 1
     fi
     
-    echo "✅ Proxy verified: $NOW ($PROXY_GROUP synced)"
-    
-    # New: Verify Network Environment
-    verify_network_environment "$REGION_CODE"
-
-    # Update config file
-    if [ -f "$CONF_FILE" ]; then
-        sed -i '/CurrentNode=/d' "$CONF_FILE"
-        echo "CurrentNode=$TARGET_NODE" >> "$CONF_FILE"
-        chmod 666 "$CONF_FILE"
+    # 网络环境验证
+    if verify_network_environment "$REGION_CODE"; then
+        echo "✅ [Network] 主线路验证通过"
+        
+        # 设置全局变量供调用者使用
+        FINAL_NODE="$TARGET_NODE"
+        
+        # 更新配置文件
+        if [ -f "$CONF_FILE" ]; then
+            sed -i '/CurrentNode=/d' "$CONF_FILE"
+            echo "CurrentNode=$TARGET_NODE" >> "$CONF_FILE"
+            chmod 666 "$CONF_FILE"
+        fi
+        return 0
     fi
+    
+    # ========== 备用线路重试逻辑 ==========
+    echo "⚠️ [Fallback] 主线路验证失败，尝试获取备用线路..."
+    
+    local max_retries=3
+    local retry_count=0
+    local used_backup_line=""
+    
+    while [ $retry_count -lt $max_retries ]; do
+        retry_count=$((retry_count + 1))
+        echo ""
+        echo "🔄 [备用线路重试 $retry_count/$max_retries]"
+        
+        # 1. 获取备用线路
+        if ! get_backup_line "$REGION_CODE"; then
+            echo "❌ [重试 $retry_count] 无法获取备用线路"
+            continue
+        fi
+        
+        local backup_node="$BACKUP_LINE_NAME"
+        echo "📡 [重试 $retry_count] 切换到备用线路: $backup_node"
+        
+        # 2. 切换到备用线路
+        if ! _do_switch_proxy "$backup_node"; then
+            echo "❌ [重试 $retry_count] 备用线路切换失败: $backup_node"
+            continue
+        fi
+        
+        # 3. 验证备用线路网络环境
+        if verify_network_environment "$REGION_CODE"; then
+            echo "✅ [重试 $retry_count] 备用线路验证通过: $backup_node"
+            
+            # 4. 更新占用状态（标记为占用）
+            update_line_occupancy "$backup_node" "true" "$REGION_CODE"
+            
+            # 5. 设置全局变量供调用者使用（关键！）
+            FINAL_NODE="$backup_node"
+            
+            if [ -f "$CONF_FILE" ]; then
+                sed -i '/CurrentNode=/d' "$CONF_FILE"
+                echo "CurrentNode=$backup_node" >> "$CONF_FILE"
+                chmod 666 "$CONF_FILE"
+            fi
+            
+            echo "✅ [Fallback] 已成功切换到备用线路: $backup_node"
+            echo "📌 [FINAL_NODE] 全局变量已设置为: $FINAL_NODE"
+            return 0
+        else
+            echo "❌ [重试 $retry_count] 备用线路验证失败: $backup_node"
+        fi
+    done
+    
+    # 所有重试都失败
+    echo ""
+    echo "❌ [FATAL] 所有线路验证均失败 (已尝试 $max_retries 条备用线路)"
+    echo "   主线路: $1"
+    echo "   地区: $REGION_CODE"
+    echo "   可能原因: 所有代理均下线或被封锁"
+    echo "❌ Unsafe environment. Exiting."
+    exit 1
 }
 
 sync_gps_from_ip() {
@@ -499,9 +677,12 @@ if [ "$ACTION" = "new" ]; then
     fi
     
     # 写入配置
+    # 使用 FINAL_NODE（switch_proxy 设置的全局变量，可能是备用线路）
     echo "AccountName=$NAME" >> "$CONF_FILE"
-    echo "CurrentNode=$NODE" >> "$CONF_FILE"
+    echo "CurrentNode=$FINAL_NODE" >> "$CONF_FILE"
     echo "AppType=$APP_TYPE" >> "$CONF_FILE"
+    
+    echo "📌 [Config] 写入配置: AccountName=$NAME, CurrentNode=$FINAL_NODE, AppType=$APP_TYPE"
     
     # 保存配置副本
     cp "$CONF_FILE" "$PROFILE_ROOT/$NAME.conf"
@@ -645,6 +826,19 @@ if [ "$ACTION" = "load" ]; then
     # Network setup
     clean_network_stack
     switch_proxy "$SAVED_NODE" "$REGION"
+    
+    # 如果使用了备用线路，更新配置中的 CurrentNode
+    if [ ! -z "$FINAL_NODE" ] && [ "$FINAL_NODE" != "$SAVED_NODE" ]; then
+        echo "📌 [Load] 使用了备用线路: $FINAL_NODE (原始: $SAVED_NODE)"
+        sed -i '/CurrentNode=/d' "$CONF_FILE"
+        echo "CurrentNode=$FINAL_NODE" >> "$CONF_FILE"
+        # 同步更新 Profile
+        if [ -f "$PROFILE" ]; then
+            sed -i '/CurrentNode=/d' "$PROFILE"
+            echo "CurrentNode=$FINAL_NODE" >> "$PROFILE"
+        fi
+    fi
+    
     sync_gps_from_ip
     
     # Fix permissions

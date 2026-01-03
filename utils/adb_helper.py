@@ -238,3 +238,101 @@ class ADBHelper:
             logger.error(f"❌ ADB异常 | {str(e)}")
             return -1, "", str(e)
 
+    def setup_reverse_port(self, device_id, remote_port=5000, local_port=5000):
+        """
+        设置 ADB 反向端口转发
+        
+        手机通过 127.0.0.1:remote_port 访问电脑的 local_port 端口
+        
+        Args:
+            device_id: 设备ID
+            remote_port: 手机端端口
+            local_port: 电脑端端口
+            
+        Returns:
+            tuple: (success, message)
+        """
+        adb_path = self.get_adb_path()
+        
+        if not adb_path or not os.path.exists(adb_path):
+            return False, "ADB路径未配置或不存在"
+        
+        if not device_id:
+            return False, "设备ID不能为空"
+        
+        try:
+            # 执行 adb reverse 命令
+            cmd = [adb_path, '-s', device_id, 'reverse', f'tcp:{remote_port}', f'tcp:{local_port}']
+            cmd_str = ' '.join(cmd)
+            
+            logger.info(f"🔗 [ADB Reverse] 设置端口转发 | 设备: {device_id}, 手机:{remote_port} -> 电脑:{local_port}")
+            
+            result = subprocess.run(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                encoding='utf-8',
+                errors='replace',
+                timeout=10,
+                creationflags=0x08000000 if os.name == 'nt' else 0
+            )
+            
+            if result.returncode == 0:
+                logger.info(f"✅ [ADB Reverse] 端口转发设置成功 | {device_id} | tcp:{remote_port} -> tcp:{local_port}")
+                return True, f"端口转发设置成功: tcp:{remote_port} -> tcp:{local_port}"
+            else:
+                error_msg = result.stderr.strip() if result.stderr else result.stdout.strip()
+                logger.warning(f"⚠️ [ADB Reverse] 设置失败 | {device_id} | {error_msg}")
+                return False, f"端口转发设置失败: {error_msg}"
+                
+        except subprocess.TimeoutExpired:
+            logger.error(f"⏱️ [ADB Reverse] 超时 | {device_id}")
+            return False, "ADB reverse 命令超时"
+        except Exception as e:
+            logger.error(f"❌ [ADB Reverse] 异常 | {device_id} | {str(e)}")
+            return False, str(e)
+
+    def list_reverse_ports(self, device_id):
+        """
+        列出设备的反向端口转发列表
+        
+        Args:
+            device_id: 设备ID
+            
+        Returns:
+            tuple: (success, list_of_ports or error_message)
+        """
+        adb_path = self.get_adb_path()
+        
+        if not adb_path or not os.path.exists(adb_path):
+            return False, "ADB路径未配置或不存在"
+        
+        if not device_id:
+            return False, "设备ID不能为空"
+        
+        try:
+            cmd = [adb_path, '-s', device_id, 'reverse', '--list']
+            
+            result = subprocess.run(
+                cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True,
+                encoding='utf-8',
+                errors='replace',
+                timeout=10,
+                creationflags=0x08000000 if os.name == 'nt' else 0
+            )
+            
+            if result.returncode == 0:
+                # 解析输出，每行格式: "tcp:5000 tcp:5000"
+                lines = result.stdout.strip().split('\n')
+                ports = [line.strip() for line in lines if line.strip()]
+                return True, ports
+            else:
+                return False, result.stderr.strip()
+                
+        except Exception as e:
+            return False, str(e)
+

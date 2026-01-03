@@ -19,22 +19,80 @@ class DeviceService:
         self.adb_helper = adb_helper
         self.setting_manager = setting_manager
     
+    # 已建立反向端口转发的设备集合（内存缓存，服务重启后会重新建立）
+    _reverse_port_established: set = set()
+    
     def get_devices(self):
-        """获取已连接的设备列表，并自动创建设备配置文件夹"""
+        """获取已连接的设备列表，并自动创建设备配置文件夹 + 反向端口转发"""
         try:
             devices = self.adb_helper.get_devices()
-            logger.info(f"找到 {len(devices)} 个设备")
+            logger.info(f"📱 找到 {len(devices)} 个设备")
             
-            # 为每个设备自动创建配置文件夹
+            # 为每个设备自动创建配置文件夹 + 设置反向端口转发
             for device in devices:
                 device_id = device.get('device_id') or device.get('id')
-                if device_id:
-                    self._ensure_device_config_dir(device_id)
+                status = device.get('status', '')
+                
+                if not device_id:
+                    continue
+                
+                # 只处理状态正常的设备
+                if status != 'device':
+                    logger.warning(f"⚠️ 设备 {device_id} 状态异常: {status}，跳过端口转发设置")
+                    continue
+                
+                # 1. 确保设备配置目录存在
+                self._ensure_device_config_dir(device_id)
+                
+                # 2. 检查是否需要设置反向端口转发（新设备）
+                if device_id not in DeviceService._reverse_port_established:
+                    logger.info(f"🆕 [新设备] 检测到新连接的设备: {device_id}")
+                    self._setup_device_reverse_port(device_id)
             
             return True, devices
         except Exception as e:
             logger.error(f"获取设备列表失败: {str(e)}", exc_info=True)
             return False, str(e)
+    
+    def _setup_device_reverse_port(self, device_id, port=5000):
+        """
+        为设备设置 ADB 反向端口转发
+        
+        Args:
+            device_id: 设备ID
+            port: 端口号（默认5000，用于后端API通信）
+        """
+        try:
+            logger.info(f"🔗 [ADB Reverse] 开始为设备 {device_id} 设置反向端口转发...")
+            
+            # 先检查是否已有端口转发
+            success, existing_ports = self.adb_helper.list_reverse_ports(device_id)
+            if success and existing_ports:
+                logger.info(f"📋 [ADB Reverse] 设备 {device_id} 现有端口转发: {existing_ports}")
+                
+                # 检查是否已存在 5000 端口转发
+                target_rule = f"tcp:{port}"
+                for rule in existing_ports:
+                    if target_rule in rule:
+                        logger.info(f"✅ [ADB Reverse] 端口 {port} 已存在转发规则，无需重复设置")
+                        DeviceService._reverse_port_established.add(device_id)
+                        return True
+            
+            # 设置反向端口转发
+            success, message = self.adb_helper.setup_reverse_port(device_id, port, port)
+            
+            if success:
+                DeviceService._reverse_port_established.add(device_id)
+                logger.info(f"✅ [ADB Reverse] 设备 {device_id} 端口转发设置完成")
+                logger.info(f"   📡 手机可通过 http://127.0.0.1:{port} 访问电脑后端服务")
+                return True
+            else:
+                logger.error(f"❌ [ADB Reverse] 设备 {device_id} 端口转发设置失败: {message}")
+                return False
+                
+        except Exception as e:
+            logger.error(f"❌ [ADB Reverse] 设备 {device_id} 端口转发异常: {str(e)}", exc_info=True)
+            return False
     
     def get_device_configs(self):
         """获取已保存的设备配置"""
