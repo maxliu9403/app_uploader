@@ -30,6 +30,69 @@ fi
 
 # ================= 备用线路 API 函数 =================
 
+# ================= 错误码定义 =================
+# 服务端可根据这些退出码判断具体错误类型
+#
+# 0   = 成功
+# 1   = 通用错误 / 参数错误
+# 10  = 网络验证失败（所有线路）
+# 11  = 代理切换失败
+# 12  = 配置文件生成失败
+# 20  = 备份文件不存在
+# 21  = 备份解压失败
+# 22  = 数据恢复失败
+# 30  = APP 类型未知
+# 31  = APP 未安装
+# 40  = 权限/SELinux 错误
+
+EXIT_SUCCESS=0
+EXIT_PARAM_ERROR=1
+EXIT_NETWORK_FAIL=10
+EXIT_PROXY_SWITCH_FAIL=11
+EXIT_CONFIG_GEN_FAIL=12
+EXIT_BACKUP_NOT_FOUND=20
+EXIT_BACKUP_EXTRACT_FAIL=21
+EXIT_RESTORE_FAIL=22
+EXIT_UNKNOWN_APP=30
+EXIT_APP_NOT_INSTALLED=31
+EXIT_PERMISSION_ERROR=40
+
+# ================= 日志辅助函数 =================
+
+log_step() {
+    echo "📋 [步骤] $1"
+}
+
+log_info() {
+    echo "ℹ️  [信息] $1"
+}
+
+log_success() {
+    echo "✅ [成功] $1"
+}
+
+log_warning() {
+    echo "⚠️  [警告] $1"
+}
+
+log_error() {
+    echo "❌ [错误] $1"
+}
+
+log_fatal() {
+    echo "🚨 [致命] $1"
+}
+
+# 输出结构化结果 (供服务端解析)
+# 格式: ##RESULT##|status|code|message
+output_result() {
+    local status="$1"   # success / error
+    local code="$2"     # 错误码
+    local message="$3"  # 消息
+    echo "##RESULT##|${status}|${code}|${message}"
+}
+
+
 # 从服务端获取可用的备用线路
 # 参数: $1 = REGION (地区代码)
 # 返回: 成功时设置 BACKUP_LINE_NAME 变量，失败返回 1
@@ -670,15 +733,17 @@ if [ "$ACTION" = "new" ]; then
     clean_network_stack
     
     # 切换代理
+    log_step "切换网络代理: $NODE (地区: $REGION)"
     switch_proxy "$NODE" "$REGION"
     
     # 🔨 Generate fingerprint with CORRECT region (fixes SIM mismatch)
-    echo "🔨 [Fingerprint] Generating for $APP_TYPE | Region: $REGION"
+    log_step "生成设备指纹: $APP_TYPE | 地区: $REGION"
     sh "$GEN_SCRIPT" "$APP_TYPE" "$REGION"
     
     if [ ! -f "$CONF_FILE" ]; then
-        echo "❌ [FATAL] gen.sh failed to create config file"
-        exit 1
+        log_fatal "指纹配置文件生成失败 (gen.sh 执行异常)"
+        output_result "error" "$EXIT_CONFIG_GEN_FAIL" "指纹配置文件生成失败"
+        exit $EXIT_CONFIG_GEN_FAIL
     fi
     
     # 写入配置
@@ -687,56 +752,94 @@ if [ "$ACTION" = "new" ]; then
     echo "CurrentNode=$FINAL_NODE" >> "$CONF_FILE"
     echo "AppType=$APP_TYPE" >> "$CONF_FILE"
     
-    echo "📌 [Config] 写入配置: AccountName=$NAME, CurrentNode=$FINAL_NODE, AppType=$APP_TYPE"
+    log_info "配置写入完成: 账号=$NAME, 节点=$FINAL_NODE, 类型=$APP_TYPE"
     
     # 保存配置副本
+    log_step "保存配置副本到 Profile 目录"
     cp "$CONF_FILE" "$PROFILE_ROOT/$NAME.conf"
     chmod 666 "$CONF_FILE" "$PROFILE_ROOT/$NAME.conf"
     
     # 注入 GMS IDs
+    log_step "注入 GMS Ads ID 和 SSAID"
     force_inject_gms_ads_id
     spoof_ssaid
     
     # GPS 同步
+    log_step "同步 GPS 位置信息"
     sync_gps_from_ip 
     
     # 修复权限
+    log_step "修复应用权限和 SELinux 上下文"
     APP_UID=$(cmd package list packages -U | grep "$PKG" | awk -F: '{print $3}' | tr -d ' ')
     if [ ! -z "$APP_UID" ]; then 
         fix_strict "$DATA_INT" "$APP_UID"
     fi
 
     # 网络重置
-    echo "✈️ 网络重置..."
+    log_step "重置网络连接 (飞行模式刷新)"
     cmd connectivity airplane-mode enable
     sleep 1
     cmd connectivity airplane-mode disable
     sleep 3
     
     # 清理干扰应用
+    log_step "清理干扰应用进程"
     kill_interfering_apps
     
     # 解冻应用
+    log_step "解冻目标应用: $PKG"
     unfreeze_app "$PKG"
     
-    echo "✅ 新环境就绪: $NAME (New模式不自动拉起APP)"
-    echo "📋 账号信息: APP=$APP_TYPE, Region=$REGION, Node=$NODE"
+    # 输出成功结果
+    echo ""
+    echo "═══════════════════════════════════════════════════════════════"
+    log_success "新账号创建成功: $NAME"
+    echo "═══════════════════════════════════════════════════════════════"
+    log_info "账号名称: $NAME"
+    log_info "应用类型: $APP_TYPE"
+    log_info "目标地区: $REGION"
+    log_info "代理节点: $FINAL_NODE"
+    log_info "包名: $PKG"
+    echo "═══════════════════════════════════════════════════════════════"
+    echo ""
+    
+    output_result "success" "$EXIT_SUCCESS" "账号 $NAME 创建成功"
+    exit $EXIT_SUCCESS
 fi
 
 
 # === LOAD (加载) ===
 if [ "$ACTION" = "load" ]; then
-    [ -z "$NAME" ] && exit 1
+    echo ""
+    echo "═══════════════════════════════════════════════════════════════"
+    log_step "开始加载账号: $NAME"
+    echo "═══════════════════════════════════════════════════════════════"
+    echo ""
+    
+    if [ -z "$NAME" ]; then
+        log_error "账号名称不能为空"
+        output_result "error" "$EXIT_PARAM_ERROR" "账号名称不能为空"
+        exit $EXIT_PARAM_ERROR
+    fi
+    
     ARCHIVE="$BACKUP_ROOT/${NAME}.tar.gz"
     PROFILE="$PROFILE_ROOT/${NAME}.conf"
     
-    if [ ! -f "$ARCHIVE" ]; then echo "❌ 无备份文件"; exit 1; fi
+    log_info "备份文件: $ARCHIVE"
+    log_info "配置文件: $PROFILE"
+    
+    if [ ! -f "$ARCHIVE" ]; then
+        log_fatal "备份文件不存在: $ARCHIVE"
+        output_result "error" "$EXIT_BACKUP_NOT_FOUND" "备份文件不存在"
+        exit $EXIT_BACKUP_NOT_FOUND
+    fi
 
     # --- 🛡️ 自动防丢检查 (Auto-Save Guard) ---
     if [ -f "$CONF_FILE" ]; then
         CURRENT_NAME=$(grep "AccountName=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
         if [ ! -z "$CURRENT_NAME" ] && [ "$CURRENT_NAME" != "$NAME" ]; then
-            echo "⚠️ 检测到当前活跃环境: [$CURRENT_NAME]"
+            log_warning "检测到当前活跃环境: [$CURRENT_NAME]"
+            log_step "自动保存当前账号以防止数据丢失..."
             execute_save_logic "$CURRENT_NAME"
         fi
     fi
@@ -767,9 +870,14 @@ if [ "$ACTION" = "load" ]; then
         echo "⚠️ 未找到保存的代理节点，将使用默认代理"
     fi
     
-    echo "📍 [DEBUG] APP_TYPE='$APP_TYPE' REGION='$REGION'"
+    log_info "APP类型: $APP_TYPE, 地区: $REGION"
     PKG=$(get_package_name "$APP_TYPE")
-    echo "📍 [DEBUG] PKG='$PKG'"
+    if [ -z "$PKG" ]; then
+        log_fatal "未知的APP类型: $APP_TYPE"
+        output_result "error" "$EXIT_UNKNOWN_APP" "未知的APP类型: $APP_TYPE"
+        exit $EXIT_UNKNOWN_APP
+    fi
+    log_info "目标应用包名: $PKG"
     DATA_INT="/data/data/$PKG"
     DATA_DE="/data/user_de/0/$PKG"
     DATA_EXT="/sdcard/Android/data/$PKG"
@@ -788,8 +896,9 @@ if [ "$ACTION" = "load" ]; then
         fi
     fi
     
-    echo "♻️ 还原 [$NAME] -> 节点: $SAVED_NODE..."
+    log_step "开始还原账号: $NAME (节点: $SAVED_NODE)"
     
+    log_step "冻结目标应用: $PKG"
     freeze_app "$PKG"
     
     # 🔒 安全清理（修正版方案A）
@@ -808,16 +917,18 @@ if [ "$ACTION" = "load" ]; then
     safe_remove_google_account
     
     # Extract backup
-    echo "📦 [Restore] Extracting backup..."
+    log_step "解压备份文件..."
     tar -xzf "$ARCHIVE" -C /
     
     if [ $? -ne 0 ]; then
-        echo "❌ [FATAL] Backup extraction failed"
-        exit 1
+        log_fatal "备份文件解压失败"
+        output_result "error" "$EXIT_BACKUP_EXTRACT_FAIL" "备份文件解压失败"
+        exit $EXIT_BACKUP_EXTRACT_FAIL
     fi
+    log_success "备份解压完成"
     
     # 🔒 关键：修复所有权限和SELinux上下文
-    echo "🔧 [Restore] 修复权限和SELinux上下文..."
+    log_step "修复权限和 SELinux 上下文..."
     fix_strict "$DATA_INT" "$APP_UID"
     fix_strict "$DATA_DE" "$APP_UID"
     
@@ -829,7 +940,9 @@ if [ "$ACTION" = "load" ]; then
     fi
     
     # Network setup
+    log_step "清理网络状态"
     clean_network_stack
+    log_step "切换代理节点: $SAVED_NODE (地区: $REGION)"
     switch_proxy "$SAVED_NODE" "$REGION"
     
     # 如果使用了备用线路，更新配置中的 CurrentNode
@@ -863,23 +976,78 @@ if [ "$ACTION" = "load" ]; then
     sync
     cmd connectivity airplane-mode enable; sleep 1; cmd connectivity airplane-mode disable; sleep 4
     
+    log_step "清理干扰应用进程"
     kill_interfering_apps
+    
+    log_step "解冻应用: $PKG"
     unfreeze_app "$PKG"
     
     # 仅 Load 模式自动拉起
+    log_step "启动应用"
     launch_app "$PKG"
+    
+    # 输出成功结果
+    echo ""
+    echo "═══════════════════════════════════════════════════════════════"
+    log_success "账号加载成功: $NAME"
+    echo "═══════════════════════════════════════════════════════════════"
+    log_info "账号名称: $NAME"
+    log_info "应用类型: $APP_TYPE"
+    log_info "目标地区: $REGION"
+    log_info "代理节点: ${FINAL_NODE:-$SAVED_NODE}"
+    log_info "包名: $PKG"
+    echo "═══════════════════════════════════════════════════════════════"
+    echo ""
+    
+    output_result "success" "$EXIT_SUCCESS" "账号 $NAME 加载成功"
+    exit $EXIT_SUCCESS
 fi
 
 # === SAVE (保存) ===
 if [ "$ACTION" = "save" ]; then
-    [ -z "$NAME" ] && exit 1
+    echo ""
+    echo "═══════════════════════════════════════════════════════════════"
+    log_step "开始保存账号: $NAME"
+    echo "═══════════════════════════════════════════════════════════════"
+    echo ""
+    
+    if [ -z "$NAME" ]; then
+        log_error "账号名称不能为空"
+        output_result "error" "$EXIT_PARAM_ERROR" "账号名称不能为空"
+        exit $EXIT_PARAM_ERROR
+    fi
+    
+    log_info "账号名称: $NAME"
     
     # 直接调用封装好的保存逻辑
     execute_save_logic "$NAME"
+    SAVE_RESULT=$?
     
     # 如果是手动保存，解冻 APP 方便继续使用
     APP_TYPE=$(grep "AppType=" "$CONF_FILE" | cut -d= -f2 | tr -d '\r\n ')
     [ -z "$APP_TYPE" ] && APP_TYPE="Vinted"
     PKG=$(get_package_name "$APP_TYPE")
+    
+    log_step "解冻应用: $PKG"
     unfreeze_app "$PKG"
+    
+    # 输出保存结果
+    if [ $SAVE_RESULT -eq 0 ]; then
+        echo ""
+        echo "═══════════════════════════════════════════════════════════════"
+        log_success "账号保存成功: $NAME"
+        echo "═══════════════════════════════════════════════════════════════"
+        log_info "账号名称: $NAME"
+        log_info "应用类型: $APP_TYPE"
+        log_info "备份文件: $PROFILE_ROOT/${NAME}.tar.gz"
+        echo "═══════════════════════════════════════════════════════════════"
+        echo ""
+        
+        output_result "success" "$EXIT_SUCCESS" "账号 $NAME 保存成功"
+        exit $EXIT_SUCCESS
+    else
+        log_fatal "账号保存失败"
+        output_result "error" "$EXIT_RESTORE_FAIL" "账号保存失败"
+        exit $EXIT_RESTORE_FAIL
+    fi
 fi

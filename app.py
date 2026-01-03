@@ -281,22 +281,46 @@ def vm_create_account():
                 bufsize=1
             )
             
+            # 存储脚本结构化结果
+            script_result = None
+            
             # 实时读取输出
             for line in iter(process.stdout.readline, ''):
                 if line:
-                    yield f"data: {to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
+                    line_stripped = line.rstrip()
+                    
+                    # 解析结构化结果: ##RESULT##|status|code|message
+                    if line_stripped.startswith('##RESULT##|'):
+                        parts = line_stripped.split('|', 3)
+                        if len(parts) >= 4:
+                            script_result = {
+                                'status': parts[1],
+                                'code': parts[2],
+                                'message': parts[3]
+                            }
+                    else:
+                        yield f"data: {to_json({'type': 'log', 'message': line_stripped})}\n\n"
             
             process.wait()
             
-            # 检查返回码
-            if process.returncode == 0:
-                # 只有创建成功才更新计数器
-                vm_service.increment_account_counter(app_type, region, device_id or None)
-                yield f"data: {to_json({'type': 'success', 'message': f'VM 账号 {name} 创建成功'})}\n\n"
-                logger.info(f"✅ VM 账号 '{name}' 创建成功")
+            # 优先使用脚本的结构化结果
+            if script_result:
+                if script_result['status'] == 'success':
+                    vm_service.increment_account_counter(app_type, region, device_id or None)
+                    yield f"data: {to_json({'type': 'success', 'message': script_result['message'], 'exit_code': script_result['code']})}\n\n"
+                    logger.info(f"✅ VM 账号 '{name}' 创建成功")
+                else:
+                    yield f"data: {to_json({'type': 'error', 'message': script_result['message'], 'exit_code': script_result['code']})}\n\n"
+                    logger.error(f"❌ VM 账号创建失败: {script_result['message']} (code: {script_result['code']})")
             else:
-                yield f"data: {to_json({'type': 'error', 'message': f'创建失败 (返回码: {process.returncode})'})}\n\n"
-                logger.error(f"❌ VM 账号创建失败，返回码: {process.returncode}")
+                # 兼容旧版本脚本，仅使用返回码判断
+                if process.returncode == 0:
+                    vm_service.increment_account_counter(app_type, region, device_id or None)
+                    yield f"data: {to_json({'type': 'success', 'message': f'VM 账号 {name} 创建成功'})}\n\n"
+                    logger.info(f"✅ VM 账号 '{name}' 创建成功")
+                else:
+                    yield f"data: {to_json({'type': 'error', 'message': f'创建失败 (返回码: {process.returncode})'})}\n\n"
+                    logger.error(f"❌ VM 账号创建失败，返回码: {process.returncode}")
         
         except Exception as e:
             logger.error(f"VM 创建失败: {str(e)}", exc_info=True)
@@ -392,17 +416,42 @@ def vm_save_account():
                 bufsize=1
             )
             
+            # 存储脚本结构化结果
+            script_result = None
+            
             for line in iter(process.stdout.readline, ''):
                 if line:
-                    yield f"data: {to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
+                    line_stripped = line.rstrip()
+                    
+                    # 解析结构化结果: ##RESULT##|status|code|message
+                    if line_stripped.startswith('##RESULT##|'):
+                        parts = line_stripped.split('|', 3)
+                        if len(parts) >= 4:
+                            script_result = {
+                                'status': parts[1],
+                                'code': parts[2],
+                                'message': parts[3]
+                            }
+                    else:
+                        yield f"data: {to_json({'type': 'log', 'message': line_stripped})}\n\n"
             
             process.wait()
             
-            if process.returncode == 0:
-                yield f"data: {to_json({'type': 'success', 'message': f'账号 {account_name} 保存成功'})}\n\n"
-                logger.info(f"✅ VM 账号 '{account_name}' 保存成功")
+            # 优先使用脚本的结构化结果
+            if script_result:
+                if script_result['status'] == 'success':
+                    yield f"data: {to_json({'type': 'success', 'message': script_result['message'], 'exit_code': script_result['code']})}\n\n"
+                    logger.info(f"✅ VM 账号 '{account_name}' 保存成功")
+                else:
+                    yield f"data: {to_json({'type': 'error', 'message': script_result['message'], 'exit_code': script_result['code']})}\n\n"
+                    logger.error(f"❌ VM 账号保存失败: {script_result['message']} (code: {script_result['code']})")
             else:
-                yield f"data: {to_json({'type': 'error', 'message': f'保存失败 (返回码: {process.returncode})'})}\n\n"
+                # 兼容旧版本脚本
+                if process.returncode == 0:
+                    yield f"data: {to_json({'type': 'success', 'message': f'账号 {account_name} 保存成功'})}\n\n"
+                    logger.info(f"✅ VM 账号 '{account_name}' 保存成功")
+                else:
+                    yield f"data: {to_json({'type': 'error', 'message': f'保存失败 (返回码: {process.returncode})'})}\n\n"
         
         except Exception as e:
             logger.error(f"VM 保存失败: {str(e)}", exc_info=True)
@@ -494,17 +543,42 @@ def vm_load_account():
                 bufsize=1
             )
             
+            # 存储脚本结构化结果
+            script_result = None
+            
             for line in iter(process.stdout.readline, ''):
                 if line:
-                    yield f"data: {to_json({'type': 'log', 'message': line.rstrip()})}\n\n"
+                    line_stripped = line.rstrip()
+                    
+                    # 解析结构化结果: ##RESULT##|status|code|message
+                    if line_stripped.startswith('##RESULT##|'):
+                        parts = line_stripped.split('|', 3)
+                        if len(parts) >= 4:
+                            script_result = {
+                                'status': parts[1],
+                                'code': parts[2],
+                                'message': parts[3]
+                            }
+                    else:
+                        yield f"data: {to_json({'type': 'log', 'message': line_stripped})}\n\n"
             
             process.wait()
             
-            if process.returncode == 0:
-                yield f"data: {to_json({'type': 'success', 'message': f'账号 {name} 加载成功'})}\n\n"
-                logger.info(f"✅ VM 账号 '{name}' 加载成功")
+            # 优先使用脚本的结构化结果
+            if script_result:
+                if script_result['status'] == 'success':
+                    yield f"data: {to_json({'type': 'success', 'message': script_result['message'], 'exit_code': script_result['code']})}\n\n"
+                    logger.info(f"✅ VM 账号 '{name}' 加载成功")
+                else:
+                    yield f"data: {to_json({'type': 'error', 'message': script_result['message'], 'exit_code': script_result['code']})}\n\n"
+                    logger.error(f"❌ VM 账号加载失败: {script_result['message']} (code: {script_result['code']})")
             else:
-                yield f"data: {to_json({'type': 'error', 'message': f'加载失败 (返回码: {process.returncode})'})}\n\n"
+                # 兼容旧版本脚本
+                if process.returncode == 0:
+                    yield f"data: {to_json({'type': 'success', 'message': f'账号 {name} 加载成功'})}\n\n"
+                    logger.info(f"✅ VM 账号 '{name}' 加载成功")
+                else:
+                    yield f"data: {to_json({'type': 'error', 'message': f'加载失败 (返回码: {process.returncode})'})}\n\n"
         
         except Exception as e:
             logger.error(f"VM 加载失败: {str(e)}", exc_info=True)
