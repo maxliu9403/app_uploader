@@ -8560,3 +8560,99 @@ Carousell_HK_...
 2026-01-03 20:51:45 [INFO] [app.py:136] 📤 400 | {"status": 400, "success": false, "error": "在地区 HK 未找到任何备用线路"}
 2026-01-03 20:51:45 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 20:51:45] "[31m[1mGET /api/proxies/backup-lines/get-available?device_id=72e8932c&region=HK HTTP/1.1[0m" 400 -
 2026-01-03 20:51:45 [ERROR] [app.py:574] ❌ VM 账号加载失败: 所有代理线路验证失败 (主线路: HK_125, 地区: HK) (code: 10)
+2026-01-03 23:44:32 [INFO] [logger.py:77] ======================================================================
+2026-01-03 23:44:32 [INFO] [logger.py:78] 📝 日志系统配置完成
+2026-01-03 23:44:32 [INFO] [logger.py:79]   - 日志文件: logs/proxy_manager.log
+2026-01-03 23:44:32 [INFO] [logger.py:80]   - 日志级别: INFO
+2026-01-03 23:44:32 [INFO] [logger.py:81]   - 单文件大小: 10.0 MB
+2026-01-03 23:44:32 [INFO] [logger.py:82]   - 保留文件数: 7
+2026-01-03 23:44:32 [INFO] [logger.py:83]   - 控制台输出: 已启用
+2026-01-03 23:44:32 [INFO] [logger.py:84]   - 文件输出: 已启用
+2026-01-03 23:44:32 [INFO] [logger.py:85] ======================================================================
+2026-01-03 23:44:32 [INFO] [app.py:593] ======================================================================
+2026-01-03 23:44:32 [INFO] [app.py:594] 🚀 Proxy Manager 应用启动
+2026-01-03 23:44:32 [INFO] [app.py:595] ======================================================================
+2026-01-03 23:44:32 [INFO] [app.py:596] 📂 工作目录: D:\app_uploader
+2026-01-03 23:44:32 [INFO] [app.py:597] 📝 配置文件: D:\app_uploader\config.yaml
+2026-01-03 23:44:33 [INFO] [app.py:598] 📱 ADB 路径: D:\桌面\platform-tools\adb.exe
+2026-01-03 23:44:33 [INFO] [app.py:599] 🔧 VM 脚本: /data/local/tmp/vm.sh
+2026-01-03 23:44:33 [INFO] [app.py:600] ======================================================================
+2026-01-03 23:44:45 [INFO] [_internal.py:97] [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://26.26.26.1:5000
+2026-01-03 23:44:45 [INFO] [_internal.py:97] [33mPress CTRL+C to quit[0m
+2026-01-03 23:44:53 [INFO] [app.py:117] 📥 GET / | {"method": "GET", "path": "/", "client": "127.0.0.1"}
+2026-01-03 23:44:53 [INFO] [app.py:167] 🏠 访问主页
+2026-01-03 23:44:53 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-03 23:44:53 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:53] "GET / HTTP/1.1" 200 -
+2026-01-03 23:44:53 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-03 23:44:54 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-03 23:44:54 [INFO] [device_service.py:29] 📱 找到 2 个设备
+2026-01-03 23:44:54 [INFO] [device_service.py:49] 🆕 [新设备] 检测到新连接的设备: 72e8932c
+2026-01-03 23:44:54 [INFO] [device_service.py:66] 🔗 [ADB Reverse] 开始为设备 72e8932c 设置反向端口转发...
+2026-01-03 23:44:54 [INFO] [device_service.py:71] 📋 [ADB Reverse] 设备 72e8932c 现有端口转发: ['UsbFfs tcp:5000 tcp:5000']
+2026-01-03 23:44:54 [INFO] [device_service.py:77] ✅ [ADB Reverse] 端口 5000 已存在转发规则，无需重复设置
+2026-01-03 23:44:54 [INFO] [device_service.py:49] 🆕 [新设备] 检测到新连接的设备: ad9accd8
+2026-01-03 23:44:54 [INFO] [device_service.py:66] 🔗 [ADB Reverse] 开始为设备 ad9accd8 设置反向端口转发...
+2026-01-03 23:44:54 [INFO] [device_service.py:71] 📋 [ADB Reverse] 设备 ad9accd8 现有端口转发: ['(reverse) tcp:5000 tcp:5000']
+2026-01-03 23:44:54 [INFO] [device_service.py:77] ✅ [ADB Reverse] 端口 5000 已存在转发规则，无需重复设置
+2026-01-03 23:44:54 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:54 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:54] "GET /api/devices HTTP/1.1" 200 -
+2026-01-03 23:44:54 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-03 23:44:54 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:54 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:54] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-03 23:44:54 [INFO] [app.py:117] 📥 GET /api/devices | {"method": "GET", "path": "/api/devices", "client": "127.0.0.1"}
+2026-01-03 23:44:54 [INFO] [app.py:117] 📥 GET /api/device-configs | {"method": "GET", "path": "/api/device-configs", "client": "127.0.0.1"}
+2026-01-03 23:44:54 [INFO] [app.py:117] 📥 GET /api/transit-proxies/names | {"method": "GET", "path": "/api/transit-proxies/names", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-03 23:44:54 [INFO] [transit_service.py:29] 🔍 开始获取所有中转线路... (设备: 72e8932c)
+2026-01-03 23:44:54 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:54 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-03 23:44:54 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:54] "GET /api/device-configs HTTP/1.1" 200 -
+2026-01-03 23:44:54 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-03 23:44:54 [INFO] [transit_service.py:34]    配置文件中共有 62 个代理条目
+2026-01-03 23:44:54 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:54 [INFO] [transit_service.py:46]    过滤后: 1 个中转线路, 61 个普通代理
+2026-01-03 23:44:54 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:54] "GET /api/regions HTTP/1.1" 200 -
+2026-01-03 23:44:54 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-03 23:44:54 [INFO] [transit_service.py:47] ✅ 成功返回 1 个中转线路
+2026-01-03 23:44:54 [INFO] [device_service.py:29] 📱 找到 2 个设备
+2026-01-03 23:44:54 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:54 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:54] "GET /api/transit-proxies/names?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-03 23:44:54 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:54 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:54] "GET /api/devices HTTP/1.1" 200 -
+2026-01-03 23:44:55 [INFO] [app.py:117] 📥 GET /api/proxies | {"method": "GET", "path": "/api/proxies", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-03 23:44:55 [INFO] [app.py:117] 📥 GET /api/regions | {"method": "GET", "path": "/api/regions", "client": "127.0.0.1"}
+2026-01-03 23:44:55 [INFO] [region_service.py:31] 成功返回 6 个地区
+2026-01-03 23:44:55 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:55 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:55] "GET /api/regions HTTP/1.1" 200 -
+2026-01-03 23:44:55 [INFO] [proxy_service.py:56] 📋 获取代理 | device=72e8932c, proxies=61, transit=1
+2026-01-03 23:44:55 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:55 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:55] "GET /api/proxies?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-03 23:44:56 [INFO] [app.py:117] 📥 GET /api/vm/account-list | {"method": "GET", "path": "/api/vm/account-list", "client": "127.0.0.1", "query": {"device_id": "72e8932c"}}
+2026-01-03 23:44:56 [INFO] [adb_helper.py:73] 找到 2 个设备
+2026-01-03 23:44:56 [INFO] [vm_service.py:136] 🔍 查找VM账号配置路径: /storage/emulated/0/MultiApp_Farm/Profiles/
+2026-01-03 23:44:56 [INFO] [vm_service.py:139] 🔍 执行命令: ls -1 /storage/emulated/0/MultiApp_Farm/Profiles/*.conf 2>/dev/null | xargs -n1 basename 2>/dev/null | sed 's/\.conf$//' || echo ''
+2026-01-03 23:44:57 [INFO] [adb_helper.py:228] 🔧 ADB | {"cmd": "D:\\桌面\\platform-tools\\adb.exe -s 72e8932c shell ls -1 /storage/emulated/0/MultiApp_Farm/Profiles/*.conf 2>/dev/null | xargs -n1 basename 2>/dev/null | sed 's/\\.conf$//' || echo ''", "rc": 0, "out": "Carousell_HK_001 Carousell_HK_002 Carousell_HK_003 Carousell_HK_004 Carousell_HK_005 Carousell_HK_00"}
+2026-01-03 23:44:57 [INFO] [vm_service.py:148] 🔍 命令返回码: 0
+2026-01-03 23:44:57 [INFO] [vm_service.py:149] 🔍 命令输出: Carousell_HK_001
+Carousell_HK_002
+Carousell_HK_003
+Carousell_HK_004
+Carousell_HK_005
+Carousell_HK_006
+Carousell_HK_007
+Carousell_HK_008
+Carousell_HK_009
+Carousell_HK_010
+Carousell_HK_011
+Carousell_HK_...
+2026-01-03 23:44:57 [INFO] [vm_service.py:202] ✅ 成功获取账号列表: 共42个, 过滤后42个
+2026-01-03 23:44:57 [INFO] [app.py:136] 📤 200 | {"status": 200, "success": true}
+2026-01-03 23:44:57 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:57] "GET /api/vm/account-list?device_id=72e8932c HTTP/1.1" 200 -
+2026-01-03 23:44:59 [INFO] [app.py:117] 📥 POST /api/vm/load | {"method": "POST", "path": "/api/vm/load", "client": "127.0.0.1", "body": {"name": "Carousell_HK_001", "device_id": "72e8932c"}}
+2026-01-03 23:44:59 [INFO] [app.py:136] 📤 200 | {"status": 200}
+2026-01-03 23:44:59 [INFO] [app.py:513] 🔍 VM Load - Name: Carousell_HK_001, Device ID: 72e8932c
+2026-01-03 23:44:59 [INFO] [app.py:533] 执行 VM 加载命令: D:\桌面\platform-tools\adb.exe -s 72e8932c shell su -c "sh /data/local/tmp/vm.sh load \"Carousell_HK_001\""
+2026-01-03 23:44:59 [INFO] [_internal.py:97] 127.0.0.1 - - [03/Jan/2026 23:44:59] "POST /api/vm/load HTTP/1.1" 200 -
+2026-01-03 23:45:15 [INFO] [app.py:571] ✅ VM 账号 'Carousell_HK_001' 加载成功
