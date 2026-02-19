@@ -29,6 +29,9 @@ vm_account_counters:
 proxy_name_counters:
   HK: 176
   UK: 33
+  fr: 5
+  MY: 20
+  BD: 20
 config_file_path: D:\app_uploader\config.yaml
 vm_script_path: /data/local/tmp/vm.sh
 adb_path: D:\桌面\platform-tools\adb.exe
